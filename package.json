@@ -1,4 +1,6 @@
 {
+  "homepage": ".",
+  "start_url": ".",
   "name": "clefclub",
   "version": "0.1.0",
   "private": true,
