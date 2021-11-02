@@ -1,19 +1,19 @@
-import logo from './logo.svg';
-import './css/App.css';
+import React from 'react';
+import Home from './components/Home.js';
+import './css/App.css'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <spam>
-          This is ClefClub.
-        </spam>
-				<spam>
-					Let's JAM.
-				</spam>
-      </header>
-    </div>
+		<Router>
+			<div className="App">
+				<Switch>
+					<Route exact path="/"> <Home /> </Route>
+				</Switch>
+			</div>
+		</Router>
   );
 }
+
 
 export default App;
