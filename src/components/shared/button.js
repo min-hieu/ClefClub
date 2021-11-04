@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-import '../../css/button.scss';
+import { PRIMARY_COLOR } from '../../Constant';
 
 /* this function return the fancy bouncy button as placeholder,
  * feel free to change it later on. */
-function Btn({ text }) {
+
+const styles = {
+	btn: {
+		textTransform: 'none',
+		color: 'white',
+		background: PRIMARY_COLOR,
+  },
+};
+
+function Btn({ classes, text }) {
 	return (
 		<Button
 			variant="contained"
+			className={classes.btn}
 		>
 			{text}
 		</Button>
 	);
 }
 
-export default Btn;
+export default withStyles(styles)(Btn);
