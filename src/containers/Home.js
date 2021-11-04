@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/Home.css';
 import Btn from '../components/shared/button';
+import Navbar from '../components/shared/navbar';
 
 function Home() {
   return (
@@ -9,6 +10,7 @@ function Home() {
 				Hello this is main page.
 			</spam>
 			<Btn text="awesome button" link="ok"/>
+      < Navbar />
     </div>
   );
 }
