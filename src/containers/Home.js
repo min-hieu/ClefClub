@@ -1,18 +1,25 @@
 import React from 'react';
-import '../css/Home.css';
+import { withStyles } from '@material-ui/core/styles';
 import Btn from '../components/shared/button';
 import Navbar from '../components/shared/navbar';
 
-function Home() {
+const styles = {
+	main: {
+		background: 'white',
+		borderRadius: 20,
+		height: '100%',
+	},
+};
+
+function Home({ classes }) {
   return (
-    <div className="Home">
-			<spam id="main-title">
+    <div className="Home" className={classes.main}>
+			<span id="main-title">
 				Hello this is main page.
-			</spam>
-			<Btn text="awesome button" link="ok"/>
-      < Navbar />
+			</span>
+			<Btn text="Login" link="ok"/>
     </div>
   );
 }
 
-export default Home;
+export default withStyles(styles)(Home);
