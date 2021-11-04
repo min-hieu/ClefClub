@@ -42,4 +42,4 @@ function navBtn(props) {
 	)
 }
 
-export default {Btn, navBtn};
+export default Btn;
