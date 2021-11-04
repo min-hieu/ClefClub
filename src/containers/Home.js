@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Btn from '../components/shared/button';
-import Navbar from '../components/shared/navbar';
+import Navbar from '../components/shared/Navbar';
 
 const styles = {
 	main: {
@@ -18,6 +18,7 @@ function Home({ classes }) {
 				Hello this is main page.
 			</span>
 			<Btn text="Login" link="ok"/>
+      <Navbar />
     </div>
   );
 }
