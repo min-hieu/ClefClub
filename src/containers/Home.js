@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/Home.css';
-import Btn from './button';
+import Btn from '../components/shared/button';
 
 function Home() {
   return (
