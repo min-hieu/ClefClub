@@ -7,7 +7,7 @@ the PAN (Physicality, Asychronism, and Novice) social problem that have haunted 
 
 to run locally, execute:<br>
 `npm install`<br>
-`npm start'<br>
+`npm start`<br>
 *note*: run `rm package-lock.json` before npm install might fix any trouble running locally. 
 
 ## Authors: 
