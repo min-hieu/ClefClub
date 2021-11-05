@@ -53,11 +53,6 @@ const StyledFab = styled(Fab)({
 
 
 function Navbar({ classes }) {
-  const icons = [
-      <HomeOutlinedIcon className={classes.leftIcon}/>,
-      <PersonOutlinedIcon className={classes.leftIcon}/>,
-  ]
-
   return (
 	  <nav class="menu">
       <AppBar position="fixed" className={classes.appBar}>

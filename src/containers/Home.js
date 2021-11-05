@@ -8,7 +8,6 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR } from '../Constant';
-import Btn from '../components/shared/button';
 import Navbar from '../components/shared/Navbar';
 import testImg from '../assets/test/test_img.png';
 
