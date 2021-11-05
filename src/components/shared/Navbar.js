@@ -17,6 +17,7 @@ const styles = {
     background: SECONDARY_COLOR,
     top: '630px',
     bottom: 0,
+    borderRadius: '0 0 20px 20px',
   },
   addIcon: {
     fontSize: 70,
