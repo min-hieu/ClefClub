@@ -68,7 +68,6 @@ function Home({ classes }) {
 	];
 
   return (
-<<<<<<< HEAD
     <div className={classes.main}>
 			<Card>
 				<CardActionArea>
@@ -84,14 +83,7 @@ function Home({ classes }) {
 					session => session
 				)}
 			</div>
-=======
-    <div className="Home" className={classes.main}>
-			<span id="main-title">
-				Hello this is main page.
-			</span>
-			<Btn text="Login" link="ok"/>
-      <Navbar />
->>>>>>> 39cba1f33804a7c17b8b39ee600b16f559688cf1
+			<Navbar />
     </div>
   );
 }
