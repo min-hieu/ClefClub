@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR } from '../Constant';
+import Btn from '../components/shared/button';
+import Navbar from '../components/shared/Navbar';
 
 const styles = {
 	main: {
@@ -66,6 +68,7 @@ function Home({ classes }) {
 	];
 
   return (
+<<<<<<< HEAD
     <div className={classes.main}>
 			<Card>
 				<CardActionArea>
@@ -81,6 +84,14 @@ function Home({ classes }) {
 					session => session
 				)}
 			</div>
+=======
+    <div className="Home" className={classes.main}>
+			<span id="main-title">
+				Hello this is main page.
+			</span>
+			<Btn text="Login" link="ok"/>
+      <Navbar />
+>>>>>>> 39cba1f33804a7c17b8b39ee600b16f559688cf1
     </div>
   );
 }
