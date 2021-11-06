@@ -1,6 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Home from './containers/Home';
+import Profile from './containers/Profile';
+import History from './containers/History';
+import Search from './containers/Search';
 import NewSession from './containers/session/new/NewSession';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -22,7 +25,10 @@ function App({ classes }) {
         <div className={classes.root}>
           <Switch>
             <Route exact path="/"> <Home /> </Route>
-            <Route exact path="/newSession"> <NewSession /> </Route>
+            <Route exact path="/profile"> <Profile /> </Route>
+            <Route exact path="/history"> <History /> </Route>
+            <Route exact path="/search"> <Search /> </Route>
+						<Route exact path="/session/new"> <NewSession /> </Route>
           </Switch>
         </div>
 			</div>

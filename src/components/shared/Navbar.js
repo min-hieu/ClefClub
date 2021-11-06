@@ -62,24 +62,24 @@ function Navbar({ classes }) {
 							</Link>
 						</Grid>
             <Grid item xs>
-							<Link to='/' style={{ textDecoration: 'none' }}>
+							<Link to='/profile' style={{ textDecoration: 'none' }}>
 								<PersonOutlinedIcon className={classes.navIcon}/>
 							</Link>
             </Grid>
             <Grid item xs>
             </Grid>
             <Grid item xs>
-							<Link to='/' style={{ textDecoration: 'none' }}>
+							<Link to='/history' style={{ textDecoration: 'none' }}>
 								<HistoryOutlinedIcon className={classes.navIcon}/>
 							</Link>
             </Grid>
             <Grid item xs>
-							<Link to='/' style={{ textDecoration: 'none' }}>
+							<Link to='/search' style={{ textDecoration: 'none' }}>
 								<SearchOutlinedIcon className={classes.navIcon}/>
 							</Link>
             </Grid>
           </Grid>
-					<Link to='/newSession'>
+					<Link to='/session/new'>
 						<StyledFab aria-label="add">
 							<AddCircleRoundedIcon className={classes.addIcon}/>
 						</StyledFab>
