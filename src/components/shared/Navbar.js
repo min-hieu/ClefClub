@@ -15,7 +15,7 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 const styles = {
   appBar: {
     background: SECONDARY_COLOR,
-    top: '630px',
+    top: '90%',
     bottom: 0,
     borderRadius: '0 0 20px 20px',
   },

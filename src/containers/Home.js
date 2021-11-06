@@ -12,13 +12,6 @@ import Navbar from '../components/shared/Navbar';
 import testImg from '../assets/test/test_img.png';
 
 const styles = {
-	main: {
-		background: 'white',
-		borderRadius: 20,
-		height: '100%',
-		overflow: 'scroll',
-		marginBottom: 20,
-	},
 	media: {
     height: 300,
 		borderRadius: '20px 20px 0 0',
@@ -40,7 +33,7 @@ const styles = {
     transform: 'translate(0, -50%)',
     textAlign: 'center',
 		backgroundColor: '#00000036',
-		'-webkit-user-select': 'none', /* Safari */        
+		'-webkit-user-select': 'none', /* Safari */
 		'-moz-user-select': 'none', /* Firefox */
 		'-ms-user-select': 'none', /* IE10+/Edge */
 		'user-select': 'none', /* Standard */
@@ -68,74 +61,69 @@ function Home({ classes }) {
 		{
 			img: testImg,
 			title: 'this is fucked'
-		},	
+		},
 		{
 			img: testImg,
 			title: 'title'
-		},	
+		},
 		{
 			img: testImg,
 			title: 'title'
-		},	
+		},
 		{
 			img: testImg,
 			title: 'fuck'
-		},	
-	]
+		},
+	];
 
   return (
-    <div className={classes.main}>
+    <>
+      <Card>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={require('../assets/test/test_img.png')}
+          />
+        </CardActionArea>
+      </Card>
+      <Typography className={classes.sessionHeading}>This week's top sessions</Typography>
 
-			<Card>
-				<CardActionArea>
-					<CardMedia
-						className={classes.media}
-						image={require('../assets/test/test_img.png')}
-					/>
-				</CardActionArea>
-			</Card>
+      <div className={classes.gridListWrapper}>
+        <GridList className={classes.gridList} cols={2.5}>
+          {tileData.map((tile) => (
+            <GridListTile key={tile.img}
+              classes={{ root: classes.tileRoot, tile: classes.tile }}>
+              <img src={tile.img} alt={tile.title} />
+              <GridListTileBar className={classes.tileTitle}
+                title={tile.title}
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
+      <Typography className={classes.sessionHeading}>This week's top collab</Typography>
 
-			<Typography className={classes.sessionHeading}>This week's top sessions</Typography>
-
-			<div className={classes.gridListWrapper}>
-				<GridList className={classes.gridList} cols={2.5}>
-					{tileData.map((tile) => (
-						<GridListTile key={tile.img}
-							classes={{ root: classes.tileRoot, tile: classes.tile }}>
-							<img src={tile.img} alt={tile.title} />
-							<GridListTileBar className={classes.tileTitle}
-								title={tile.title}
-							/>
-						</GridListTile>
-					))}
-				</GridList>
-			</div>
-
-			<Typography className={classes.sessionHeading}>This week's top collab</Typography>
-
-			<div className={classes.gridListWrapper}>
-				<GridList className={classes.gridList} cols={2.5}>
-					{tileData.map((tile) => (
-						<GridListTile key={tile.img}
-							classes={{ root: classes.tileRoot, tile: classes.tile }}>
-							<img src={tile.img} alt={tile.title} />
-							<GridListTileBar className={classes.tileTitle}
-								title={tile.title}
-							/>
-						</GridListTile>
-					))}
-				</GridList>
-			</div>
-			
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-
-			<Navbar />
-    </div>
+      <div className={classes.gridListWrapper}>
+        <GridList className={classes.gridList} cols={2.5}>
+          {tileData.map((tile) => (
+            <GridListTile key={tile.img}
+              classes={{ root: classes.tileRoot, tile: classes.tile }}>
+              <img src={tile.img} alt={tile.title} />
+              <GridListTileBar className={classes.tileTitle}
+                title={tile.title}
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <Navbar />
+    </>
   );
 }
 
