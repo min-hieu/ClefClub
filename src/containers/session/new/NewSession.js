@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Navbar from '../../../components/shared/Navbar';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 
 const styles = {
@@ -38,6 +39,14 @@ const styles = {
     transition: 'border .24s ease-in-out',
     width: 300,
     height: 300,
+    justifyContent: 'center',
+  },
+  addIcon: {
+    color: PRIMARY_COLOR,
+    fontSize: 72,
+  },
+  addText: {
+    fontSize: 20,
   },
 };
 
@@ -56,6 +65,8 @@ function NewSession({ classes }) {
         </Grid>
       </Grid>
       <div className={classes.dropzone}>
+        <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
+        <Typography className={classes.addText}>Upload video</Typography>
       </div>
 			<Navbar />
     </div>
