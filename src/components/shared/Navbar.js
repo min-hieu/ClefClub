@@ -27,9 +27,11 @@ const styles = {
     color: PRIMARY_COLOR,
     fontSize: 35,
     margin: 10,
+		'&:hover': {
+			color: "white",
+		},
   },
-}
-;
+};
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
@@ -54,19 +56,27 @@ function Navbar({ classes }) {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolBar}>
           <Grid container spacing={2} direction="row">
+						<Grid item xs>
+							<Link to='/' style={{ textDecoration: 'none' }}>
+									<HomeOutlinedIcon className={classes.navIcon}/>
+							</Link>
+						</Grid>
             <Grid item xs>
-              <HomeOutlinedIcon className={classes.navIcon}/>
+							<Link to='/' style={{ textDecoration: 'none' }}>
+								<PersonOutlinedIcon className={classes.navIcon}/>
+							</Link>
             </Grid>
             <Grid item xs>
-              <PersonOutlinedIcon className={classes.navIcon}/>
             </Grid>
             <Grid item xs>
+							<Link to='/' style={{ textDecoration: 'none' }}>
+								<HistoryOutlinedIcon className={classes.navIcon}/>
+							</Link>
             </Grid>
             <Grid item xs>
-              <HistoryOutlinedIcon className={classes.navIcon}/>
-            </Grid>
-            <Grid item xs>
-              <SearchOutlinedIcon className={classes.navIcon}/>
+							<Link to='/' style={{ textDecoration: 'none' }}>
+								<SearchOutlinedIcon className={classes.navIcon}/>
+							</Link>
             </Grid>
           </Grid>
 					<Link to='/newSession'>
