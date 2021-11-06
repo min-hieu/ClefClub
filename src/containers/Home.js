@@ -61,7 +61,7 @@ function Home({ classes }) {
 	const tileData = [
 		{
 			img: testImg,
-			title: 'this is fucked'
+			title: 'this is a session'
 		},
 		{
 			img: testImg,
@@ -73,7 +73,7 @@ function Home({ classes }) {
 		},
 		{
 			img: testImg,
-			title: 'fuck'
+			title: 'another session'
 		},
 	];
 
