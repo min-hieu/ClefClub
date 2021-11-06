@@ -1,15 +1,24 @@
 import React from 'react';
+import { PRIMARY_COLOR } from '../../Constant';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import Navbar from '../components/shared/Navbar';
+import testImg from '../../assets/test/test_img.png';
 
-const styles = {};
+const styles = {
+	hud: {
+		height: '16%',
+		width: '100%',
+		background: `linear-gradient(#00000000,${PRIMARY_COLOR} 40%)`,
+		bottom: 0,
+		position: 'absolute',
+	},
+};
 
 function CollabView({ classes }) {
   return (
     <>
-			This is history page
-      <Navbar />
+			<div className={classes.hud}>
+			</div>
     </>
   );
 }
