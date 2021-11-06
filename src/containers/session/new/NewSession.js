@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
 import Navbar from '../../../components/shared/Navbar';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
@@ -48,6 +49,8 @@ const styles = {
   addText: {
     fontSize: 20,
   },
+  name: {
+  },
 };
 
 function NewSession({ classes }) {
@@ -68,6 +71,12 @@ function NewSession({ classes }) {
         <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
         <Typography className={classes.addText}>Upload video</Typography>
       </div>
+      <InputBase
+        className={classes.name}
+        defaultValue="Session Title"
+        required
+        inputProps={{ 'aria-label': 'naked' }}
+      />
 			<Navbar />
     </div>
   );
