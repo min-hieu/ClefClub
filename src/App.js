@@ -22,7 +22,7 @@ function App({ classes }) {
         <div className={classes.root}>
           <Switch>
             <Route exact path="/"> <Home /> </Route>
-            <Route exact path="/session/new"> <NewSession /> </Route>
+            <Route exact path="/newSession"> <NewSession /> </Route>
           </Switch>
         </div>
 			</div>

@@ -1,5 +1,6 @@
 import '../../css/navbar.scss';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant'
+import { Link } from 'react-router-dom';
 import React from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -22,12 +23,7 @@ const styles = {
   addIcon: {
     fontSize: 70,
   },
-  leftIcon: {
-    color: PRIMARY_COLOR,
-    fontSize: 35,
-    margin: 10,
-  },
-  rightIcon: {
+  navIcon: {
     color: PRIMARY_COLOR,
     fontSize: 35,
     margin: 10,
@@ -59,23 +55,25 @@ function Navbar({ classes }) {
         <Toolbar className={classes.toolBar}>
           <Grid container spacing={2} direction="row">
             <Grid item xs>
-              <HomeOutlinedIcon className={classes.leftIcon}/>
+              <HomeOutlinedIcon className={classes.navIcon}/>
             </Grid>
             <Grid item xs>
-              <PersonOutlinedIcon className={classes.leftIcon}/>
+              <PersonOutlinedIcon className={classes.navIcon}/>
             </Grid>
             <Grid item xs>
             </Grid>
             <Grid item xs>
-              <HistoryOutlinedIcon className={classes.rightIcon}/>
+              <HistoryOutlinedIcon className={classes.navIcon}/>
             </Grid>
             <Grid item xs>
-              <SearchOutlinedIcon className={classes.rightIcon}/>
+              <SearchOutlinedIcon className={classes.navIcon}/>
             </Grid>
           </Grid>
-          <StyledFab aria-label="add">
-            <AddCircleRoundedIcon className={classes.addIcon}/>
-          </StyledFab>
+					<Link to='/newSession'>
+						<StyledFab aria-label="add">
+							<AddCircleRoundedIcon className={classes.addIcon}/>
+						</StyledFab>
+					</Link>
         </Toolbar>
       </AppBar>
 		</nav>
