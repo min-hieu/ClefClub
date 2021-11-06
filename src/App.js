@@ -10,7 +10,7 @@ const styles = {
 		background: 'white',
 		borderRadius: '20px 20px 0 0',
 		height: '90%',
-		overflow: 'scroll',
+		overflow: 'auto',
 		marginBottom: 20,
 	},
 };
@@ -29,6 +29,5 @@ function App({ classes }) {
 		</Router>
   );
 }
-
 
 export default withStyles(styles)(App);
