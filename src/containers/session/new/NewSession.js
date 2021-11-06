@@ -3,8 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Navbar from '../../../components/shared/Navbar';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import PublicIcon from '@material-ui/icons/Public';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 
 const styles = {
@@ -50,10 +56,58 @@ const styles = {
     fontSize: 20,
   },
   name: {
+    fontSize: 20,
+    color: PRIMARY_COLOR,
+    fontWeight: 'bold',
+    width: '100%',
+    padding: 4,
+  },
+  nameInput: {
+    textAlign: 'center',
+  },
+  description: {
+    width: '100%',
+  },
+  viewButton: {
+    textTransform: 'none',
+    color: SECONDARY_COLOR,
+    backgroundColor: TERTIARY_COLOR,
+    borderRadius: 15,
+    marginTop: 10,
+    minWidth: 140,
+    fontSize: 18,
+  },
+  menuItem: {
+    color: SECONDARY_COLOR,
+    backgroundColor: TERTIARY_COLOR,
+    minWidth: 140,
+    fontSize: 18,
+    justifyContent: 'center !important',
+    '&:hover': {
+      backgroundColor: `${PRIMARY_COLOR} !important`,
+      color: TERTIARY_COLOR,
+    },
   },
 };
 
 function NewSession({ classes }) {
+  const viewOptions = ['Public', 'Private'];
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const handleClickButton = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className={classes.main}>
       <Grid container alignItems="center">
@@ -73,10 +127,46 @@ function NewSession({ classes }) {
       </div>
       <InputBase
         className={classes.name}
-        defaultValue="Session Title"
+        placeholder="Session Title"
         required
         inputProps={{ 'aria-label': 'naked' }}
+        classes={{
+          input: classes.nameInput,
+        }}
       />
+      <Input
+        className={classes.description}
+        placeholder="Description"
+        required
+      />
+      <Button
+        ref={anchorEl}
+        onClick={handleClickButton}
+        className={classes.viewButton}
+        startIcon={<PublicIcon />}
+        endIcon={<ExpandMoreIcon />}
+      >
+        {viewOptions[selectedIndex]}
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        {viewOptions.map((option, index) => (
+          <MenuItem
+            ListItemClasses={{ button: classes.menuItem }}
+            key={option}
+            selected={index === selectedIndex}
+            onClick={(event) => handleMenuItemClick(event, index)}
+          >
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
 			<Navbar />
     </div>
   );
