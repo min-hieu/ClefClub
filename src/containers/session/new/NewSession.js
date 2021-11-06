@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Navbar from '../../../components/shared/Navbar';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PublicIcon from '@material-ui/icons/Public';
+import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 
@@ -91,7 +92,7 @@ const styles = {
 };
 
 function NewSession({ classes }) {
-  const viewOptions = ['Public', 'Private'];
+  const viewOptions = ['Public', 'Inviters'];
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -143,7 +144,7 @@ function NewSession({ classes }) {
         ref={anchorEl}
         onClick={handleClickButton}
         className={classes.viewButton}
-        startIcon={<PublicIcon />}
+        startIcon={selectedIndex ? <PeopleOutlineIcon/> : <PublicIcon />}
         endIcon={<ExpandMoreIcon />}
       >
         {viewOptions[selectedIndex]}
