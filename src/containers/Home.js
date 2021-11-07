@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import testImg from '../assets/test/test_img.png';
+
+import CardList from '../components/shared/CardList';
 
 const styles = {
 	media: {
@@ -58,65 +57,51 @@ const styles = {
 };
 
 function Home({ classes }) {
-	const tileData = [
-		{
-			img: testImg,
-			title: 'this is a session'
-		},
-		{
-			img: testImg,
-			title: 'title'
-		},
-		{
-			img: testImg,
-			title: 'title'
-		},
-		{
-			img: testImg,
-			title: 'another session'
-		},
+	const topSessionData = [
+		{ 	img: testImg,
+			title: 'Carpe Diem'},
+		{ 	img: testImg,
+			title: 'title'},
+		{ 	img: testImg,
+			title: 'title'},
+		{ 	img: testImg,
+			title: 'another session'},
 	];
+
+  const topCollabData = [
+		{ 	img: testImg,
+			title: 'this is a jam'},
+		{ 	img: testImg,
+			title: 'title'},
+		{ 	img: testImg,
+			title: 'title'},
+		{ 	img: testImg,
+			title: 'another jam'},
+	];
+
+  const banner = 
+    <Card>
+      <CardActionArea>
+        <CardMedia className={classes.media} image={require('../assets/test/test_img.png')}/>
+      </CardActionArea>
+    </Card>
+
+    const topSession =       
+      <CardList data={topSessionData} displayCols={2.5} link={'/session/view'}></CardList>  
+    
+    const topCollabs = 
+      <CardList data={topCollabData} displayCols={2.5} link={'./collab/view'}></CardList>
 
   return (
     <>
-      <Card>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={require('../assets/test/test_img.png')}
-          />
-        </CardActionArea>
-      </Card>
+      {banner}
+      
       <Typography className={classes.sessionHeading}>This week's top sessions</Typography>
+      {topSession}
 
-      <div className={classes.gridListWrapper}>
-        <GridList className={classes.gridList} cols={2.5}>
-          {tileData.map((tile) => (
-            <GridListTile key={tile.img}
-              classes={{ root: classes.tileRoot, tile: classes.tile }}>
-              <img src={tile.img} alt={tile.title} />
-              <GridListTileBar className={classes.tileTitle}
-                title={tile.title}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
       <Typography className={classes.sessionHeading}>This week's top collab</Typography>
-
-      <div className={classes.gridListWrapper}>
-        <GridList className={classes.gridList} cols={2.5}>
-          {tileData.map((tile) => (
-            <GridListTile key={tile.img}
-              classes={{ root: classes.tileRoot, tile: classes.tile }}>
-              <img src={tile.img} alt={tile.title} />
-              <GridListTileBar className={classes.tileTitle}
-                title={tile.title}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
+      {topCollabs}
+      
       <br/>
       <br/>
       <br/>

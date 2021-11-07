@@ -5,10 +5,18 @@ the PAN (Physicality, Asychronism, and Novice) social problem that have haunted 
 
 # Setup
 
-to run locally, execute:<br>
+To run locally, execute:<br>
 `npm install`<br>
 `npm start`<br>
-*note*: run `rm package-lock.json` before npm install might fix any trouble running locally. 
+*Trouble-shooting*: 
+    Run `rm package-lock.json` before npm install might fix any trouble running locally. 
+    For linux, add `--openssl-legacy-provider` to the scripts (npm start, build, ...)
+
+# Coding convention:
+- Functional component (Please use () => {}) and hook for stateful component.
+- Shared component MUST be put in components/shared/
+- Not-shared but big component SHOULD be put in components/ (Example, a complex component of session/view page should be in components/session/view/)
+- Avoid putting too much nested JSX. Consider make it at max 3 layers (Use variable to make smaller components and build up from there)
 
 ## Authors: 
 - Charlie (Hieu)

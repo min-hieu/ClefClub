@@ -24,17 +24,17 @@ function App({ classes }) {
   return (
 		<Router>
 			<div className="App">
-        <div className={classes.root}>
-          <Switch>
-            <Route exact path="/"> <Home /> </Route>
-            <Route exact path="/profile"> <Profile /> </Route>
-            <Route exact path="/history"> <History /> </Route>
-            <Route exact path="/search"> <Search /> </Route>
+				<div className={classes.root}>
+				<Switch>
+					<Route exact path="/"> <Home /> </Route>
+					<Route exact path="/profile"> <Profile /> </Route>
+					<Route exact path="/history"> <History /> </Route>
+					<Route exact path="/search"> <Search /> </Route>
 						<Route exact path="/session/new"> <NewSession /> </Route>
 						<Route exact path="/session/view"> <ViewSession /> </Route>
 						<Route exact path="/collab/view"> <CollabView /> </Route>
-          </Switch>
-        </div>
+				</Switch>
+				</div>
 			</div>
 		</Router>
   );

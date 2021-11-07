@@ -50,7 +50,7 @@ const StyledFab = styled(Fab)({
 });
 
 
-function Navbar({ classes }) {
+const Navbar = ({classes}) => {
   return (
 	  <nav class="menu">
       <AppBar position="fixed" className={classes.appBar}>

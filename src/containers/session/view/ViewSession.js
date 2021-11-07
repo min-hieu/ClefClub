@@ -1,18 +1,16 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import Navbar from '../../../components/shared/Navbar';
 import testImg from '../../../assets/test/test_img.png'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import TruncateMarkup from "react-truncate-markup";
+import CardList from '../../../components/shared/CardList';
+import CollapsibleDescription from '../../../components/shared/CollapsibleDescription'
 
 const styles = {
   title: {
@@ -127,32 +125,20 @@ const styles = {
 };
 
 function ViewSession({ classes }) {
-  const [showMore, setShowMore] = React.useState(true);
   const mainCover = 
-		{
-			img: testImg,
-			title: 'this is session'
-		};
+		{ img: testImg,
+			title: 'this is session'};
 
-
-  const tileData = [
-		{
-			img: testImg,
-			title: 'this is a jam'
-		},
-		{
-			img: testImg,
-			title: 'title'
-		},
-		{
-			img: testImg,
-			title: 'title'
-		},
-		{
-			img: testImg,
-			title: 'another jam'
-		},
-	];
+  const collabData = [
+      { img: testImg,
+        title: 'this is a jam'},
+      { img: testImg,
+        title: 'title'},
+      { img: testImg,
+        title: 'title'},
+      { img: testImg,
+        title: 'another jam'},
+    ];
 
   const title = 
     <Grid container alignItems="center" justifyContent="center">
@@ -173,27 +159,8 @@ function ViewSession({ classes }) {
       <Typography className={classes.addText}>Upload video</Typography>
     </div>
 
-  const sessionTitle = 
-    <Grid item>
-      <Typography className={classes.sessionTitle}>John - 69K views - 6 days ago</Typography>
-    </Grid>
+  const descriptionText = 'Yo, make sure to check out my soundcloud on the Spotify haha';
 
-  const description = <Typography className={classes.sessionSubtitle}>Yo, make sure to check out my soundcloud on the Spotify haha</Typography>
-
-  const sessionSubtitle = 
-    <Grid item>
-      {showMore
-        ? <TruncateMarkup lines = {1}>{description}</TruncateMarkup>
-        : description}    
-    </Grid>
-
-  const showMoreLink =
-      <Grid item className={classes.readMoreBox}>
-        <a className={classes.readMore} onClick={() => setShowMore(!showMore)}>
-          Show {showMore ? "more" : "less"}
-        </a>
-      </Grid>
-  
   const header = 
     <Grid container alignItems="center" justifyContent="center">
       <Grid item>
@@ -201,35 +168,21 @@ function ViewSession({ classes }) {
       </Grid>
     </Grid>
 
-  const drawTile = (tile) => (
-    <GridListTile key={tile.img} classes={{ root: classes.tileRoot, tile: classes.tile }}>
-      <img src={tile.img} alt={tile.title} />
-      <GridListTileBar className={classes.tileTitle} title={tile.title}/>
-    </GridListTile>
-  )
-
   const row = 
-    <div className={classes.gridListWrapper}>
-      <GridList className={classes.gridList} cols={2.5}>
-        {tileData.map(drawTile)}
-      </GridList>
-    </div>
+    <CardList data={collabData} displayCols={2.5} link={'/collab/view'}></CardList>
 
   const rows = [row, row, row, row];
 
   return (
     <>
       {title}
+      
       <div className={classes.gridListWrapper}>
         <GridList className={classes.gridList} cols={2}>
             {cover}
             {dropZone}
         </GridList>
-        <Grid container xs={10} alignItems="center" justifyContent="flex-start">
-          {sessionTitle}
-          {sessionSubtitle}
-          {showMoreLink}
-        </Grid>
+        <CollapsibleDescription text='descriptionText'></CollapsibleDescription>
       </div>
       
       {header}
