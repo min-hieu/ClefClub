@@ -182,7 +182,7 @@ function ViewSession({ classes }) {
             {cover}
             {dropZone}
         </GridList>
-        <CollapsibleDescription text='descriptionText'></CollapsibleDescription>
+        <CollapsibleDescription text={descriptionText}></CollapsibleDescription>
       </div>
       
       {header}

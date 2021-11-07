@@ -33,7 +33,7 @@ const CollapsibleDescription = ({classes, text}) => {
         <Typography className={classes.sessionTitle}>John - 69K views - 6 days ago</Typography>
       </Grid>
 
-    const descriptionText = <Typography className={classes.sessionSubtitle}>text</Typography>
+    const descriptionText = <Typography className={classes.sessionSubtitle}>{text}</Typography>
 
     const sessionSubtitle = 
         <Grid item>
