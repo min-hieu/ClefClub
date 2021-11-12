@@ -109,65 +109,83 @@ function NewSession({ classes }) {
     setAnchorEl(null);
   };
 
+  const header =
+    <Grid container alignItems="center">
+      <Grid item xs={10}>
+        <Typography className={classes.title}>New Session</Typography>
+      </Grid>
+      <Grid item xs={2}>
+        <Typography className={classes.done}>Done</Typography>
+      </Grid>
+      <Grid item>
+        <Typography className={classes.subtitle}>Start cooking up some jam!</Typography>
+      </Grid>
+    </Grid>
+
+  const addZone =
+    <div className={classes.dropzone}>
+      <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
+      <Typography className={classes.addText}>Upload video</Typography>
+    </div>
+
+  const button =
+    <Button
+      ref={anchorEl}
+      onClick={handleClickButton}
+      className={classes.viewButton}
+      startIcon={selectedIndex ? <PeopleOutlineIcon/> : <PublicIcon />}
+      endIcon={<ExpandMoreIcon />}
+    >
+      {viewOptions[selectedIndex]}
+    </Button>
+
+  const menu =
+    <Menu
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+    {viewOptions.map((option, index) => (
+      <MenuItem
+        ListItemClasses={{ button: classes.menuItem }}
+        key={option}
+        selected={index === selectedIndex}
+        onClick={(event) => handleMenuItemClick(event, index)}
+      >
+        {option}
+      </MenuItem>
+    ))}
+  </Menu>
+
+  const visibilityButton = [button, menu]
+
+  const titleField =
+    <InputBase
+      className={classes.name}
+      placeholder="Session Title"
+      required
+      inputProps={{ 'aria-label': 'naked' }}
+      classes={{
+        input: classes.nameInput,
+      }}
+    />
+  const descriptionField =
+    <Input
+      className={classes.description}
+      placeholder="Description"
+      required
+    />
+
   return (
     <div className={classes.main}>
-      <Grid container alignItems="center">
-        <Grid item xs={10}>
-          <Typography className={classes.title}>New Session</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography className={classes.done}>Done</Typography>
-        </Grid>
-        <Grid item>
-          <Typography className={classes.subtitle}>Start cooking up some jam!</Typography>
-        </Grid>
-      </Grid>
-      <div className={classes.dropzone}>
-        <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
-        <Typography className={classes.addText}>Upload video</Typography>
-      </div>
-      <InputBase
-        className={classes.name}
-        placeholder="Session Title"
-        required
-        inputProps={{ 'aria-label': 'naked' }}
-        classes={{
-          input: classes.nameInput,
-        }}
-      />
-      <Input
-        className={classes.description}
-        placeholder="Description"
-        required
-      />
-      <Button
-        ref={anchorEl}
-        onClick={handleClickButton}
-        className={classes.viewButton}
-        startIcon={selectedIndex ? <PeopleOutlineIcon/> : <PublicIcon />}
-        endIcon={<ExpandMoreIcon />}
-      >
-        {viewOptions[selectedIndex]}
-      </Button>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        {viewOptions.map((option, index) => (
-          <MenuItem
-            ListItemClasses={{ button: classes.menuItem }}
-            key={option}
-            selected={index === selectedIndex}
-            onClick={(event) => handleMenuItemClick(event, index)}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
+      {header}
+      {addZone}
+      {titleField}
+      {descriptionField}
+      {visibilityButton}
 			<Navbar />
     </div>
   );

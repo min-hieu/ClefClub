@@ -27,9 +27,9 @@ const styles = {
     color: PRIMARY_COLOR,
     fontSize: 35,
     margin: 10,
-		'&:hover': {
-			color: "white",
-		},
+    '&:hover': {
+      color: "white",
+    },
   },
 };
 
@@ -49,44 +49,40 @@ const StyledFab = styled(Fab)({
   },
 });
 
+const IconWrapper = (icon, link) => (
+  <Grid item xs>
+    <Link to={link} style={{ textDecoration: 'none' }}>
+      {icon}
+    </Link>
+  </Grid>
+)
+const Navbar = ({classes}) => {
+  const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
+  const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')
+  const HistoryOption = IconWrapper(<HistoryOutlinedIcon className={classes.navIcon}/>, '/history')
+  const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
+  const AddOption =           
+    <Link to='/session/new'>
+      <StyledFab aria-label="add">
+        <AddCircleRoundedIcon className={classes.addIcon}/>
+      </StyledFab>
+    </Link>
 
-function Navbar({ classes }) {
   return (
-	  <nav class="menu">
+    <nav class="menu">
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolBar}>
           <Grid container spacing={2} direction="row">
-						<Grid item xs>
-							<Link to='/' style={{ textDecoration: 'none' }}>
-									<HomeOutlinedIcon className={classes.navIcon}/>
-							</Link>
-						</Grid>
-            <Grid item xs>
-							<Link to='/profile' style={{ textDecoration: 'none' }}>
-								<PersonOutlinedIcon className={classes.navIcon}/>
-							</Link>
-            </Grid>
-            <Grid item xs>
-            </Grid>
-            <Grid item xs>
-							<Link to='/history' style={{ textDecoration: 'none' }}>
-								<HistoryOutlinedIcon className={classes.navIcon}/>
-							</Link>
-            </Grid>
-            <Grid item xs>
-							<Link to='/search' style={{ textDecoration: 'none' }}>
-								<SearchOutlinedIcon className={classes.navIcon}/>
-							</Link>
-            </Grid>
+            {HomeOption}
+            {ProfileOption}
+            <Grid item xs></Grid>
+            {HistoryOption}
+            {SearchOption}
           </Grid>
-					<Link to='/session/new'>
-						<StyledFab aria-label="add">
-							<AddCircleRoundedIcon className={classes.addIcon}/>
-						</StyledFab>
-					</Link>
+          {AddOption}
         </Toolbar>
       </AppBar>
-		</nav>
+    </nav>
   );
 }
 
