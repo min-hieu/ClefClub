@@ -10,6 +10,8 @@ import CollabView from './containers/collab/CollabView';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import monkey from './assets/test/monkey.jpeg';
+
 const styles = {
 	root: {
 		background: 'white',
@@ -27,7 +29,10 @@ function App({ classes }) {
 				<div className={classes.root}>
 				<Switch>
 					<Route exact path="/"> <Home /> </Route>
-					<Route exact path="/profile"> <Profile /> </Route>
+					<Route exact path="/profile"> <Profile
+						name = "Charlie"
+						picture = {monkey}
+					/> </Route>
 					<Route exact path="/history"> <History /> </Route>
 					<Route exact path="/search"> <Search /> </Route>
 						<Route exact path="/session/new"> <NewSession /> </Route>
