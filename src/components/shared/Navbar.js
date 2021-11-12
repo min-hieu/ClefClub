@@ -56,6 +56,7 @@ const IconWrapper = (icon, link) => (
     </Link>
   </Grid>
 )
+
 const Navbar = ({classes}) => {
   const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
   const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')

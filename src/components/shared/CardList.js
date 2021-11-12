@@ -34,11 +34,22 @@ const styles = {
   gridList: {
     flexWrap: 'nowrap'
   },
+	offsetStart: {
+		transform: 'translate(0,0)'
+	},
+	offsetMid: {
+		transform: 'translate(50%,0)'
+	},
 };
 
-const CardList = ({classes, data, displayCols, link}) => {
+const CardList = ({classes, data, displayCols, link, offsetFlag}) => {
+		let offset = styles.offsetStart;
+		if (offsetFlag) {
+			offset = styles.offsetMid;
+		}
+
     const drawTile = (data) => (
-      <GridListTile key={data.img} classes={{ root: classes.tileRoot, tile: classes.tile }}>
+      <GridListTile sx={{offset}} key={data.img} classes={{ root: classes.tileRoot, tile: classes.tile }}>
         <Link to={link} style={{ textDecoration: 'none' }}>         
           <img src={data.img} alt={data.title}/>
           <GridListTileBar className={classes.tileTitle} title={data.title}/>

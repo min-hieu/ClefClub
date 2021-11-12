@@ -6,10 +6,11 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR } from '../Constant';
-import Navbar from '../components/shared/Navbar';
 import testImg from '../assets/test/test_img.png';
 
+import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
+import CollabHeading from '../components/shared/CollabHeading';
 
 const styles = {
 	media: {
@@ -21,61 +22,34 @@ const styles = {
     height: 177,
 		borderRadius: 10,
   },
-	sessionHeading: {
+	collabHeading: {
 		fontSize: 20,
 		color: PRIMARY_COLOR,
 		paddingLeft: 16,
 		padding: 10,
 	},
-	tileTitle: {
-		height: '100%',
-    top: '50%',
-    transform: 'translate(0, -50%)',
-    textAlign: 'center',
-		backgroundColor: '#00000036',
-		'-webkit-user-select': 'none', /* Safari */
-		'-moz-user-select': 'none', /* Firefox */
-		'-ms-user-select': 'none', /* IE10+/Edge */
-		'user-select': 'none', /* Standard */
-	},
-	tileRoot: {
-		marginLeft: 15,
-	},
-	tile: {
-		borderRadius: 10,
-	},
-	gridListWrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-		overflow: 'hidden',
-		'-webkit-scrollbar-display': 'None',
-  },
-  gridList: {
-    flexWrap: 'nowrap'
-  },
 };
 
 function Home({ classes }) {
 	const topSessionData = [
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'Carpe Diem'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'title'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'title'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'another session'},
 	];
 
   const topCollabData = [
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'this is a jam'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'title'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'title'},
-		{ 	img: testImg,
+		{		img: testImg,
 			title: 'another jam'},
 	];
 
@@ -86,20 +60,18 @@ function Home({ classes }) {
       </CardActionArea>
     </Card>
 
-    const topSession =       
-      <CardList data={topSessionData} displayCols={2.5} link={'/session/view'}></CardList>  
-    
-    const topCollabs = 
-      <CardList data={topCollabData} displayCols={2.5} link={'./collab/view'}></CardList>
+    const topCollabs = <CardList 
+				data={topCollabData}
+				displayCols={2.5} 
+				link={'./collab/view'}
+				offsetFlag={1}
+			></CardList>
 
   return (
     <>
       {banner}
       
-      <Typography className={classes.sessionHeading}>This week's top sessions</Typography>
-      {topSession}
-
-      <Typography className={classes.sessionHeading}>This week's top collab</Typography>
+			<CollabHeading text="This week's top collab" />
       {topCollabs}
       
       <br/>
