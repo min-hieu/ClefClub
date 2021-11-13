@@ -1,18 +1,17 @@
 import React from 'react';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR} from '../Constant';
-import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { TERTIARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CollabHeading from '../components/shared/CollabHeading';
+import CardList from '../components/shared/CardList';
+import testImg from '../assets/test/test_img.png';
 
 const styles = {
 	profile: {
-		position: 'absolute',
-		left: '50%',
-		transform: 'translate(-50%,30px)',
+    margin: '0 auto',
+    marginTop: 3,
 		background: TERTIARY_COLOR,
 		padding: '15px',
 		width: '90%',
@@ -30,38 +29,55 @@ const styles = {
 		fontSize: 30,
 		fontWeight: 'bold',
 	},
-	heading: {
-		fontSize: 20,
-		color: PRIMARY_COLOR,
-		paddingLeft: 20,
-		position: 'absolute',
-		top: 160,
-	}
 };
 
 function Profile(props) {
-	const { 
-		classes,
+	const {
 		name,
 		picture,
 		collabs
-	} = props;
+	} = props
+
+  const topCollabData = [
+    {   img: testImg,
+      title: 'this is a jam'},
+    {   img: testImg,
+      title: 'this is a jam'},
+    {   img: testImg,
+      title: 'this is a jam'},
+    {   img: testImg,
+      title: 'this is a jam'},
+  ]
+
+  var offset = {
+    transform: 'translate(0,110%)',
+  }
+
+  const topCollabs = <CardList
+    data={topCollabData}
+    displayCols={2.5}
+    link={'./collab/view'}
+    customStyle={[1,1]}
+  ></CardList>
 
 	return (
-		<>
+		<div>
 			<Grid container sx={styles.profile}>
 				<Grid item xs={8}>
-					<Typography variant="h1" sx={styles.name}>{ name }</Typography>
+					<Typography variant="h1" sx={styles.name}>{name}</Typography>
 				</Grid>
 				<Grid item xs={2}>
 					<Avatar sx={styles.avatar} alt={ name } src={ picture }/>
 				</Grid>
 			</Grid>
-			
-			<CollabHeading text="Your Previous Collab" sx={styles.heading}/>
+
+      <div>
+        <CollabHeading text="Your Previous Collab"/>
+      </div>
+      {topCollabs}
 
 			<Navbar />
-		</>
+		</div>
 	);
 }
 

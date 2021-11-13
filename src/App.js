@@ -35,9 +35,9 @@ function App({ classes }) {
 					/> </Route>
 					<Route exact path="/history"> <History /> </Route>
 					<Route exact path="/search"> <Search /> </Route>
-						<Route exact path="/session/new"> <NewSession /> </Route>
-						<Route exact path="/session/view"> <ViewSession /> </Route>
-						<Route exact path="/collab/view"> <CollabView /> </Route>
+          <Route exact path="/session/new"> <NewSession /> </Route>
+          <Route exact path="/session/view"> <ViewSession /> </Route>
+          <Route exact path="/collab/view"> <CollabView /> </Route>
 				</Switch>
 				</div>
 			</div>

@@ -12,10 +12,12 @@ const styles = {
 	},
 }
 
-const CollabHeading = ({ classes, text , sx }) => 
-	<Typography className={ classes.collabHeading } sx={ sx } >
-		{ text }
-	</Typography>
-;
+const CollabHeading = ({ classes, text , sx }) => {
+  return (
+    <Typography className={classes.collabHeading}>
+      { text }
+    </Typography>
+  )
+}
 
 export default withStyles(styles)( CollabHeading );
