@@ -43,8 +43,8 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-  overflow: 'hidden',
-  '-webkit-scrollbar-display': 'None',
+    overflow: 'hidden',
+    '-webkit-scrollbar-display': 'None',
   },
   gridList: {
     flexWrap: 'nowrap',
