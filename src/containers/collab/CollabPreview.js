@@ -25,7 +25,7 @@ const styles = {
   },
   acceptButton: {
     textTransform: 'none !important',
-		backgroundColor: `${TERTIARY_COLOR} !important`,
+    backgroundColor: `${TERTIARY_COLOR} !important`,
     '&:hover': {
       backgroundColor: `${SECONDARY_COLOR} !important`,
       color: PRIMARY_COLOR,
@@ -33,7 +33,7 @@ const styles = {
   },
   declineButton: {
     textTransform: 'none !important',
-		backgroundColor: '#ffdddd !important',
+    backgroundColor: '#ffdddd !important',
     '&:hover': {
       backgroundColor: `#ffbbbb !important`,
       color: '#ff2222',

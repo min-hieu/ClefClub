@@ -8,47 +8,47 @@ import testImg from '../assets/test/test_img.png';
 const styles = {};
 
 function Notification({ classes }) {
-	const notiData = [
-		{ 	
+  const notiData = [
+    { 	
       img: testImg,
-			title: 'Carpe Diem',
+      title: 'Carpe Diem',
       receive: true,
       accept: null,
     },
-		{ 	
+    { 	
       img: testImg,
-			title: 'Carpe',
+      title: 'Carpe',
       receive: false,
       accept: true,
     },
     { 	
       img: testImg,
-			title: 'Diem',
+      title: 'Diem',
       receive: false,
       accept: false
     },
-	];
+  ];
 
-	const oldNotiData = [
-		{ 	
+  const oldNotiData = [
+    { 	
       img: testImg,
-			title: 'Carpe Diem',
+      title: 'Carpe Diem',
       receive: true,
       accept: null,
     },
-		{ 	
+    { 	
       img: testImg,
-			title: 'Carpe',
+      title: 'Carpe',
       receive: false,
       accept: true,
     },
     { 	
       img: testImg,
-			title: 'Diem',
+      title: 'Diem',
       receive: false,
       accept: false
     },
-	];
+  ];
   return (
     <>
       <NotificationList data = {notiData} section = 'New'></NotificationList>

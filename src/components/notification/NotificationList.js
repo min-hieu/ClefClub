@@ -16,35 +16,35 @@ import { PRIMARY_COLOR, TERTIARY_COLOR } from '../../Constant';
 
 const styles = {
   sectionHeading: {
-		fontSize: 20,
-		color: PRIMARY_COLOR,
-		paddingLeft: 16,
-		padding: 10,
-	},
+    fontSize: 20,
+    color: PRIMARY_COLOR,
+    paddingLeft: 16,
+    padding: 10,
+  },
 
-	tileTitle: {
-		height: '100%',
+  tileTitle: {
+    height: '100%',
     top: '50%',
     transform: 'translate(0, -50%)',
     textAlign: 'center',
-		backgroundColor: '#00000036',
-		'-webkit-user-select': 'none', /* Safari */
-		'-moz-user-select': 'none', /* Firefox */
-		'-ms-user-select': 'none', /* IE10+/Edge */
-		'user-select': 'none', /* Standard */
-	},
-	tileRoot: {
-		marginLeft: 15,
-	},
-	tile: {
+    backgroundColor: '#00000036',
+    '-webkit-user-select': 'none', /* Safari */
+    '-moz-user-select': 'none', /* Firefox */
+    '-ms-user-select': 'none', /* IE10+/Edge */
+    'user-select': 'none', /* Standard */
+  },
+  tileRoot: {
+    marginLeft: 15,
+  },
+  tile: {
     minHeight: '30%',
-	},
-	gridListWrapper: {
+  },
+  gridListWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-	overflow: 'hidden',
-	'-webkit-scrollbar-display': 'None',
+  overflow: 'hidden',
+  '-webkit-scrollbar-display': 'None',
   },
   gridList: {
     flexWrap: 'nowrap',
