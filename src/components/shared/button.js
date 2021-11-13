@@ -14,12 +14,9 @@ const styles = {
   },
 };
 
-function Btn({ classes, text }) {
+const Btn = ({ classes, text }) => {
 	return (
-		<Button
-			variant="contained"
-			className={classes.btn}
-		>
+		<Button	variant="contained" className={classes.btn}>
 			{text}
 		</Button>
 	);
