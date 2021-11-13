@@ -69,22 +69,22 @@ const Navbar = ({classes}) => {
       </StyledFab>
     </Link>
 
-  return (
-    <nav class="menu">
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar className={classes.toolBar}>
-          <Grid container spacing={2} direction="row">
-            {HomeOption}
-            {ProfileOption}
-            <Grid item xs></Grid>
-            {HistoryOption}
-            {SearchOption}
-          </Grid>
-          {AddOption}
-        </Toolbar>
-      </AppBar>
-    </nav>
-  );
+    return (
+      <nav class="menu">
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar className={classes.toolBar}>
+            <Grid container spacing={2} direction="row">
+              {HomeOption}
+              {ProfileOption}
+              <Grid item xs></Grid>
+              {HistoryOption}
+              {SearchOption}
+            </Grid>
+            {AddOption}
+          </Toolbar>
+        </AppBar>
+      </nav>
+    );
 }
 
 export default withStyles(styles)(Navbar);

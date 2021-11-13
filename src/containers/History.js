@@ -7,7 +7,7 @@ const styles = {};
 function History({ classes }) {
   return (
     <>
-			This is history page
+      This is history page
       <Navbar />
     </>
   );

@@ -10,35 +10,35 @@ import CardList from '../components/shared/CardList';
 import CollabHeading from '../components/shared/CollabHeading';
 
 const styles = {
-	media: {
+  media: {
     height: 300,
-		borderRadius: '20px 20px 0 0',
+    borderRadius: '20px 20px 0 0',
   },
-	mediaList: {
+  mediaList: {
     width: 133,
     height: 177,
-		borderRadius: 10,
+    borderRadius: 10,
   },
-	collabHeading: {
-		fontSize: 20,
-		color: PRIMARY_COLOR,
-		paddingLeft: 16,
-		padding: 10,
-	},
+  collabHeading: {
+    fontSize: 20,
+    color: PRIMARY_COLOR,
+    paddingLeft: 16,
+    padding: 10,
+  },
 };
 
 function Home({ classes }) {
 
   const topCollabData = [
-		{		img: testImg,
-			title: 'this is a jam'},
-		{		img: testImg,
-			title: 'title'},
-		{		img: testImg,
-			title: 'title'},
-		{		img: testImg,
-			title: 'another jam'},
-	];
+    {		img: testImg,
+      title: 'this is a jam'},
+    {		img: testImg,
+      title: 'title'},
+    {		img: testImg,
+      title: 'title'},
+    {		img: testImg,
+      title: 'another jam'},
+  ];
 
   const banner =
     <Card>
@@ -48,26 +48,26 @@ function Home({ classes }) {
     </Card>
 
     const topCollabs = <CardList
-				data={topCollabData}
-				displayCols={2.5}
-				link={'./collab/view'}
-				offsetFlag={1}
-			></CardList>
+      data={topCollabData}
+      displayCols={2.5}
+      link={'./collab/view'}
+      offsetFlag={1}
+    ></CardList>
 
-  return (
-    <>
-      {banner}
-			<CollabHeading text="This week's top collab" />
-      {topCollabs}
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <Navbar />
-    </>
-  );
+    return (
+      <>
+        {banner}
+        <CollabHeading text="This week's top collab" />
+        {topCollabs}
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <Navbar />
+      </>
+    );
 }
 
 export default withStyles(styles)(Home);

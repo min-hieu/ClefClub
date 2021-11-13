@@ -33,29 +33,29 @@ const CollapsibleDescription = ({classes, text}) => {
       <Typography className={classes.sessionTitle}>John - 69K views - 6 days ago</Typography>
     </Grid>
 
-  const descriptionText = <Typography className={classes.sessionSubtitle}>{text}</Typography>
+    const descriptionText = <Typography className={classes.sessionSubtitle}>{text}</Typography>
 
-  const sessionSubtitle =
-    <Grid item>
-    {showMore
-      ? <TruncateMarkup lines = {1}>{descriptionText}</TruncateMarkup>
-      : descriptionText}
-    </Grid>
+    const sessionSubtitle =
+      <Grid item>
+        {showMore
+          ? <TruncateMarkup lines = {1}>{descriptionText}</TruncateMarkup>
+          : descriptionText}
+      </Grid>
 
-  const showMoreLink =
-    <Grid item className={classes.readMoreBox}>
-      <a className={classes.readMore} onClick={() => setShowMore(!showMore)}>
-        Show {showMore ? "more" : "less"}
-      </a>
-    </Grid>
+    const showMoreLink =
+      <Grid item className={classes.readMoreBox}>
+        <a className={classes.readMore} onClick={() => setShowMore(!showMore)}>
+          Show {showMore ? "more" : "less"}
+        </a>
+      </Grid>
 
-  return (
-    <Grid container xs={10} alignItems="center" justifyContent="flex-start">
-      {sessionTitle}
-      {sessionSubtitle}
-      {showMoreLink}
-    </Grid>
-  )
+    return (
+      <Grid container xs={10} alignItems="center" justifyContent="flex-start">
+        {sessionTitle}
+        {sessionSubtitle}
+        {showMoreLink}
+      </Grid>
+    )
 };
 
 export default withStyles(styles)(CollapsibleDescription);

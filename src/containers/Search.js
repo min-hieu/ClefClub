@@ -7,7 +7,7 @@ const styles = {};
 function Search({ classes }) {
   return (
     <>
-			This is search page
+      This is search page
       <Navbar />
     </>
   );

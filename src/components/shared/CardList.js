@@ -10,27 +10,27 @@ const styles = {
 };
 
 const CardList = (props) => {
-    const {
-      classes,
-      data,
-      displayCols,
-      link,
-      offsetMid,
-    } = props;
+  const {
+    classes,
+    data,
+    displayCols,
+    link,
+    offsetMid,
+  } = props;
 
-    const drawTile = (data) => (
-      <Grid item xs={3} className={classes.gridItem}>
-        <Link to={link} style={{ textDecoration: 'none' }}>
-          <img src={data.img} alt={data.title}/>
-        </Link>
-      </Grid>
-    );
+  const drawTile = (data) => (
+    <Grid item xs={3} className={classes.gridItem}>
+      <Link to={link} style={{ textDecoration: 'none' }}>
+        <img src={data.img} alt={data.title}/>
+      </Link>
+    </Grid>
+  );
 
-    return (
-      <Grid container direction="row" className={classes.gridList} cols={displayCols}>
-        {data.map(drawTile)}
-      </Grid>
-    )
+  return (
+    <Grid container direction="row" className={classes.gridList} cols={displayCols}>
+      {data.map(drawTile)}
+    </Grid>
+  )
 }
 
 export default withStyles(styles)(CardList);

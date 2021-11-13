@@ -9,34 +9,34 @@ import CardList from '../components/shared/CardList';
 import testImg from '../assets/test/test_img.png';
 
 const styles = {
-	profile: {
+  profile: {
     margin: '0 auto',
     marginTop: 3,
-		background: TERTIARY_COLOR,
-		padding: '15px',
-		width: '90%',
-		borderRadius: 2,
-		height: 130,
-		overflow: 'hidden',
-	},
-	avatar: {
-		width: 100,
-		height: 100,
-	},
-	name: {
-		textAlign: 'center',
-		lineHeight: 3.3,
-		fontSize: 30,
-		fontWeight: 'bold',
-	},
+    background: TERTIARY_COLOR,
+    padding: '15px',
+    width: '90%',
+    borderRadius: 2,
+    height: 130,
+    overflow: 'hidden',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+  },
+  name: {
+    textAlign: 'center',
+    lineHeight: 3.3,
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
 };
 
 function Profile(props) {
-	const {
-		name,
-		picture,
-		collabs
-	} = props
+  const {
+    name,
+    picture,
+    collabs
+  } = props
 
   const topCollabData = [
     {   img: testImg,
@@ -60,25 +60,25 @@ function Profile(props) {
     customStyle={[1,1]}
   ></CardList>
 
-	return (
-		<div>
-			<Grid container sx={styles.profile}>
-				<Grid item xs={8}>
-					<Typography variant="h1" sx={styles.name}>{name}</Typography>
-				</Grid>
-				<Grid item xs={2}>
-					<Avatar sx={styles.avatar} alt={ name } src={ picture }/>
-				</Grid>
-			</Grid>
-
+    return (
       <div>
-        <CollabHeading text="Your Previous Collab"/>
-      </div>
-      {topCollabs}
+        <Grid container sx={styles.profile}>
+          <Grid item xs={8}>
+            <Typography variant="h1" sx={styles.name}>{name}</Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
+          </Grid>
+        </Grid>
 
-			<Navbar />
-		</div>
-	);
+        <div>
+          <CollabHeading text="Your Previous Collab"/>
+        </div>
+        {topCollabs}
+
+        <Navbar />
+      </div>
+    );
 }
 
 export default Profile;

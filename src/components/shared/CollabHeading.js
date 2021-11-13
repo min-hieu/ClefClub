@@ -4,12 +4,12 @@ import { withStyles } from '@material-ui/core/styles';
 import { PRIMARY_COLOR } from '../../Constant';
 
 const styles = {
-	collabHeading: {
-		fontSize: 20,
-		color: PRIMARY_COLOR,
-		paddingLeft: 16,
-		padding: 10,
-	},
+  collabHeading: {
+    fontSize: 20,
+    color: PRIMARY_COLOR,
+    paddingLeft: 16,
+    padding: 10,
+  },
 }
 
 const CollabHeading = ({ classes, text , sx }) => {
