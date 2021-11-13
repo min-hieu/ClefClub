@@ -7,7 +7,7 @@ import Search from './containers/Search';
 import NewSession from './containers/session/new/NewSession';
 import ViewSession from './containers/session/view/ViewSession';
 import CollabView from './containers/collab/CollabView';
-import CollabPreview from './containers/collab/CollabPreview';
+import CollabPreview from './containers/collab/preview/PreviewCollab';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 

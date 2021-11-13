@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import Navbar from '../../components/shared/Navbar';
-import YoutubeEmbed from '../../components/shared/YoutubeEmbed';
+import Navbar from '../../../components/shared/Navbar';
+import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import {Typography, Grid} from '@material-ui/core'
-import {PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
+import {PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
