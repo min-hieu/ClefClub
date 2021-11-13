@@ -11,7 +11,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constan
 
 const styles = {
   main: {
-    margin: 35,
+    margin: '50px 35px 20px 35px',
   },
   title: {
     fontSize: 30,
