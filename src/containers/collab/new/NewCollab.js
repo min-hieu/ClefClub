@@ -5,18 +5,13 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Navbar from '../../../components/shared/Navbar';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import PublicIcon from '@material-ui/icons/Public';
-import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Navbar from '../../../components/shared/Navbar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 
 const styles = {
   main: {
-    margin: 35,
+    margin: '50px 35px 20px 35px',
   },
   title: {
     fontSize: 30,
@@ -78,49 +73,27 @@ const styles = {
     minWidth: 140,
     fontSize: 18,
   },
-  menuItem: {
-    color: SECONDARY_COLOR,
-    backgroundColor: TERTIARY_COLOR,
-    minWidth: 140,
+  publishButton: {
+    color: TERTIARY_COLOR,
+    backgroundColor: SECONDARY_COLOR,
     fontSize: 18,
+    fontWeight: 'bold',
     justifyContent: 'center !important',
     '&:hover': {
       backgroundColor: `${PRIMARY_COLOR} !important`,
       color: TERTIARY_COLOR,
     },
-  },
+    width: '100%',
+    marginTop: 20,
+  }
 };
 
-function NewSession({ classes }) {
-  const viewOptions = ['Public', 'Inviters'];
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const handleClickButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+function NewCollab({ classes }) {
   const header =
-    <Grid container alignItems="center">
-      <Grid item xs={10}>
-        <Typography className={classes.title}>New Session</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography className={classes.done}>Done</Typography>
-      </Grid>
-      <Grid item>
-        <Typography className={classes.subtitle}>Start cooking up some jam!</Typography>
-      </Grid>
-    </Grid>
+    <>
+      <Typography className={classes.title}>New Jam</Typography>
+      <Typography className={classes.subtitle}>Start cooking up some joy!</Typography>
+    </>
 
   const addZone =
     <div className={classes.dropzone}>
@@ -128,44 +101,10 @@ function NewSession({ classes }) {
       <Typography className={classes.addText}>Upload video</Typography>
     </div>
 
-  const button =
-    <Button
-      ref={anchorEl}
-      onClick={handleClickButton}
-      className={classes.viewButton}
-      startIcon={selectedIndex ? <PeopleOutlineIcon/> : <PublicIcon />}
-      endIcon={<ExpandMoreIcon />}
-    >
-      {viewOptions[selectedIndex]}
-    </Button>
-
-  const menu =
-    <Menu
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={handleClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-    >
-    {viewOptions.map((option, index) => (
-      <MenuItem
-        ListItemClasses={{ button: classes.menuItem }}
-        key={option}
-        selected={index === selectedIndex}
-        onClick={(event) => handleMenuItemClick(event, index)}
-      >
-        {option}
-      </MenuItem>
-    ))}
-  </Menu>
-
-  const visibilityButton = [button, menu]
-
   const titleField =
     <InputBase
       className={classes.name}
-      placeholder="Session Title"
+      placeholder="Jam Title"
       required
       inputProps={{ 'aria-label': 'naked' }}
       classes={{
@@ -179,16 +118,21 @@ function NewSession({ classes }) {
       required
     />
 
+  const publishButton =
+    <Button variant="contained" className={classes.publishButton}>
+      Publish your jam
+    </Button>
+
   return (
     <div className={classes.main}>
       {header}
       {addZone}
       {titleField}
       {descriptionField}
-      {visibilityButton}
+      {publishButton}
 			<Navbar />
     </div>
   );
 }
 
-export default withStyles(styles)(NewSession);
+export default withStyles(styles)(NewCollab);
