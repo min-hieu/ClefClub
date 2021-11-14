@@ -11,8 +11,8 @@ import ClapIcon from '../../assets/clap.svg';
 
 const styles = {
   container: {
-    overflow: 'scroll',
-    height: 700,
+    overflow: 'auto',
+    height: 375,
   },
   overlayTop: {
     background:
@@ -32,7 +32,7 @@ const styles = {
 const CardList = ({ data, conSx }) => {
 
   const history = useHistory();
-  const goToLink = (link) => 
+  const goToLink = (link) =>
     history.push(link);
 
   const drawTile = (item) => (

@@ -17,7 +17,7 @@ import testImg7 from '../assets/test/jam5.jpeg';
 const styles = {
   profile: {
     margin: '0 auto',
-    marginTop: 3,
+    marginTop: 8,
     background: TERTIARY_COLOR,
     padding: '15px',
     width: '90%',
@@ -146,8 +146,10 @@ function Profile(props) {
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography sx={ showClaps ? styles.titleActive : styles.title }
-          onClick={(e) => {setShowClaps(true);setShowCollabs(false)}}>
+          <Typography
+            sx={ showClaps ? styles.titleActive : styles.title }
+            onClick={(e) => {setShowClaps(true);setShowCollabs(false)}}
+          >
             Claps
           </Typography>
         </Grid>
