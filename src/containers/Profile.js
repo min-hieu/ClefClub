@@ -1,12 +1,18 @@
-import React from 'react';
-import { TERTIARY_COLOR } from '../Constant';
+import React, { useState } from 'react';
+import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CollabHeading from '../components/shared/CollabHeading';
 import CardList from '../components/shared/CardList';
-import testImg from '../assets/test/test_img.png';
+import testImg1 from '../assets/test/test_img.png';
+import testImg2 from '../assets/test/jam.jpeg';
+import testImg3 from '../assets/test/jam2.jpeg';
+import testImg4 from '../assets/test/jam69.jpeg';
+import testImg5 from '../assets/test/jam1.jpeg';
+import testImg6 from '../assets/test/jam4.jpeg';
+import testImg7 from '../assets/test/jam5.jpeg';
 
 const styles = {
   profile: {
@@ -29,6 +35,33 @@ const styles = {
     fontSize: 30,
     fontWeight: 'bold',
   },
+  titleBar: {
+    margin: '2vh 0',
+  },
+  title: {
+    textAlign: 'center',
+    borderRadius: '16px',
+    width: 'fit-content',
+    padding: '3px 9px',
+    margin: '0 auto',
+    color: SECONDARY_COLOR,
+    userSelect: 'none',
+    '&:hover': {
+      color: PRIMARY_COLOR,
+      background: SECONDARY_COLOR,
+      cursor: 'pointer',
+    },
+  },
+  titleActive: {
+    textAlign: 'center',
+    borderRadius: '16px',
+    width: 'fit-content',
+    padding: '3px 9px',
+    margin: '0 auto',
+    color: 'white',
+    background: PRIMARY_COLOR,
+    userSelect: 'none',
+  },
 };
 
 function Profile(props) {
@@ -39,46 +72,93 @@ function Profile(props) {
   } = props
 
   const topCollabData = [
-    {   img: testImg,
-      title: 'this is a jam'},
-    {   img: testImg,
-      title: 'this is a jam'},
-    {   img: testImg,
-      title: 'this is a jam'},
-    {   img: testImg,
-      title: 'this is a jam'},
+    {   img: testImg1,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg2,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg3,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg4,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg5,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg6,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg1,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+    {   img: testImg7,
+      title: 'this is a jam',
+       link: '/collab/view',
+       clap: 123},
+  ];
+
+  const clapData = [
+    {   img: testImg1,
+      title: 'you clapped this',
+       link: '/collab/view'},
+    {   img: testImg3,
+      title: 'you clapped this',
+       link: '/collab/view'},
+    {   img: testImg5,
+      title: 'you clapped this',
+       link: '/collab/view'},
+    {   img: testImg1,
+      title: 'you clapped this',
+       link: '/collab/view'},
+    {   img: testImg7,
+      title: 'you clapped this',
+       link: '/collab/view'},
   ]
 
-  var offset = {
-    transform: 'translate(0,110%)',
-  }
+  const [showCollabs, setShowCollabs] = React.useState(true);
+  const [showClaps, setShowClaps] = React.useState(false);
 
-  const topCollabs = <CardList
-    data={topCollabData}
-    displayCols={2.5}
-    link={'./collab/view'}
-    customStyle={[1,1]}
-  ></CardList>
-
-    return (
-      <div>
-        <Grid container sx={styles.profile}>
-          <Grid item xs={8}>
-            <Typography variant="h1" sx={styles.name}>{name}</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
-          </Grid>
+  return (
+    <div>
+      <Grid container sx={styles.profile}>
+        <Grid item xs={8}>
+          <Typography variant="h1" sx={styles.name}>{name}</Typography>
         </Grid>
+        <Grid item xs={2}>
+          <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
+        </Grid>
+      </Grid>
 
-        <div>
-          <CollabHeading text="Your Previous Collab"/>
-        </div>
-        {topCollabs}
+      <Grid container sx={styles.titleBar}>
+        <Grid item xs={6}>
+          <Typography sx={ showCollabs ? styles.titleActive : styles.title }
+          onClick={(e) => {setShowClaps(false);setShowCollabs(true)}}>
+            Previous Collab
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography sx={ showClaps ? styles.titleActive : styles.title }
+          onClick={(e) => {setShowClaps(true);setShowCollabs(false)}}>
+            Claps
+          </Typography>
+        </Grid>
+      </Grid>
 
-        <Navbar />
-      </div>
-    );
+      { showCollabs ? <CardList data={topCollabData}/> : null }
+      { showClaps ? <CardList data={clapData}/> : null }
+
+      <Navbar />
+    </div>
+  );
 }
 
 export default Profile;

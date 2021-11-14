@@ -10,7 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
-import HistoryOutlinedIcon from '@material-ui/icons/HistoryOutlined';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
 const styles = {
@@ -60,9 +60,9 @@ const IconWrapper = (icon, link) => (
 const Navbar = ({classes}) => {
   const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
   const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')
-  const HistoryOption = IconWrapper(<HistoryOutlinedIcon className={classes.navIcon}/>, '/history')
+  const NotiOption = IconWrapper(<NotificationsNoneIcon className={classes.navIcon}/>, '/history')
   const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
-  const AddOption =           
+  const AddOption =
     <Link to='/session/new'>
       <StyledFab aria-label="add">
         <AddCircleRoundedIcon className={classes.addIcon}/>
@@ -77,7 +77,7 @@ const Navbar = ({classes}) => {
               {HomeOption}
               {ProfileOption}
               <Grid item xs></Grid>
-              {HistoryOption}
+              {NotiOption}
               {SearchOption}
             </Grid>
             {AddOption}
