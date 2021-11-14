@@ -4,11 +4,12 @@ import Home from './containers/Home';
 import Profile from './containers/Profile';
 import History from './containers/History';
 import Search from './containers/Search';
-import NewSession from './containers/session/new/NewSession';
+import NewCollab from './containers/collab/new/NewCollab';
 import ViewSession from './containers/session/view/ViewSession';
 import CollabView from './containers/collab/CollabView';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import iphoneX from './assets/iPhoneX.png'
 
 import monkey from './assets/test/monkey.jpeg';
 
@@ -19,6 +20,7 @@ const styles = {
 		height: '100%',
 		overflow: 'auto',
 		marginBottom: 20,
+    backgroundImage: `url(${iphoneX})`,
 	},
 };
 
@@ -35,9 +37,9 @@ function App({ classes }) {
 					/> </Route>
 					<Route exact path="/history"> <History /> </Route>
 					<Route exact path="/search"> <Search /> </Route>
-          <Route exact path="/session/new"> <NewSession /> </Route>
-          <Route exact path="/session/view"> <ViewSession /> </Route>
-          <Route exact path="/collab/view"> <CollabView /> </Route>
+						<Route exact path="/session/new"> <NewCollab /> </Route>
+						<Route exact path="/session/view"> <ViewSession /> </Route>
+						<Route exact path="/collab/view"> <CollabView /> </Route>
 				</Switch>
 				</div>
 			</div>
