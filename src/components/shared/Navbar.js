@@ -59,7 +59,7 @@ const IconWrapper = (icon, link) => (
 const Navbar = ({classes}) => {
   const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
   const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')
-  const HistoryOption = IconWrapper(<HistoryOutlinedIcon className={classes.navIcon}/>, '/history')
+  const HistoryOption = IconWrapper(<HistoryOutlinedIcon className={classes.navIcon}/>, '/notification')
   const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
   const AddOption =           
     <Link to='/session/new'>
