@@ -1,3 +1,5 @@
 export const PRIMARY_COLOR = "#006D77";
 export const SECONDARY_COLOR = "#83C5BE";
 export const TERTIARY_COLOR = "#EDF6F9";
+export const NEGATIVE_PRIMARY_COLOR = "#FF2222"
+export const NEGATIVE_SECONDARY_COLOR = "#FFBBBB"
