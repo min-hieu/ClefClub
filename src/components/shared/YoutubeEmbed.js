@@ -13,17 +13,17 @@ const styles = {
   videoResponsiveIframe: {
     left: 0,
     top: 0,
-    height: '100%',
-    width: '99.9%',
+    maxHeight: '100%',
+    maxWidth: '99.9%',
     position: 'absolute',
   },  
 }
-const YoutubeEmbed = ({classes, embedId }) => (
+const YoutubeEmbed = ({classes, embedId, w, h }) => (
   <div className={classes.videoResponsive}>
     <iframe
       className={classes.videoResponsiveIframe}
-      width="853"
-      height="480"
+      width={w}
+      height={h}
       src={`https://www.youtube.com/embed/${embedId}`}
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
