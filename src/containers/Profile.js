@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { withStyles } from '@material-ui/core/styles';
 import Navbar from '../components/shared/Navbar';
 import { useAuth } from "../contexts/AuthContext"
@@ -14,7 +14,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import CardList from '../components/shared/CardList';
 import CollapsibleDescription from '../components/shared/CollapsibleDescription'
 import { Card, Button, Alert } from "react-bootstrap"
-
+import { getUserCollabs } from "../contexts/DBContext"
 
 const styles = {
   title: {
@@ -128,11 +128,36 @@ const styles = {
   }
 };
 
+class CardVideo extends React.Component {   
+  render() {
+      return (
+          <div> 
+          <h2>{ this.props.value.title }</h2>
+          <h4>{ this.props.value.description }</h4>
+          <h4>Number of claps: { this.props.value.likes }</h4>
+          <video controls className="uploadedVideo" src={this.props.value.videos[0] } alt="firebase-video" />
+
+          </div>
+      );
+  }
+}
 
 function Profile({ classes }) {
   const [error, setError] = useState("")
   const { currentUser, logout } = useAuth()
   const history = useHistory()
+  const [userCollabs, setUserCollabs] = useState()
+  
+  
+  useEffect(() => {
+    let collabs = getUserCollabs (currentUser.email);
+    const settingCollabs = collabs.then(collabs => {
+      setUserCollabs(collabs)
+    })
+    
+    return settingCollabs
+  }, [])
+
 
   async function handleLogout() {
     setError("")
@@ -144,12 +169,26 @@ function Profile({ classes }) {
       setError("Failed to log out")
     }
   }
+
+
   const title = 
 <Grid container alignItems="center" justifyContent="center">
   <Grid item>
     <Typography className={classes.title}>{currentUser.email}</Typography>
   </Grid>
 </Grid>
+
+  console.log("User collabs:\n",userCollabs);
+  var elements=[];
+  if (userCollabs){
+    console.log("User collabs length:\n",userCollabs.length);
+      for(var i=0;i<userCollabs.length;i++){
+    // push the component to elements!
+    // console.log(userCollabs[i] );
+    elements.push(<CardVideo value={ userCollabs[i] } />);
+}
+  }
+
 
 
   return (
@@ -169,6 +208,7 @@ function Profile({ classes }) {
           </Link>
         </Grid>
       </Grid>
+
       <Grid container alignItems="center" justifyContent="center">
         <Grid item>
           <Link to="/login" onClick={handleLogout} className="btn btn-primary w-100 mt-3">
@@ -176,6 +216,11 @@ function Profile({ classes }) {
           </Link>
         </Grid>
       </Grid>
+
+      <div> 
+        <h1 center>Your jams</h1>
+      {elements}
+      </div>
 
       </Card.Body>
 		</Card>
