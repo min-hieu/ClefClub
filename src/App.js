@@ -33,7 +33,8 @@ function App({ classes }) {
   return (
         <Router>
             <div className="App">
-                <div className={classes.root}>
+                <div style={styles.root}>
+                <img src={ iphoneX } style={styles.iphoneOverlay}/>
                 <Switch>
                     <Route exact path="/"> <Home /> </Route>
                     <Route exact path="/profile"> 
