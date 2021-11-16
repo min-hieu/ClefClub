@@ -15,6 +15,7 @@ import CardList from '../components/shared/CardList';
 import CollapsibleDescription from '../components/shared/CollapsibleDescription'
 import { Card, Button, Alert } from "react-bootstrap"
 import { getUserCollabs } from "../contexts/DBContext"
+import { getUserInfo } from "../contexts/AuthContext"
 
 const styles = {
   title: {
@@ -147,6 +148,7 @@ function Profile({ classes }) {
   const { currentUser, logout } = useAuth()
   const history = useHistory()
   const [userCollabs, setUserCollabs] = useState()
+  const [userInfo, setUserInfo] = useState()
   
   
   useEffect(() => {
@@ -154,8 +156,14 @@ function Profile({ classes }) {
     const settingCollabs = collabs.then(collabs => {
       setUserCollabs(collabs)
     })
+
+    let user = getUserInfo (currentUser.email);
+    console.log("Found a user:\n",user)
+    const setInfo = user.then(user => {
+      setUserInfo (user)
+    })
     
-    return settingCollabs
+    return settingCollabs , setInfo
   }, [])
 
 
@@ -170,11 +178,12 @@ function Profile({ classes }) {
     }
   }
 
+  (userInfo) ? console.log("Nickname:\n",userInfo.nickname) : console.log("nothing");
 
   const title = 
 <Grid container alignItems="center" justifyContent="center">
   <Grid item>
-    <Typography className={classes.title}>{currentUser.email}</Typography>
+    <Typography className={classes.title}> {(userInfo) ? userInfo.nickname : "nothing"}</Typography>
   </Grid>
 </Grid>
 
