@@ -121,7 +121,7 @@ const NotificationList = ({classes, data, section}) => {
         : data.finalAccept === null 
         ? `Your contribution to ${data.title} has been sent.`
         : data.finalAccept
-          ? `Your contribution to ${data.title} has been approved. Now you are an owner of the jam.`
+          ? `Your contribution to ${data.title} has been approved.`
           : `Your contribution to ${data.title} has been declined.`
       const link = data.receive 
         ? '/collab/preview'
