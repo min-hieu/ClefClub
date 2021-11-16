@@ -68,6 +68,7 @@ const styles = {
     borderRadius: 10,
   },
   searchCollabTitle: {
+    marginTop: 5,
     fontSize: 20,
     fontWeight: 'bold',
   },
