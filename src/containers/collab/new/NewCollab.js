@@ -39,7 +39,6 @@ const styles = {
     backgroundColor: TERTIARY_COLOR,
     color: SECONDARY_COLOR,
     outline: 'none',
-    transition: 'border .24s ease-in-out',
     width: 300,
     height: 300,
     justifyContent: 'center',
