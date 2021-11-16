@@ -13,8 +13,6 @@ const styles = {
   videoResponsiveIframe: {
     left: 0,
     top: 0,
-    maxHeight: '100%',
-    maxWidth: '99.9%',
     position: 'absolute',
   },  
 }
@@ -27,7 +25,6 @@ const YoutubeEmbed = ({classes, embedId, w, h }) => (
       src={`https://www.youtube.com/embed/${embedId}`}
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
       title="Embedded youtube"
     />
   </div>
