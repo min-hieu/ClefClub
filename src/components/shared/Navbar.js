@@ -60,7 +60,7 @@ const IconWrapper = (icon, link) => (
 const Navbar = ({classes}) => {
   const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
   const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')
-  const NotiOption = IconWrapper(<NotificationsNoneIcon className={classes.navIcon}/>, '/history')
+  const NotiOption = IconWrapper(<NotificationsNoneIcon className={classes.navIcon}/>,  '/notification')
   const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
   const AddOption =
     <Link to='/session/new'>
