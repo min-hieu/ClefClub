@@ -22,7 +22,9 @@ export const getUserCollabs = async (id) => {
   var joined = [];
   collabs.docs.map((doc) => {
     // console.log(doc.data().userIds.includes(id))
-    if (doc.data().userIds.includes(id)) joined.push(doc.data());
+    if (doc.data().userIds) {
+      if (doc.data().userIds.includes(id)) joined.push(doc.data());
+    }
   });
   return joined;
 };

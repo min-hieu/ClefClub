@@ -9,9 +9,10 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import Navbar from '../../components/shared/Navbar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
 
+import { useAuth } from "../../contexts/AuthContext"
 import { storage } from "../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
+import { db } from "../../firebase"
 
 const styles = {
   main: {
@@ -184,7 +185,6 @@ function ContributeToCollab({ classes }) {
     }
     );
   };
-
 
   const header =
     <>

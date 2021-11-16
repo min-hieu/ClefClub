@@ -16,7 +16,7 @@ const getRemaining = (countDownDate) => {
 };
 
 export const getUserInfo = async (id) => {
-  debugger
+  // debugger
   var users = await db.collection("users").get();
   var user;
   users.docs.map((doc) => {
