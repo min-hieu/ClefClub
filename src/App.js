@@ -5,8 +5,7 @@ import Profile from './containers/Profile';
 import History from './containers/History';
 import Search from './containers/Search';
 import NewCollab from './containers/collab/new/NewCollab';
-import ViewSession from './containers/session/view/ViewSession';
-import CollabView from './containers/collab/CollabView';
+import ViewCollab from './containers/collab/view/ViewCollab';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import iphoneX from './assets/iPhoneX.png'
@@ -32,9 +31,7 @@ function App({ classes }) {
 					<Route exact path="/profile"> <Profile /> </Route>
 					<Route exact path="/history"> <History /> </Route>
 					<Route exact path="/search"> <Search /> </Route>
-						<Route exact path="/session/new"> <NewCollab /> </Route>
-						<Route exact path="/session/view"> <ViewSession /> </Route>
-						<Route exact path="/collab/view"> <CollabView /> </Route>
+          <Route exact path="/collab/view"> <ViewCollab /> </Route>
 				</Switch>
 				</div>
 			</div>
