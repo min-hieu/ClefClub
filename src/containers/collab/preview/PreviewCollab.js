@@ -17,10 +17,11 @@ const styles = {
     fontSize: 30,
     fontWeight: 'bold',
     margin: 10,
+    marginTop: 50,
   },
   subTitle: {
     fontSize: 15,
-    margin: '30px 10px 10px 10px',
+    margin: 10,
     color: PRIMARY_COLOR,
   },
   acceptButton: {
