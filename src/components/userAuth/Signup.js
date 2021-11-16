@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 import { db } from "../../firebase"
-import {createId} from "../../contexts/DBContext"
+
 
 export default function Signup() {
   const nameRef = useRef()

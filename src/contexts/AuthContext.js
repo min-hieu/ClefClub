@@ -16,7 +16,6 @@ const getRemaining = (countDownDate) => {
 };
 
 export const getUserInfo = async (id) => {
-  debugger
   var users = await db.collection("users").get();
   var user;
   users.docs.map((doc) => {
@@ -26,10 +25,6 @@ export const getUserInfo = async (id) => {
   return user;
 };
 
-
-export function useAuth() {
-  return useContext(AuthContext)
-}
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
@@ -82,4 +77,8 @@ export function AuthProvider({ children }) {
       {!loading && children}
     </AuthContext.Provider>
   )
+}
+
+export function useAuth() {
+  return useContext(AuthContext)
 }

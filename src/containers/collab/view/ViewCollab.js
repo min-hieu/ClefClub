@@ -49,7 +49,7 @@ const styles = {
   },
 };
 
-function CollabView(props) {
+function ViewCollab(props) {
   const {
     videoId,
     videoUser,
@@ -114,5 +114,5 @@ function CollabView(props) {
   );
 }
 
-// export default withStyles(styles)(CollabView);
-export default CollabView;
+// export default withStyles(styles)(ViewCollab);
+export default ViewCollab;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from "react"
 import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import Avatar from '@mui/material/Avatar';
@@ -14,22 +14,8 @@ import testImg5 from '../assets/test/jam1.jpeg';
 import testImg6 from '../assets/test/jam4.jpeg';
 import testImg7 from '../assets/test/jam5.jpeg';
 // mine
-import React, { useContext, useState, useEffect } from "react"
-import { withStyles } from '@material-ui/core/styles';
-import Navbar from '../components/shared/Navbar';
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../Constant';
-import testImg from '../assets/test/test_img.png'
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import CardList from '../components/shared/CardList';
-import CollapsibleDescription from '../components/shared/CollapsibleDescription'
-import { Card, Button, Alert } from "react-bootstrap"
 import { getUserCollabs } from "../contexts/DBContext"
 import { getUserInfo } from "../contexts/AuthContext"
 
@@ -208,7 +194,7 @@ function Profile(props) {
   const title = 
   <Grid container alignItems="center" justifyContent="center">
   <Grid item>
-    <Typography className={classes.title}> {(userInfo) ? userInfo.nickname : "nothing"}</Typography>
+    <Typography sx={styles.title}> {(userInfo) ? userInfo.nickname : "nothing"}</Typography>
   </Grid>
   </Grid>
 
