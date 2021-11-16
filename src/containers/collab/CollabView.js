@@ -2,6 +2,7 @@ import React from 'react';
 import { PRIMARY_COLOR } from '../../Constant';
 import { withStyles } from '@material-ui/core/styles';
 import testImg from '../../assets/test/test_img.png';
+import YoutubeEmbed from '../../components/shared/YoutubeEmbed';
 
 const styles = {
   hud: {
@@ -13,13 +14,14 @@ const styles = {
   },
 };
 
-function CollabView({ classes }) {
+function CollabView({ videoId }) {
   return (
     <>
-      <div className={classes.hud}>
+      <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="853" h="480" />
+      <div className={styles.hud}>
       </div>
     </>
   );
 }
 
-export default withStyles(styles)(CollabView);
+export default CollabView;
