@@ -12,7 +12,6 @@ import ContributeToCollab from './containers/collab/ContributeToCollab';
 import Login from "./components/userAuth/Login";
 import Signup from "./components/userAuth/Signup";
 import PrivateRoute from "./components/userAuth/PrivateRoute";
-import ForgotPassword from "./components/userAuth/ForgotPassword";
 import UpdateProfile from "./components/userAuth/UpdateProfile";
 
 import { AuthProvider } from "./contexts/AuthContext"
@@ -58,7 +57,6 @@ function App({ classes }) {
                     <PrivateRoute path="/update-profile" component={UpdateProfile} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/login" component={Login} />
-                    <Route path="/forgot-password" component={ForgotPassword} />
                     <Route exact path="/notification"> <Notification /> </Route>
                     <Route exact path="/search"> <Search /> </Route>
                         <Route exact path="/session/new"> <NewCollab /> </Route>
