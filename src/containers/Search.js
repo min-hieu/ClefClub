@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -73,6 +72,7 @@ function Search({ classes }) {
   };
 
   return (
+<<<<<<< HEAD
     <div className={classes.main}>
       <Typography className={classes.title}>Search</Typography>
       <div className={classes.search}>
@@ -123,6 +123,10 @@ function Search({ classes }) {
           </Grid>
         </Grid>
       )}
+=======
+    <>
+      This is search page
+>>>>>>> b1a47992fe424003ef5a3071e4fb9a6062aa31d5
       <Navbar />
     </div>
   );
