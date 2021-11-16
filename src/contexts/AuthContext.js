@@ -15,6 +15,17 @@ const getRemaining = (countDownDate) => {
   return true;
 };
 
+export const getUserInfo = async (id) => {
+  debugger
+  var users = await db.collection("users").get();
+  var user;
+  users.docs.map((doc) => {
+    if (doc.data().email == id)
+      user = doc.data();
+  });
+  return user;
+};
+
 
 export function useAuth() {
   return useContext(AuthContext)
@@ -53,7 +64,6 @@ export function AuthProvider({ children }) {
       setCurrentUser(user)
       setLoading(false)
     })
-
     return unsubscribe
   }, [])
 
