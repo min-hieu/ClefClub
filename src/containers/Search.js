@@ -72,7 +72,6 @@ function Search({ classes }) {
   };
 
   return (
-<<<<<<< HEAD
     <div className={classes.main}>
       <Typography className={classes.title}>Search</Typography>
       <div className={classes.search}>
@@ -123,10 +122,6 @@ function Search({ classes }) {
           </Grid>
         </Grid>
       )}
-=======
-    <>
-      This is search page
->>>>>>> b1a47992fe424003ef5a3071e4fb9a6062aa31d5
       <Navbar />
     </div>
   );
