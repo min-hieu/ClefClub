@@ -10,6 +10,7 @@ import CollabView from './containers/collab/CollabView';
 import CollabPreview from './containers/collab/preview/PreviewCollab';
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import iphoneX from './assets/iPhoneX.png'
 
 const styles = {
 	root: {
@@ -18,6 +19,7 @@ const styles = {
 		height: '100%',
 		overflow: 'auto',
 		marginBottom: 20,
+    backgroundImage: `url(${iphoneX})`,
 	},
 };
 

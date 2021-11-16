@@ -17,10 +17,11 @@ const styles = {
     fontSize: 30,
     fontWeight: 'bold',
     margin: 10,
+    marginTop: 50,
   },
   subTitle: {
     fontSize: 15,
-    margin: '30px 10px 10px 10px',
+    margin: 10,
     color: PRIMARY_COLOR,
   },
   acceptButton: {
@@ -56,36 +57,36 @@ const styles = {
 };
 
 const CollabPreview = ({ classes }) => {
-  const title = 
+  const title =
     <Grid container alignItems="center" justifyContent="center">
       <Grid item>
         <Typography className={classes.title}>CARPE DIEM</Typography>
       </Grid>
     </Grid>
 
-  const subTitle1 = 
+  const subTitle1 =
   <Grid container alignItems="center" justifyContent="center">
     <Grid item>
       <Typography className={classes.subTitle}>Contribution requested by ABC</Typography>
     </Grid>
   </Grid>
 
-  const subTitle2 = 
+  const subTitle2 =
       <Grid container alignItems="center" justifyContent="center">
         <Grid item>
           <Typography className={classes.subTitle}>Still not sure? Let's see how it currently looks like</Typography>
         </Grid>
       </Grid>
 
-  const decision = 
+  const decision =
     <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-      <Link to='/notification' style={{ textDecoration: 'none' }}>         
+      <Link to='/notification' style={{ textDecoration: 'none' }}>
         <Button className={classes.acceptButton} color="success" >
             <CheckIcon />
             <Typography className={classes.btnText}> Accept </Typography>
         </Button>
       </Link>
-      <Link to='/notification' style={{ textDecoration: 'none' }}>         
+      <Link to='/notification' style={{ textDecoration: 'none' }}>
         <Button className={classes.declineButton} color="error" >
             <ClearIcon />
             <Typography className={classes.btnText}> Decline </Typography>
@@ -93,10 +94,10 @@ const CollabPreview = ({ classes }) => {
       </Link>
     </Stack>
 
-  const progressInstance =   
+  const progressInstance =
       <Stack direction="column" spacing={5} alignItems="center">
         <ProgressBar variant="success" now={40} style={{width: '90%'}} />
-        <Typography variant="caption" className={classes.caption}> Approved by 2/5 owner(s) </Typography>        
+        <Typography variant="caption" className={classes.caption}> Approved by 2/5 owner(s) </Typography>
       </Stack>;
 
   return (

@@ -109,7 +109,7 @@ function NewSession({ classes }) {
     setAnchorEl(null);
   };
 
-  const header =       
+  const header =
     <Grid container alignItems="center">
       <Grid item xs={10}>
         <Typography className={classes.title}>New Session</Typography>
@@ -122,7 +122,7 @@ function NewSession({ classes }) {
       </Grid>
     </Grid>
 
-  const addZone = 
+  const addZone =
     <div className={classes.dropzone}>
       <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
       <Typography className={classes.addText}>Upload video</Typography>
@@ -139,7 +139,7 @@ function NewSession({ classes }) {
       {viewOptions[selectedIndex]}
     </Button>
 
-  const menu = 
+  const menu =
     <Menu
       anchorEl={anchorEl}
       keepMounted
@@ -172,7 +172,7 @@ function NewSession({ classes }) {
         input: classes.nameInput,
       }}
     />
-  const descriptionField = 
+  const descriptionField =
     <Input
       className={classes.description}
       placeholder="Description"
@@ -182,14 +182,10 @@ function NewSession({ classes }) {
   return (
     <div className={classes.main}>
       {header}
-
       {addZone}
-
       {titleField}
       {descriptionField}
-
       {visibilityButton}
-      
 			<Navbar />
     </div>
   );
