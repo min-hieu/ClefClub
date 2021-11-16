@@ -4,7 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import CheckIcon from '@material-ui/icons/Check';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import testCover from '../../../assets/test/test_cover.png'
 import Navbar from '../../../components/shared/Navbar';
@@ -60,6 +63,27 @@ const styles = {
     borderRadius: 10,
     paddingBottom: 4,
   },
+  submitButton: {
+    background: PRIMARY_COLOR,
+    color: TERTIARY_COLOR,
+    fontSize: 16,
+    fontWeight: 'bold',
+    width: '100%',
+    borderRadius: 10,
+    marginTop: 10,
+    '&:hover': {
+      background: TERTIARY_COLOR,
+      color: SECONDARY_COLOR,
+    },
+  },
+  snackbar: {
+    background: PRIMARY_COLOR,
+  },
+  successMessage: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
 };
 
 const StyledFab = styled(Fab)({
@@ -81,40 +105,84 @@ function AddCollab({ classes }) {
 		{ img: testCover,
 			title: 'test cover' };
   const [uploaded, setUploaded] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+  const submit = async () => {
+    setOpen(true);
+    await delay(1000);
+    window.location.href = '/';
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const successMessage =
+    <div className={classes.successMessage}>
+      <CheckIcon />
+      <span> Your jam has been submitted! </span>
+    </div>
+
+  const header = <Typography className={classes.title}>Add to Jam</Typography>
+  const videoUpload =
+    uploaded ? (
+      <>
+        <iframe
+          className={classes.preview}
+          width="304"
+          height="380"
+          src={"https://www.youtube.com/embed/-xEpxWPAYXU?start=28&end=41"}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="Embedded youtube"
+        />
+        <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
+          <RefreshIcon />
+        </StyledFab>
+      </>
+    ) : (
+      <div className={classes.videoWrapper}>
+        <img src={mainCover.img} alt={mainCover.title} className={classes.cover} />
+        <div className={classes.dropzone} onClick={() => setUploaded(true)}>
+          <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
+          <Typography className={classes.addText}>Upload video</Typography>
+        </div>
+      </div>
+    )
+
+  const messageToOwner =
+    <Input
+      className={classes.message}
+      placeholder="Message for the jam owner..."
+      required
+    />
+
+  const submitButton =
+    <Button
+      className={classes.submitButton}
+      onClick={submit}
+    >
+      Submit your jam
+    </Button>
+
+  const successSnackbar =
+    <Snackbar
+      open={open}
+      onClose={handleClose}
+      ContentProps={{
+        classes: {
+          root: classes.snackbar
+        }
+      }}
+      message={successMessage}
+    />
 
   return (
     <div className={classes.main}>
-      <Typography className={classes.title}>Add to Jam</Typography>
-      {uploaded ? (
-        <>
-          <iframe
-            className={classes.preview}
-            width="304"
-            height="380"
-            src={"https://www.youtube.com/embed/-xEpxWPAYXU?start=28&end=41"}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Embedded youtube"
-          />
-          <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
-            <RefreshIcon />
-          </StyledFab>
-        </>
-      ) : (
-        <div className={classes.videoWrapper}>
-          <img src={mainCover.img} className={classes.cover} />
-          <div className={classes.dropzone} onClick={() => setUploaded(true)}>
-            <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
-            <Typography className={classes.addText}>Upload video</Typography>
-          </div>
-        </div>
-      )}
-      <Input
-        className={classes.message}
-        placeholder="Message for the jam owner..."
-        required
-      />
+      {header}
+      {videoUpload}
+      {messageToOwner}
+      {submitButton}
+      {successSnackbar}
       <Navbar />
     </div>
   );
