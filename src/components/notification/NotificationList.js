@@ -119,10 +119,10 @@ const NotificationList = ({classes, data, section}) => {
           ? `You have an awaiting contribution for the jam ${data.title}` 
           : `Your jam ${data.title} just ${data.finalAccept ? 'approved' : 'declined'} a new contribution` 
         : data.finalAccept === null 
-        ? `Your contribution request to ${data.title} has been sent.`
+        ? `Your contribution to ${data.title} has been sent.`
         : data.finalAccept
-          ? `Your contribution request to ${data.title} has been approved. Now you are an owner of the jam.`
-          : `Your contribution request to ${data.title} has been declined.`
+          ? `Your contribution to ${data.title} has been approved. Now you are an owner of the jam.`
+          : `Your contribution to ${data.title} has been declined.`
       const link = data.receive 
         ? '/collab/preview'
         : '/collab/preview'
