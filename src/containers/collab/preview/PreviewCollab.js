@@ -12,9 +12,13 @@ import Stack from '@mui/material/Stack';
 import ClearIcon from '@mui/icons-material/Clear';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
+const receive = true;
 const requester = 'ABMs';
 let approved = null;
 let final_approved = null;
+let num_approve = 2;
+let num_decline = 1;
+let num_owners = 5;
 
 const styles = {
   title: {
@@ -45,7 +49,7 @@ const styles = {
     },
   },
   decision: {
-    margin: `30px 0 15px 0`,
+    margin: `30px 0 0 0`,
     border: 1
   },
 
@@ -57,7 +61,7 @@ const styles = {
     marginTop: '0px !important',
   },
   approveText: {
-    color: PRIMARY_COLOR
+    color: PRIMARY_COLOR,
   },
   declineText: {
     color: NEGATIVE_PRIMARY_COLOR,
@@ -89,9 +93,11 @@ const CollabPreview = ({ classes }) => {
 
   const handleApprove = () => {
     approved = true;
+    num_approve += 1;
   }
   const handleDecline = () => {
     approved = false;
+    num_decline += 1;
   }
   const approveButton = 
     <Link to='/notification' style={{ textDecoration: 'none' }}>         
@@ -108,28 +114,32 @@ const CollabPreview = ({ classes }) => {
       </Button>
     </Link>
 
+  const decisionText = final_approved === null
+    ? `You have ${approved ? 'approved' : 'declined'} this contribution` 
+    : `This contribution has been ${final_approved ? 'approved' : 'declined'}`
+
   const decision = 
-    approved === null
+    final_approved === null && approved === null
     ? <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
         {approveButton}
         {declineButton}
       </Stack>
     : <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-        <Typography variant="body1" className={approved ? classes.approveText : classes.declineText}> 
-          You have {approved ? 'approved' : 'declined'} this contribution 
+        <Typography variant="body1" className={final_approved || approved ? classes.approveText : classes.declineText}> 
+          {decisionText} 
         </Typography>        
       </Stack>
 
   const progressInstance =   
       <Stack direction="column" spacing={5} alignItems="center">
-        <ProgressBar style={{width: '90%'}}>
-          <ProgressBar variant="success" now={40} key={1}/>
-          <ProgressBar variant="danger" now={20} key={2}/>
+        <ProgressBar style={{width: '90%', marginTop: '20px'}}>
+          <ProgressBar variant="success" now={num_approve/num_owners*100} key={1}/>
+          <ProgressBar variant="danger" now={num_decline/num_owners*100} key={2}/>
         </ProgressBar>
         <Stack direction="row" spacing={1} alignItems="center" className={classes.caption}>
-          <Typography variant="caption" className={classes.approveText}> Approved by 2/5 owner(s) </Typography>        
+          <Typography variant="caption" className={classes.approveText}> Approved by {num_approve}/{num_owners} owner(s) </Typography>        
           <Typography variant="caption"> - </Typography>        
-          <Typography variant="caption" className={classes.declineText}> Declined by 1/5 owner(s) </Typography> 
+          <Typography variant="caption" className={classes.declineText}> Declined by {num_decline}/{num_owners} owner(s) </Typography> 
         </Stack>       
       </Stack>;
 
@@ -139,10 +149,15 @@ const CollabPreview = ({ classes }) => {
       {title}
       {subTitle1}
       <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" />
-      {decision}
+      {receive ? decision : null}
       {progressInstance}
-      {subTitle2}
-      <YoutubeEmbed embedId="u5IEr6jMuHw"></YoutubeEmbed>
+      {receive 
+        ? <>
+            {subTitle2}
+            <YoutubeEmbed embedId="u5IEr6jMuHw"></YoutubeEmbed>
+          </>
+        : null
+      }
       <br/>
       <br/>
       <br/>
