@@ -187,14 +187,14 @@ function NewCollab({ classes }) {
         console.log('File available at', downloadURL);
 
         const sessionId = createId(20);
-        console.log({
-          ...formData,
-          likes: 0,
-          userIds: ['userId'],
-          comments: [],
-          createdAt: Date.now(),
-          videos: [downloadURL],
-        })
+        // console.log({
+        //   ...formData,
+        //   likes: 0,
+        //   userIds: ['userId'],
+        //   comments: [],
+        //   createdAt: Date.now(),
+        //   videos: [downloadURL],
+        // })
         db.collection("sessions").doc(sessionId).set({
           ...formData,
           likes: 0,
@@ -202,6 +202,7 @@ function NewCollab({ classes }) {
           comments: [],
           createdAt: Date.now(),
           videos: [downloadURL],
+          requests: []
         });
       });
       alert("You jam is created!");
