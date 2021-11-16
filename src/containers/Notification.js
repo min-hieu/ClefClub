@@ -51,6 +51,7 @@ function Notification({ classes }) {
   ];
   return (
     <>
+      <br/>
       <NotificationList data = {notiData} section = 'New'></NotificationList>
       <NotificationList data = {oldNotiData} section = 'Earlier'></NotificationList>
       <br/>

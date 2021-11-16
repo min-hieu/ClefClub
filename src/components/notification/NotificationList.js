@@ -115,13 +115,13 @@ const MediaControlCard = ({text, data}) => {
 const NotificationList = ({classes, data, section}) => {
     const drawTile = (data) => {
       const text = data.receive 
-        ? `You have an awaiting contribution for the collabs ${data.title}` 
+        ? `You have an awaiting contribution for the jam ${data.title}` 
         : data.accept 
-          ? `Your contribution to ${data.title} has been approved. Now you are an owner of the collab.`
+          ? `Your contribution to ${data.title} has been approved. Now you are an owner of the jam.`
           : `Your contribution to ${data.title} has been declined.`
       const link = data.receive 
         ? '/collab/preview'
-        : '/collab/view'
+        : '/collab/preview'
       return (
         <Link to={link} style={{ textDecoration: 'none' }}>         
           <Grid item xs={12}>
