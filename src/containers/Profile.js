@@ -31,9 +31,14 @@ const styles = {
   },
   name: {
     textAlign: 'center',
-    lineHeight: 3.3,
     fontSize: 30,
     fontWeight: 'bold',
+    lineHeight: 1.5,
+  },
+  collabs: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: PRIMARY_COLOR,
   },
   titleBar: {
     margin: '2vh 0',
@@ -68,7 +73,7 @@ function Profile(props) {
   const {
     name,
     picture,
-    collabs
+    collabs,
   } = props
 
   const topCollabData = [
@@ -130,8 +135,13 @@ function Profile(props) {
   return (
     <div>
       <Grid container sx={styles.profile}>
-        <Grid item xs={8}>
-          <Typography variant="h1" sx={styles.name}>{name}</Typography>
+        <Grid item xs={8} container direction="column" justifyContent="center">
+          <Grid item>
+            <Typography variant="h1" sx={styles.name}>{name}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography sx={styles.collabs}>{`${collabs} `}jams</Typography>
+          </Grid>
         </Grid>
         <Grid item xs={2}>
           <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
@@ -142,7 +152,7 @@ function Profile(props) {
         <Grid item xs={6}>
           <Typography sx={ showCollabs ? styles.titleActive : styles.title }
           onClick={(e) => {setShowClaps(false);setShowCollabs(true)}}>
-            Previous Collab
+            Previous Jams
           </Typography>
         </Grid>
         <Grid item xs={6}>

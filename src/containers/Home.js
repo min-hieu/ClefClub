@@ -32,6 +32,7 @@ const styles = {
     paddingLeft: 16,
     padding: 10,
   },
+  homeCardList: {},
 };
 
 function Home({ classes }) {
@@ -78,14 +79,13 @@ function Home({ classes }) {
       </CardActionArea>
     </Card>
 
-    const topCollabs = <CardList
-      data={topCollabData}
-    ></CardList>
+    const topCollabs =
+      <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
 
     return (
       <>
         {banner}
-        <CollabHeading text="This week's top collab" />
+        <CollabHeading text="This week's top jams" />
         {topCollabs}
         <Navbar />
       </>

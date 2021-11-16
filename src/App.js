@@ -34,6 +34,7 @@ function App({ classes }) {
 					<Route exact path="/profile"> <Profile
 						name = "Charlie"
 						picture = {monkey}
+            collabs="169"
 					/> </Route>
 					<Route exact path="/history"> <History /> </Route>
 					<Route exact path="/search"> <Search /> </Route>
