@@ -5,6 +5,9 @@ import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant
 import testImg from '../../../assets/test/test_img.png';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ChatIcon from '@mui/icons-material/Chat';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import ClapIcon from '../../../assets/clap.svg';
+import Grid from '@mui/material/Grid';
 
 const styles = {
   overlay: {
@@ -39,11 +42,11 @@ const styles = {
     bottom: 50,
     position: 'relative',
   },
-  chatIcon:{
-    position: 'absolute',
-    right: 20,
-    bottom: 40,
-  }
+  iconList: {
+    bottom: 20,
+    right: 40,
+    width: 30,
+  },
 };
 
 function CollabView(props) {
@@ -75,6 +78,27 @@ function CollabView(props) {
       Ayo whassubdog...
     </Typography>
 
+  const iconList =
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={3}
+      position="absolute"
+      sx={styles.iconList}
+    >
+      <Grid item xs={4}>
+        <LocalFloristIcon />
+      </Grid>
+      <Grid item xs={4}>
+        <img src={ClapIcon} style={{width:24,height:24}}/>
+      </Grid>
+      <Grid item xs={4}>
+        <ChatIcon/>
+      </Grid>
+    </Grid>
+
   return (
     <>
       {video}
@@ -83,7 +107,7 @@ function CollabView(props) {
         <div style={styles.textWrapper}>
           {title}
           {description}
-          <ChatIcon sx={styles.chatIcon}/>
+          {iconList}
         </div>
       </div>
     </>
