@@ -148,13 +148,13 @@ const CollabPreview = ({ classes }) => {
       <br/>
       {title}
       {subTitle1}
-      <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" />
+      <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="853" h="480" />
       {receive ? decision : null}
       {progressInstance}
       {receive 
         ? <>
             {subTitle2}
-            <YoutubeEmbed embedId="u5IEr6jMuHw"></YoutubeEmbed>
+            <YoutubeEmbed embedId="u5IEr6jMuHw"  w="853" h="480" ></YoutubeEmbed>
           </>
         : null
       }
