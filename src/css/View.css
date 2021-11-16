@@ -46,6 +46,15 @@
     /* top: 50%; */
 }
 
+.horizontal-sec-right{
+    /* position: absolute; */
+    position: relative;
+    right: 85px;
+    bottom: 160px;
+    /* z-index: 10; */
+    /* top: 50%; */
+}
+
 .container {
     height: 100%;
     position: relative;
@@ -68,5 +77,9 @@
   }
 
 .addIcon {
+    font-size: 70,
+}
+
+.Favorite {
     font-size: 70,
 }

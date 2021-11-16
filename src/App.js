@@ -44,26 +44,28 @@ function App({ classes }) {
             <div className="App">
                 <div style={styles.root}>
                 <img src={ iphoneX } style={styles.iphoneOverlay}/>
-                <Switch>
-                    <Route exact path="/"> <Home /> </Route>
-                    <PrivateRoute path="/update-profile" component={UpdateProfile} />
-					          <Route path="/signup" component={Signup} />
-					          <Route path="/login" component={Login} />
-          					<Route path="/forgot-password" component={ForgotPassword} />
-                    <Route exact path="/profile"> 
-                        <Profile
-                        name = "Charlie"
-                        picture = {monkey}
-                        collabs="169"
-                        /> 
-                    </Route>
-                    <Route exact path="/notification"> <Notification /> </Route>
-                    <Route exact path="/search"> <Search /> </Route>
-                        <Route exact path="/session/new"> <NewCollab /> </Route>
-                        <Route exact path="/session/view"> <ViewSession /> </Route>
-                        <Route exact path="/collab/view"> <ViewCollab /> </Route>
-                        <Route exact path="/collab/preview"> <CollabPreview /> </Route>
-                </Switch>
+                <AuthProvider>
+                  <Switch>
+                      <Route exact path="/"> <Home /> </Route>
+                      <PrivateRoute path="/update-profile" component={UpdateProfile} />
+                      <Route path="/signup" component={Signup} />
+                      <Route path="/login" component={Login} />
+                      <Route path="/forgot-password" component={ForgotPassword} />
+                      <Route exact path="/profile"> 
+                          <Profile
+                          name = "Charlie"
+                          picture = {monkey}
+                          collabs="169"
+                          /> 
+                      </Route>
+                      <Route exact path="/notification"> <Notification /> </Route>
+                      <Route exact path="/search"> <Search /> </Route>
+                          <Route exact path="/session/new"> <NewCollab /> </Route>
+                          <Route exact path="/session/view"> <ViewSession /> </Route>
+                          <Route exact path="/collab/view"> <ViewCollab /> </Route>
+                          <Route exact path="/collab/preview"> <CollabPreview /> </Route>
+                  </Switch>
+                </AuthProvider>
                 </div>
             </div>
         </Router>
