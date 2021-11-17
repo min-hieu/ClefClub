@@ -1,11 +1,13 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
 import testImg from '../../../assets/test/test_img.png';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
 
@@ -47,6 +49,14 @@ const styles = {
     right: 40,
     width: 30,
   },
+  backIcon: {
+    zIndex: 999,
+    fontSize: 30,
+    top: 40,
+    left: 20,
+    position: 'sticky',
+    color: TERTIARY_COLOR,
+  },
 };
 
 function CollabView(props) {
@@ -57,7 +67,13 @@ function CollabView(props) {
     videoDescription,
   } = props
 
+  const history = useHistory();
   const tmpVideoId = "lQr-MMn639Q?autoplay=1";
+  const backIcon =
+    <ArrowBackIosIcon
+      style={styles.backIcon}
+      onClick={() => history.goBack()}
+    />
 
   const video =
     <YoutubeEmbed
@@ -101,6 +117,7 @@ function CollabView(props) {
 
   return (
     <>
+      {backIcon}
       {video}
       <div style={styles.overlay}>
         <div style={styles.overlayBg}/>
