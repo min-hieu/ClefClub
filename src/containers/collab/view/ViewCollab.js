@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
@@ -8,6 +8,10 @@ import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
+import ViewSession from '../../session/view/ViewSession';
+import FilterVintageIcon from '@mui/icons-material/FilterVintage';
+import style from './clap.css';
+
 
 const styles = {
   overlay: {
@@ -47,7 +51,37 @@ const styles = {
     right: 40,
     width: 30,
   },
+  cmtSection: {
+    bottom: 0,
+  },
+  cmtBg: {
+    position: 'absolute',
+    background: 'white',
+    bottom: 20,
+    borderRadius: 20,
+    width: 360,
+    height: 450,
+    left: '50%',
+    transform: "translate(-50%,0)",
+    transition: "all .3s ease-out",
+  },
+  closeCmt: {
+    position: 'absolute',
+    top: 0,
+    width: 400,
+    height: 800,
+    left: '50%',
+    transform: "translate(-50%,0)",
+  },
+  flyClap: {
+    position: 'absolute',
+    opacity: 0,
+    top: 0,
+    width: 50,
+    height: 50,
+  }
 };
+
 
 function CollabView(props) {
   const {
@@ -89,27 +123,45 @@ function CollabView(props) {
       sx={styles.iconList}
     >
       <Grid item xs={4}>
-        <LocalFloristIcon />
+        <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
       </Grid>
       <Grid item xs={4}>
         <img src={ClapIcon} style={{width:24,height:24}}/>
       </Grid>
       <Grid item xs={4}>
-        <ChatIcon/>
+        <ChatIcon
+        onClick={(e) => {setShowComments(true)}}
+        />
       </Grid>
     </Grid>
 
+  const flower =
+        <FilterVintageIcon sx={{position: 'absolute',right:23.4,bottom:118.1}}/>
+
+  const [showComments, setShowComments] = useState(false);
+  const [showFlower, setShowFlower] = useState(false);
+
   return (
     <>
-      {video}
+      { video }
       <div style={styles.overlay}>
         <div style={styles.overlayBg}/>
         <div style={styles.textWrapper}>
           {title}
           {description}
+          {showFlower ? flower : null}
           {iconList}
         </div>
       </div>
+      <img src={ClapIcon} className="flyClaps" id="clap1"/>
+      <img src={ClapIcon} className="flyClaps" id="clap2"/>
+      <img src={ClapIcon} className="flyClaps" id="clap3"/>
+      <img src={ClapIcon} className="flyClaps" id="clap4"/>
+      <img src={ClapIcon} className="flyClaps" id="clap5"/>
+      <img src={ClapIcon} className="flyClaps" id="clap6"/>
+      { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
+      { showComments ? <div style={styles.cmtBg} /> : null }
+      { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
     </>
   );
 }

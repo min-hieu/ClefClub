@@ -17,6 +17,13 @@ import { Container, Header, List } from "semantic-ui-react";
 const styles = {
   main: {
     margin: '50px 35px 20px 35px',
+    height: 400,
+    width: 310,
+    overflow: 'auto',
+    position: 'absolute',
+    transform: 'translate(-50%, 0)',
+    left: '50%',
+    bottom: 20,
   },
     submitBtn: {
     textTransform: 'none !important',
@@ -28,117 +35,6 @@ const styles = {
     },
   },
 }
-// const styles = {
-//   title: {
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     margin: 10,
-//   },
-// 	media: {
-//     height: 200,
-// 		borderRadius: '10px',
-//   },
-// 	mediaList: {
-//     width: 133,
-//     height: 177,
-// 		borderRadius: 10,
-//   },
-// 	sessionHeading: {
-// 		fontSize: 20,
-// 		color: PRIMARY_COLOR,
-// 		paddingLeft: 16,
-// 		padding: 10,
-// 	},
-// 	coverTitle: {
-// 		height: '100%',
-//     top: '50%',
-//     transform: 'translate(0, -50%)',
-//     textAlign: 'center',
-// 		backgroundColor: '#00000036',
-// 		'-webkit-user-select': 'none', /* Safari */
-// 		'-moz-user-select': 'none', /* Firefox */
-// 		'-ms-user-select': 'none', /* IE10+/Edge */
-// 		'user-select': 'none', /* Standard */
-// 	},
-// 	coverRoot: {
-// 		marginLeft: 10,
-// 	},
-// 	cover: {
-// 		borderRadius: '10px 0 0 10px',
-// 	},
-
-
-//   tileTitle: {
-// 		height: '100%',
-//     top: '50%',
-//     transform: 'translate(0, -50%)',
-//     textAlign: 'center',
-// 		backgroundColor: '#00000036',
-// 		'-webkit-user-select': 'none', /* Safari */
-// 		'-moz-user-select': 'none', /* Firefox */
-// 		'-ms-user-select': 'none', /* IE10+/Edge */
-// 		'user-select': 'none', /* Standard */
-// 	},
-// 	tileRoot: {
-// 		marginLeft: 10,
-// 	},
-// 	tile: {
-// 		borderRadius: 10,
-// 	},
-  
-// 	gridListWrapper: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//     justifyContent: 'space-around',
-// 		overflow: 'hidden',
-// 		'-webkit-scrollbar-display': 'None',
-//   },
-//   gridList: {
-//     flexWrap: 'nowrap',
-//     alignItems: 'center',
-//   },
-//   dropzone: {
-//     flex: '1',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//     borderWidth: 3,
-//     borderRadius: '0px 10px 10px 0px',
-//     borderColor: PRIMARY_COLOR,
-//     borderStyle: 'dashed',
-//     backgroundColor: TERTIARY_COLOR,
-//     color: SECONDARY_COLOR,
-//     outline: 'none',
-//     transition: 'border .24s ease-in-out',
-//     maxHeight: 171,
-//     justifyContent: 'center',
-//     marginLeft: -2,
-//   },
-//   addIcon: {
-//     color: PRIMARY_COLOR,
-//     fontSize: 54,
-//   },
-//   addText: {
-//     fontSize: 15,
-//   },
-//   sessionTitle: {
-//     color: PRIMARY_COLOR,
-//     margin: '5px 0 0 0',
-//   },
-//   sessionSubtitle: {
-//     color: 'grey',
-//     margin: '2px 0 0 0',
-//     fontSize: 12,
-//   },
-//   readMoreBox: {
-//     marginTop: -5,
-//   },
-//   readMore: {
-//     color: "black", 
-//     cursor: "pointer",
-//     fontSize: 12,
-//   }
-// };
 
 const Matt = {
   name: 'Matt',
@@ -192,15 +88,17 @@ const commentData = [
 
 ]
 
-function ViewSession({ classes }) {
+function ViewSession({ sx }) {
+
+  const mainStyle = sx ? sx : styles.main
+
   return (
-    <div className={classes.main}>
-      <Container style={{ margin: 20 }}>
+    <div className={mainStyle}>
+      <Container style={ styles.main }>
         <CommentExampleComment data = {commentData}></CommentExampleComment>
       </Container>
-      <Navbar />
     </div>
   );
 }
 
-export default withStyles(styles)(ViewSession);
+export default ViewSession;
