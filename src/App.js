@@ -5,13 +5,9 @@ import Notification from './containers/Notification';
 import Search from './containers/Search';
 import NewCollab from './containers/collab/new/NewCollab';
 import ViewSession from './containers/session/view/ViewSession';
-<<<<<<< HEAD
-import CollabView from './containers/collab/CollabView';
 import AddCollab from './containers/collab/add/AddCollab';
-=======
-import CollabPreview from './containers/collab/preview/PreviewCollab';
+import PreviewCollab from './containers/collab/preview/PreviewCollab';
 import ViewCollab from './containers/collab/view/ViewCollab';
->>>>>>> 698200046f749e6e458c2d030c02206df6e1e37c
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import iphoneX from './assets/iPhoneX.png'
@@ -36,29 +32,29 @@ const styles = {
 
 function App({ classes }) {
   return (
-        <Router>
-            <div className="App">
-                <div style={styles.root}>
-                <img src={ iphoneX } style={styles.iphoneOverlay}/>
-                <Switch>
-                    <Route exact path="/"> <Home /> </Route>
-                    <Route exact path="/profile"> 
-                        <Profile
-                        name = "Charlie"
-                        picture = {monkey}
-                        collabs="169"
-                        /> 
-                    </Route>
-                    <Route exact path="/notification"> <Notification /> </Route>
-                    <Route exact path="/search"> <Search /> </Route>
-                        <Route exact path="/session/new"> <NewCollab /> </Route>
-                        <Route exact path="/session/view"> <ViewSession /> </Route>
-                        <Route exact path="/collab/view"> <ViewCollab /> </Route>
-                        <Route exact path="/collab/preview"> <CollabPreview /> </Route>
-                </Switch>
-                </div>
-            </div>
-        </Router>
+    <Router>
+      <div className="App">
+        <div style={styles.root}>
+          <img src={ iphoneX } style={styles.iphoneOverlay}/>
+          <Switch>
+            <Route exact path="/"> <Home /> </Route>
+            <Route exact path="/profile">
+              <Profile
+                name = "Charlie"
+                picture = {monkey}
+                collabs="169"
+              />
+            </Route>
+            <Route exact path="/notification"> <Notification /> </Route>
+            <Route exact path="/search"> <Search /> </Route>
+            <Route exact path="/collab/new"> <NewCollab /> </Route>
+            <Route exact path="/collab/view"> <ViewCollab /> </Route>
+            <Route exact path="/collab/preview"> <PreviewCollab /> </Route>
+            <Route exact path="/collab/add"> <AddCollab /> </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
   );
 }
 
