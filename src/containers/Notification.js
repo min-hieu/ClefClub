@@ -66,8 +66,8 @@ const styles = {
 
 
 function Notification({ classes }) {
-  const [showIncoming, setshowIncoming] = useState(true);
-  const [showMy, setshowMy] = useState(false);
+  const [showIncoming, setshowIncoming] = useState(false);
+  const [showMy, setshowMy] = useState(true);
 
   const tabNames = 
   <Grid container sx={styles.titleBar}>

@@ -32,7 +32,8 @@ const CardList = ({ data, conSx }) => {
 
   const history = useHistory();
   const goToLink = (link) =>
-    history.push(link);
+    // history.push(link);
+    history.push({pathname: link, state: {collabId: 'CHROc1YPAEJXHjAX7iJ9'}})
 
   const drawTile = (item) => (
     <ImageListItem key={item.img}>

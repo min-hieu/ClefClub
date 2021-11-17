@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {useLocation} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
@@ -6,8 +7,13 @@ import testImg from '../../../assets/test/test_img.png';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
+import { Link, useHistory } from "react-router-dom"
+
+
+import { db } from "../../../firebase"
 
 const styles = {
   overlay: {
@@ -47,7 +53,36 @@ const styles = {
     right: 40,
     width: 30,
   },
+  clap: {
+    '&:hover': {
+      color: 'SECONDARY_COLOR',
+      // background: SECONDARY_COLOR,
+      cursor: 'pointer',
+    },
+    width: 24,
+    height: 24,
+  }
 };
+
+
+
+const handleLikes  = () => {
+  console.log("Clap!")
+  var collab = db.collection("sessions").doc('CHROc1YPAEJXHjAX7iJ9');
+  collab.get().then(function (doc) {
+    if (doc.exists) {
+      collab.get().then((snapshot) => {
+        var likes = snapshot.data().likes;
+        collab.update({
+          likes: likes+1,
+        });
+      });
+    } else {
+      alert("session is no longer available");
+    }
+  });
+      
+}
 
 function ViewCollab(props) {
   const {
@@ -58,6 +93,24 @@ function ViewCollab(props) {
   } = props
 
   const tmpVideoId = "lQr-MMn639Q?autoplay=1";
+  const history = useHistory()
+  const [collabId, setCollabId] = useState()
+
+
+  const { state } = useLocation();
+  useEffect(() => {
+    console.log(state);
+    setCollabId(state.collabId)
+  }, []);
+
+  async function handleJam() {
+    try {
+      history.push( {pathname: "/collab/contribute/", state: {collabId: collabId}})
+    } catch {
+      console.log("Failed to join")
+    }
+  }
+
 
   const video =
     <YoutubeEmbed
@@ -89,10 +142,10 @@ function ViewCollab(props) {
       sx={styles.iconList}
     >
       <Grid item xs={4}>
-        <LocalFloristIcon />
+        <AddCircleIcon onClick={handleJam}/>
       </Grid>
-      <Grid item xs={4}>
-        <img src={ClapIcon} style={{width:24,height:24}}/>
+      <Grid item xs={4} onClick={handleLikes} >
+        <img src={ClapIcon} style={styles.clap}/>
       </Grid>
       <Grid item xs={4}>
         <ChatIcon/>

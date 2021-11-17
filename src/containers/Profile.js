@@ -114,46 +114,48 @@ function Profile(props) {
 
   // mine
   const [error, setError] = useState("")
-  const { currentUser, logout, isLogged } = useAuth()
+  const { currentUser, logout } = useAuth()
   const history = useHistory()
   const [userCollabs, setUserCollabs] = useState()
-  const [userInfo, setUserInfo] = useState()
+  const [userName, setUserName] = useState("")
+  const [userJamNumber, setUserJamNumber] = useState(0)
 
 
-  const topCollabData = [
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg2,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg3,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg4,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg5,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg6,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg7,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-  ];
+
+  // const topCollabData = [
+  //   {   img: testImg1,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg2,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg3,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg4,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg5,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg6,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg1,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg7,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  // ];
 
   const clapData = [
     {   img: testImg1,
@@ -176,27 +178,27 @@ function Profile(props) {
   const [showCollabs, setShowCollabs] = React.useState(true);
   const [showClaps, setShowClaps] = React.useState(false);
 
-// mine
   useEffect(() => {
-
+    // Run! Like go get some data from an API.
     if (!currentUser) {
       history.push("/login")
       return;
+    }else{
+
+      let user = getUserInfo (currentUser.email);
+    // console.log("Found a user:\n",user)
+       user.then(user => {
+      setUserName(user.nickname)
+      })
+
+      let collabs = getUserCollabs (currentUser.email);
+      collabs.then(collabs => {
+        setUserCollabs(collabs)
+        setUserJamNumber(collabs.length)
+      })
     }
+  }, []);
 
-    let collabs = getUserCollabs (currentUser.email);
-    const settingCollabs = collabs.then(collabs => {
-      setUserCollabs(collabs)
-    })
-
-    let user = getUserInfo (currentUser.email);
-    console.log("Found a user:\n",user)
-    const setInfo = user.then(user => {
-      setUserInfo (user)
-    })
-    
-    return settingCollabs , setInfo
-  }, [])
 
 
   async function handleLogout() {
@@ -209,77 +211,36 @@ function Profile(props) {
     }
   }
 
-  // (userInfo) ? console.log("Nickname:\n",userInfo.nickname) : console.log("nothing");
+ 
 
-  const title = 
-  <Grid container alignItems="center" justifyContent="center">
-  <Grid item>
-    <Typography sx={styles.title}> {(userInfo) ? userInfo.nickname : "nothing"}</Typography>
-  </Grid>
-  </Grid>
-
-  // console.log("User collabs:\n",userCollabs);
-  var elements=[];
+  var topCollabData=[];
   if (userCollabs){
-    // console.log("User collabs length:\n",userCollabs.length);
       for(var i=0;i<userCollabs.length;i++){
-    // push the component to elements!
-    // console.log(userCollabs[i] );
-    elements.push(<CardVideo value={ userCollabs[i] } />);
+        topCollabData.push({   img: testImg3,
+          video: userCollabs[i].videos[0],
+          title: userCollabs[i].title,
+          link: '/collab/view',
+          clap: userCollabs[i].likes});
+      }
   }
-  }
-
-//   <Card>
-//   <Card.Body>
-//   {title}
-  
-//   <Grid container alignItems="center" justifyContent="center">
-//     <Grid item>
-//       <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-//             Update Profile
-//       </Link>
-//     </Grid>
-//   </Grid>
-
-//   <Grid container alignItems="center" justifyContent="center">
-//     <Grid item>
-//       <Link to="/login" onClick={handleLogout} className="btn btn-primary w-100 mt-3">
-//             Log Out
-//       </Link>
-//     </Grid>
-//   </Grid>
-
-//   <div> 
-//     <h1 center>Your jams</h1>
-//   {elements}
-//   </div>
-
-//   </Card.Body>
-// </Card>
+  console.log("Elements:",topCollabData)
 
   return (
     <div>
-      {/* <Grid container sx={styles.logout}>
-            <Typography sx={styles.title} onClick={{handleLogout}} >
-              Log Out
-            </Typography>
-      </Grid> */}
       <Grid container sx={styles.profile}>
         <Grid item xs={8} container direction="column" justifyContent="center">
           <Grid item>
-            <Typography variant="h1" sx={styles.name}>{name}</Typography>
+            <Typography variant="h1" sx={styles.name}>{userName}</Typography>
           </Grid>
           <Grid item>
-            <Typography sx={styles.collabs}>{`${collabs} `}jams</Typography>
+            <Typography sx={styles.collabs}>{`${userJamNumber} `}jams</Typography>
           </Grid>
         </Grid>
         <Grid item xs={2}>
           <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
-          {/* <Grid item xs={4}> */}
           <Typography sx={styles.logout} onClick={handleLogout} >
                 Log Out
             </Typography>
-          {/* </Grid> */}
         </Grid>
         
         

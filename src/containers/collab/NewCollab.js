@@ -195,7 +195,7 @@ function NewCollab({ classes }) {
         //   createdAt: Date.now(),
         //   videos: [downloadURL],
         // })
-        db.collection("sessions").doc(sessionId).set({
+        db.collection("sessions").add({
           ...formData,
           likes: 0,
           userIds: [currentUser.email],

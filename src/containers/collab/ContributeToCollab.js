@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useLocation} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -9,17 +10,30 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import Navbar from '../../components/shared/Navbar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
 
-import { storage } from "../../firebase"
+import { storage, db } from "../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
+import {getCollab} from "../../contexts/DBContext"
+import { useHistory } from "react-router-dom"
+import { useAuth } from "../../contexts/AuthContext"
 
 const styles = {
   main: {
     margin: '50px 35px 20px 35px',
   },
   title: {
+    textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  jamTitle: {
+    textAlign: 'center',
+    // fontSize: 20,
+    // fontWeight: 'bold',
+    color: 'grey',
+  },
+  jamDescription: {
+    color: 'PRIMARY_COLOR',
+    // margin: '5px 0 20px 0',
   },
   done: {
     fontSize: 20,
@@ -28,8 +42,8 @@ const styles = {
     color: PRIMARY_COLOR,
   },
   subtitle: {
-    color: 'grey',
-    margin: '5px 0 20px 0',
+    color: 'black',
+    margin: '5px 0 10px 0',
   },
   dropzone: {
     flex: '1',
@@ -45,7 +59,7 @@ const styles = {
     outline: 'none',
     transition: 'border .24s ease-in-out',
     width: 300,
-    height: 300,
+    height: 200,
     justifyContent: 'center',
   },
   addIcon: {
@@ -73,7 +87,7 @@ const styles = {
     color: SECONDARY_COLOR,
     backgroundColor: TERTIARY_COLOR,
     borderRadius: 15,
-    marginTop: 10,
+    marginBottom: 50,
     minWidth: 140,
     fontSize: 18,
   },
@@ -100,6 +114,36 @@ function ContributeToCollab({ classes }) {
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState("Upload video");
+  const [collabId, setCollabId] = useState()
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabDescription, setCollabDescription] = useState()
+  const [collabSize, setCollabSize] = useState()
+  const [collabOwners, setCollabOwners] = useState([])
+  const history = useHistory()
+  const [formData, setFormData] = useState({})
+  const { currentUser } = useAuth()
+
+
+  const updateFormData = (key, value) => {
+    setFormData({...formData, [key]: value})
+  }
+
+  const { state } = useLocation();
+
+  useEffect(() => {
+    setCollabId(state.collabId)
+    let collab = getCollab (state.collabId);
+    collab.then(collab => {
+      // console.log(collab.title)
+      setCollabTitle(collab.title)
+      setCollabDescription(collab.description)
+      setCollabSize(collab.userIds.length)
+      setCollabOwners(collab.userIds)
+
+      })
+    
+  }, [collabId,collabTitle,collabDescription]);
+
 
   var videoChosen = false;
 
@@ -118,6 +162,7 @@ function ContributeToCollab({ classes }) {
     setAnchorEl(null);
   };
 
+
   const handleChoose = e => {
     if (e.target.files[0]) {
       setVideo(e.target.files[0]);
@@ -129,9 +174,6 @@ function ContributeToCollab({ classes }) {
     hiddenFileInput.current.click();
   }
 
-  // const videoChosen () => {
-  //   document.getElementById("load_text").innerHTML = 'New Phrase';
-  // };
 
   const handleVideoUpload = () => {
 
@@ -179,17 +221,44 @@ function ContributeToCollab({ classes }) {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
+        db.collection("requests").add({
+          ...formData,
+          collabID: collabId,
+          status: "pending",
+          acceptedIds: [],
+          declinedIds: [],
+          videoURL: downloadURL,
+          requesterId: currentUser.email,
+          receiverIds: collabOwners,
+        });
       });
-      alert("You jam is created!");
+      alert("Your request is sent!");
+      history.push("/notification")
     }
     );
   };
 
+  const messageField =
+  <Input
+  onChange={(event) => {
+    updateFormData('message', event.target.value)
+  }}
+    className={classes.description}
+    placeholder="Message to owners"
+    required
+  />
 
   const header =
     <>
       <Typography className={classes.title}>Join the Jam</Typography>
-      <Typography className={classes.subtitle}>Start cooking up some joy!</Typography>
+      <Typography className={classes.jamTitle}>Start cooking up some joy!</Typography>
+    </>
+
+const jamInfo =
+    <>
+      <Typography className={classes.subtitle}><b>Jam's Title:</b> {collabTitle}</Typography>
+      <Typography className={classes.subtitle}><b>Description: </b>{collabDescription}</Typography>
+      <Typography className={classes.subtitle}><b>Number of collaborators:</b> {collabSize}</Typography>
     </>
 
 const addZone = 
@@ -208,7 +277,13 @@ const addZone =
   return (
     <div className={classes.main}>
       {header}
+      <br/>
+      {jamInfo}
+      <br/>
       {addZone}
+      <br/>
+      {messageField}
+      <br/>
       {publishButton}
 			<Navbar />
     </div>

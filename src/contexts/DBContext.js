@@ -32,4 +32,9 @@ export const getUserCollabs = async (id) => {
   return joined;
 };
 
+// function to get all collabs of user with ID
+export const getCollab = async (id) => {
+  return (await db.collection("sessions").doc(id).get()).data();
+};
+
 
