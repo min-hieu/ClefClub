@@ -33,6 +33,19 @@ const styles = {
   login: {
     color: PRIMARY_COLOR
   },
+  link: {
+    color: PRIMARY_COLOR,
+    '&:hover': {
+      color: SECONDARY_COLOR
+    }
+  },
+  link: {
+    color: PRIMARY_COLOR,
+    '&:hover': {
+      color: SECONDARY_COLOR
+    }
+  },
+
   submitBtn: {
     textTransform: 'none !important',
     color: `black !important`,
@@ -108,13 +121,13 @@ function ForgotPassword({classes}) {
     </Link>
 
   const signup = 
-    <Typography className={classes.signup} >
-      Need an account? <Link to="/signup">Sign Up</Link>
+    <Typography className={classes.login} >
+      Need an account? <Link to="/signup" className={classes.link}>Sign Up</Link>
     </Typography>
 
   const login = 
-    <Typography className={classes.signup} >
-      <Link to="/login">Log in </Link>
+    <Typography className={classes.login} >
+      <Link to="/login" className={classes.link}>Log in </Link>
     </Typography>
 
     return (

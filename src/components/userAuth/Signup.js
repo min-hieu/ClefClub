@@ -33,6 +33,12 @@ const styles = {
   login: {
     color: PRIMARY_COLOR
   },
+  link: {
+    color: PRIMARY_COLOR,
+    '&:hover': {
+      color: SECONDARY_COLOR
+    }
+  },
   submitBtn: {
     textTransform: 'none !important',
     color: `black !important`,
@@ -150,7 +156,7 @@ function Signup({classes}) {
     // </Link>
   const login = 
     <Typography className={classes.login} >
-      Already have an account? <Link to="/login">Log In</Link>
+      Already have an account? <Link to="/login" className={classes.link}>Log In</Link>
     </Typography>
 
     return (
