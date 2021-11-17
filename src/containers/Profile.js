@@ -17,6 +17,7 @@ import testImg7 from '../assets/test/jam5.jpeg';
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 import { getUserCollabs } from "../contexts/DBContext"
+import { getUserClaps } from "../contexts/DBContext"
 import { getUserInfo } from "../contexts/AuthContext"
 
 
@@ -117,6 +118,7 @@ function Profile(props) {
   const { currentUser, logout } = useAuth()
   const history = useHistory()
   const [userCollabs, setUserCollabs] = useState()
+  const [userClaps, setUserClaps] = useState()
   const [userName, setUserName] = useState("")
   const [userJamNumber, setUserJamNumber] = useState(0)
 
@@ -196,6 +198,12 @@ function Profile(props) {
         setUserCollabs(collabs)
         setUserJamNumber(collabs.length)
       })
+
+      let claps = getUserClaps (currentUser.email);
+      claps.then(claps => {
+        setUserClaps(claps)
+      })
+
     }
   }, []);
 
@@ -220,10 +228,26 @@ function Profile(props) {
           video: userCollabs[i].videos[0],
           title: userCollabs[i].title,
           link: '/collab/view',
-          clap: userCollabs[i].likes});
+          clap: userCollabs[i].claps,
+          collabId: userCollabs[i].collabId,
+        });
       }
   }
-  console.log("Elements:",topCollabData)
+  console.log("Elements topCollabData:",topCollabData)
+
+  var topClapData=[];
+  if (userClaps){
+      for(var i=0;i<userClaps.length;i++){
+        topClapData.push({   img: testImg3,
+          video: userClaps[i].videos[0],
+          title: userClaps[i].title,
+          link: '/collab/view',
+          clap: userClaps[i].claps,
+          collabId: userClaps[i].collabId,
+        });
+      }
+  }
+  console.log("Elements userClaps:",topClapData)
 
   return (
     <div>
@@ -250,7 +274,7 @@ function Profile(props) {
         <Grid item xs={6}>
           <Typography sx={ showCollabs ? styles.titleActive : styles.title }
           onClick={(e) => {setShowClaps(false);setShowCollabs(true)}}>
-            Previous Jams
+            Your Jams
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -258,13 +282,13 @@ function Profile(props) {
             sx={ showClaps ? styles.titleActive : styles.title }
             onClick={(e) => {setShowClaps(true);setShowCollabs(false)}}
           >
-            Claps
+            Your Claps
           </Typography>
         </Grid>
       </Grid>
 
       { showCollabs ? <CardList data={topCollabData}/> : null }
-      { showClaps ? <CardList data={clapData}/> : null }
+      { showClaps ? <CardList data={topClapData}/> : null }
 
       <Navbar />
     </div>

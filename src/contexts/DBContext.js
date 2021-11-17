@@ -21,15 +21,45 @@ export const getUserCollabs = async (id) => {
   var collabs = await db.collection("sessions").get();
   var joined = [];
   collabs.docs.map((doc) => {
-    // console.log(doc.data().userIds.includes(id))
+    
     if (doc.data().userIds){
-      if (doc.data().userIds.includes(id)) joined.push(doc.data());
+      if (doc.data().userIds.includes(id)) joined.push(Object.assign({}, doc.data(), {collabId: doc.id}));
     }else{
       return null;
     }
     
   });
   return joined;
+};
+
+// function to get all collabs of user with ID
+export const getAllCollabs = async () => {
+  // debugger
+  var collabs = await db.collection("sessions").get();
+  var all = [];
+  collabs.docs.map((doc) => {
+      if (doc.data()) all.push(Object.assign({}, doc.data(), {collabId: doc.id}));
+  });
+  // console.log("All collabs:", all)
+  return all;
+};
+
+
+// function to get all collabs of user with ID
+export const getUserClaps = async (id) => {
+  // debugger
+  var collabs = await db.collection("sessions").get();
+  var clapped = [];
+  collabs.docs.map((doc) => {
+    // console.log(doc.data().userIds.includes(id))
+    if (doc.data().clappedIds){
+      if (doc.data().clappedIds.includes(id) && !doc.data().userIds.includes(id)) clapped.push(Object.assign({}, doc.data(), {collabId: doc.id}));
+    }else{
+      return null;
+    }
+    
+  });
+  return clapped;
 };
 
 // function to get all collabs of user with ID

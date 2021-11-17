@@ -11,6 +11,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
 import { Link, useHistory } from "react-router-dom"
+import { useAuth } from "../../../contexts/AuthContext"
+import { getCollab } from "../../../contexts/DBContext"
 
 
 import { db } from "../../../firebase"
@@ -66,23 +68,6 @@ const styles = {
 
 
 
-const handleLikes  = () => {
-  console.log("Clap!")
-  var collab = db.collection("sessions").doc('CHROc1YPAEJXHjAX7iJ9');
-  collab.get().then(function (doc) {
-    if (doc.exists) {
-      collab.get().then((snapshot) => {
-        var likes = snapshot.data().likes;
-        collab.update({
-          likes: likes+1,
-        });
-      });
-    } else {
-      alert("session is no longer available");
-    }
-  });
-      
-}
 
 function ViewCollab(props) {
   const {
@@ -95,13 +80,30 @@ function ViewCollab(props) {
   const tmpVideoId = "lQr-MMn639Q?autoplay=1";
   const history = useHistory()
   const [collabId, setCollabId] = useState()
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabClaps, setCollabClaps] = useState()
+  const [collabSize, setCollabSize] = useState()
+  const [collabDescription, setCollabDescription] = useState()
+  const { currentUser } = useAuth()
 
 
   const { state } = useLocation();
+ 
   useEffect(() => {
-    console.log(state);
     setCollabId(state.collabId)
-  }, []);
+    let collab = getCollab (state.collabId);
+    collab.then(collab => {
+      // console.log(collab.title)
+      setCollabTitle(collab.title)
+      setCollabDescription(collab.description)
+      setCollabSize(collab.userIds.length)
+      setCollabClaps(collab.claps)
+    
+      })
+    
+  }, [collabId,collabTitle,collabClaps,collabSize,collabDescription]);
+
+
 
   async function handleJam() {
     try {
@@ -111,7 +113,28 @@ function ViewCollab(props) {
     }
   }
 
-
+  const handleLikes  = () => {
+    var collab = db.collection("sessions").doc(collabId);
+    collab.get().then(function (doc) {
+      if (doc.exists) {
+        collab.get().then((snapshot) => {
+          var claps = snapshot.data().claps;
+          var clappedIds = snapshot.data().clappedIds;
+          if (clappedIds && !clappedIds.includes(currentUser.email)){
+            console.log(clappedIds)
+            collab.update({
+              claps: claps+1,
+              clappedIds: clappedIds.concat([currentUser.email])
+            });
+            console.log("Clap!")
+          }
+        });
+      } else {
+        alert("session is no longer available");
+      }
+    });    
+  }
+  
   const video =
     <YoutubeEmbed
       embedId={ tmpVideoId }
@@ -122,13 +145,13 @@ function ViewCollab(props) {
 
   const title =
     <Typography sx={styles.title}>
-      <span style={{color:SECONDARY_COLOR}}>John</span>
-      - 69K views - 6 days ago
+      <span style={{color:SECONDARY_COLOR}}>{collabTitle} </span>
+       - {collabClaps} claps - 6 days ago
     </Typography>
 
   const description =
     <Typography sx={styles.desc}>
-      Ayo whassubdog...
+      {collabDescription}
     </Typography>
 
   const iconList =

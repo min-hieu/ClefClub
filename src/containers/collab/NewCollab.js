@@ -14,6 +14,7 @@ import { storage } from "../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../firebase"
 import {createId} from "../../contexts/DBContext"
+import { useHistory } from "react-router-dom"
 
 
 const styles = {
@@ -106,6 +107,7 @@ function NewCollab({ classes }) {
   const { currentUser, logout } = useAuth()
   const descriptionRef = useRef()
   const titleRef = useRef()
+  const history = useHistory()
 
   const updateFormData = (key, value) => {
     setFormData({...formData, [key]: value})
@@ -197,13 +199,20 @@ function NewCollab({ classes }) {
         // })
         db.collection("sessions").add({
           ...formData,
-          likes: 0,
+          claps: 0,
+          clappedIds: [currentUser.email],
           userIds: [currentUser.email],
           comments: [],
           createdAt: Date.now(),
           videos: [downloadURL],
           requests: []
         });
+
+        try {
+          history.push( {pathname: "/profile"})
+        } catch {
+          console.log("Failed to create a jam!")
+        }
       });
       alert("You jam is created!");
     }

@@ -31,16 +31,23 @@ const styles = {
 const CardList = ({ data, conSx }) => {
 
   const history = useHistory();
-  const goToLink = (link) =>
+  const goToLink = (link, cId) =>
     // history.push(link);
-    history.push({pathname: link, state: {collabId: 'CHROc1YPAEJXHjAX7iJ9'}})
+    history.push({pathname: link, state: {collabId: cId}})
 
   const drawTile = (item) => (
-    <ImageListItem key={item.img}>
-        <img
-          src={`${item.img}?w=248&fit=crop&auto=format`}
+    <ImageListItem key={item.video}>
+        <video
+          // src={`${item.img}?w=248&fit=crop&auto=format`}
+          src={item.video}
+          autoPlay
+          tiny
+          loop
+          muted
+          width={170}
+          // fluid
           alt={item.title}
-          onClick={(e) => goToLink(item.link)}
+          onClick={(e) => goToLink(item.link, item.collabId)}
         />
         <ImageListItemBar
           sx={styles.overlayBottom}
@@ -51,7 +58,9 @@ const CardList = ({ data, conSx }) => {
                 sx={styles.actionicon}
                 aria-label={`star ${item.title}`}
               >
+                {item.claps}
                 <img src={ ClapIcon } style={{ width:'20px', height:'20px' }}/>
+                
               </IconButton>
             }
             actionPosition="left"
