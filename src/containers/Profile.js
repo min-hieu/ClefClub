@@ -6,13 +6,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CollabHeading from '../components/shared/CollabHeading';
 import CardList from '../components/shared/CardList';
-import testImg1 from '../assets/test/test_img.png';
-import testImg2 from '../assets/test/jam.jpeg';
 import testImg3 from '../assets/test/jam2.jpeg';
-import testImg4 from '../assets/test/jam69.jpeg';
-import testImg5 from '../assets/test/jam1.jpeg';
-import testImg6 from '../assets/test/jam4.jpeg';
-import testImg7 from '../assets/test/jam5.jpeg';
+
 // mine
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
@@ -122,60 +117,6 @@ function Profile(props) {
   const [userName, setUserName] = useState("")
   const [userJamNumber, setUserJamNumber] = useState(0)
 
-
-
-  // const topCollabData = [
-  //   {   img: testImg1,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg2,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg3,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg4,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg5,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg6,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg1,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg7,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  // ];
-
-  const clapData = [
-    {   img: testImg1,
-      title: 'you clapped this',
-       link: '/collab/view'},
-    {   img: testImg3,
-      title: 'you clapped this',
-       link: '/collab/view'},
-    {   img: testImg5,
-      title: 'you clapped this',
-       link: '/collab/view'},
-    {   img: testImg1,
-      title: 'you clapped this',
-       link: '/collab/view'},
-    {   img: testImg7,
-      title: 'you clapped this',
-       link: '/collab/view'},
-  ]
 
   const [showCollabs, setShowCollabs] = React.useState(true);
   const [showClaps, setShowClaps] = React.useState(false);

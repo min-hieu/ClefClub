@@ -32,7 +32,7 @@ export const getUserCollabs = async (id) => {
   return joined;
 };
 
-// function to get all collabs of user with ID
+// function to get all collabs
 export const getAllCollabs = async () => {
   // debugger
   var collabs = await db.collection("sessions").get();
@@ -45,7 +45,7 @@ export const getAllCollabs = async () => {
 };
 
 
-// function to get all collabs of user with ID
+// function to get all clapped collabs of user with ID
 export const getUserClaps = async (id) => {
   // debugger
   var collabs = await db.collection("sessions").get();
@@ -62,9 +62,87 @@ export const getUserClaps = async (id) => {
   return clapped;
 };
 
-// function to get all collabs of user with ID
+// function to get collab with ID
 export const getCollab = async (id) => {
   return (await db.collection("sessions").doc(id).get()).data();
+};
+
+// function to get user with ID
+export const getUser = async (id) => {
+  return (await db.collection("users").doc(id).get()).data();
+};
+
+// function to get all outgoing requests of user with ID
+export const getOutgoingRequests = async (id) => {
+  // debugger
+  var requests = await db.collection("requests").get();
+  var closed = [];
+  var pending = [];
+  requests.docs.map((doc) => {
+    
+    if (doc.data().requesterId == id){
+      if (doc.data().status == 'pending'){
+          pending.push({
+            collabId: doc.data().collabId,
+            collabTitle: doc.data().collabTitle,
+            requesterName: doc.data().requesterName,
+            acceptedN: doc.data().acceptedIds.length,
+            declinedN: doc.data().declinedIds.length,
+            message: doc.data().message,
+            videoURL: doc.data().videoURL,
+          })
+      }else{
+          closed.push({
+            collabId: doc.data().collabId,
+          collabTitle: doc.data().collabTitle,
+          requesterName: doc.data().requesterName,
+         acceptedN: doc.data().acceptedIds.length,
+         declinedN: doc.data().declinedIds.length,
+         message: doc.data().message,
+         videoURL: doc.data().videoURL,
+          })
+      } 
+    }
+  });
+  console.log("Pending out:",pending.length, "Closed out:", closed.length)
+  return [pending, closed];
+};
+
+// function to get all outgoing requests of user with ID
+export const getIncomingRequests = async (id) => {
+  // debugger
+  var requests = await db.collection("requests").get();
+
+  var waiting = [];
+  var unpublished = [];
+
+  requests.docs.map((doc) => {
+    // console.log("receiverIds:",doc.data().receiverIds)
+    if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status == 'pending'){
+      if ( !doc.data().acceptedIds.includes(id)|| !doc.data().declinedIds.includes(id)){
+        waiting.push({
+          collabId: doc.data().collabId,
+          collabTitle: doc.data().collabTitle,
+          requesterName: doc.data().requesterName,
+         acceptedN: doc.data().acceptedIds.length,
+         declinedN: doc.data().declinedIds.length,
+         message: doc.data().message,
+         videoURL: doc.data().videoURL,
+        })
+      }else{
+        unpublished.push({
+          collabId: doc.data().collabId,
+          collabTitle: doc.data().collabTitle,
+          requesterName: doc.data().requesterName,
+         acceptedN: doc.data().acceptedIds.length,
+         declinedN: doc.data().declinedIds.length,
+         message: doc.data().message,
+         videoURL: doc.data().videoURL,
+        })
+      } 
+    }
+  });
+  return [waiting, unpublished];
 };
 
 

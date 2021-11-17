@@ -14,7 +14,7 @@ import { storage, db } from "../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {getCollab} from "../../contexts/DBContext"
 import { useHistory } from "react-router-dom"
-import { useAuth } from "../../contexts/AuthContext"
+import { useAuth,getUserInfo } from "../../contexts/AuthContext"
 
 const styles = {
   main: {
@@ -119,6 +119,7 @@ function ContributeToCollab({ classes }) {
   const [collabDescription, setCollabDescription] = useState()
   const [collabSize, setCollabSize] = useState()
   const [collabOwners, setCollabOwners] = useState([])
+  const [userName, setUserName] = useState([])
   const history = useHistory()
   const [formData, setFormData] = useState({})
   const { currentUser } = useAuth()
@@ -131,6 +132,7 @@ function ContributeToCollab({ classes }) {
   const { state } = useLocation();
 
   useEffect(() => {
+    
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
     collab.then(collab => {
@@ -140,6 +142,12 @@ function ContributeToCollab({ classes }) {
       setCollabSize(collab.userIds.length)
       setCollabOwners(collab.userIds)
 
+      })
+
+    let user = getUserInfo (currentUser.email);
+    // console.log("Found a user:\n",user)
+        user.then(user => {
+      setUserName(user.nickname)
       })
     
   }, [collabId,collabTitle,collabDescription]);
@@ -223,12 +231,13 @@ function ContributeToCollab({ classes }) {
         console.log('File available at', downloadURL);
         db.collection("requests").add({
           ...formData,
-          collabID: collabId,
+          collabTitle: collabTitle,
           status: "pending",
           acceptedIds: [],
           declinedIds: [],
           videoURL: downloadURL,
           requesterId: currentUser.email,
+          requesterName: userName,
           receiverIds: collabOwners,
         });
       });
