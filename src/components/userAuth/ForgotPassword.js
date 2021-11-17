@@ -115,7 +115,7 @@ function ForgotPassword({classes}) {
       />
   const submitBtn = 
     <Link to='/profile' style={{ textDecoration: 'none' }}>         
-      <Button variant="contained" className={classes.submitBtn} onClick = {handleSubmit}>
+      <Button variant="contained" className={classes.submitBtn} onClick = {handleSubmit} disabled={loading}>
         <Typography className={classes.btnText}> Reset password </Typography>
       </Button>
     </Link>
