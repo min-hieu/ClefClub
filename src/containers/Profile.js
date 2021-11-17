@@ -23,12 +23,22 @@ import { getUserInfo } from "../contexts/AuthContext"
 const styles = {
   profile: {
     margin: '0 auto',
-    marginTop: 8,
+    marginTop: 0,
     background: TERTIARY_COLOR,
     padding: '15px',
     width: '90%',
     borderRadius: 2,
     height: 130,
+    overflow: 'hidden',
+  },
+  logout: {
+    textAlign: 'right',
+    margin: '0 auto',
+    marginTop: 4,
+    padding: '15px',
+    width: '90%',
+    borderRadius: 2,
+    height: 50,
     overflow: 'hidden',
   },
   avatar: {
@@ -99,11 +109,11 @@ function Profile(props) {
 
   // mine
   const [error, setError] = useState("")
-  const { currentUser, logout } = useAuth()
+  const { currentUser, logout, isLogged } = useAuth()
   const history = useHistory()
   const [userCollabs, setUserCollabs] = useState()
   const [userInfo, setUserInfo] = useState()
-  
+
 
   const topCollabData = [
     {   img: testImg1,
@@ -163,6 +173,12 @@ function Profile(props) {
 
 // mine
   useEffect(() => {
+
+    if (!currentUser) {
+      history.push("/login")
+      return;
+    }
+
     let collabs = getUserCollabs (currentUser.email);
     const settingCollabs = collabs.then(collabs => {
       setUserCollabs(collabs)
@@ -189,7 +205,7 @@ function Profile(props) {
     }
   }
 
-  (userInfo) ? console.log("Nickname:\n",userInfo.nickname) : console.log("nothing");
+  // (userInfo) ? console.log("Nickname:\n",userInfo.nickname) : console.log("nothing");
 
   const title = 
   <Grid container alignItems="center" justifyContent="center">
@@ -198,10 +214,10 @@ function Profile(props) {
   </Grid>
   </Grid>
 
-  console.log("User collabs:\n",userCollabs);
+  // console.log("User collabs:\n",userCollabs);
   var elements=[];
   if (userCollabs){
-    console.log("User collabs length:\n",userCollabs.length);
+    // console.log("User collabs length:\n",userCollabs.length);
       for(var i=0;i<userCollabs.length;i++){
     // push the component to elements!
     // console.log(userCollabs[i] );
@@ -239,6 +255,11 @@ function Profile(props) {
 
   return (
     <div>
+      <Grid container sx={styles.logout}>
+            <Typography sx={styles.title} onClick={{handleLogout}} >
+              Log Out
+            </Typography>
+      </Grid>
       <Grid container sx={styles.profile}>
         <Grid item xs={8} container direction="column" justifyContent="center">
           <Grid item>

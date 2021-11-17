@@ -60,7 +60,7 @@ function App({ classes }) {
                     <Route exact path="/notification"> <Notification /> </Route>
                     <Route exact path="/search"> <Search /> </Route>
                         <Route exact path="/session/new"> <NewCollab /> </Route>
-                        {/* <Route exact path="/session/view"> <ViewSession /> </Route> */}
+                        <Route exact path="/collab/contribute"> <ContributeToCollab /> </Route>
                         <Route exact path="/collab/view"> <ViewCollab /> </Route>
                         <Route exact path="/collab/preview"> <CollabPreview /> </Route>
                 </Switch>

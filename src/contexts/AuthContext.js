@@ -26,6 +26,10 @@ export const getUserInfo = async (id) => {
 };
 
 
+
+
+
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
@@ -69,7 +73,7 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     updateEmail,
-    updatePassword
+    updatePassword,
   }
 
   return (
