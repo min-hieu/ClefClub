@@ -41,7 +41,7 @@ const styles = {
   },
   submitBtn: {
     textTransform: 'none !important',
-    color: `black !important`,
+    color: `${PRIMARY_COLOR} !important`,
     backgroundColor: `${SECONDARY_COLOR} !important`,
     '&:hover': {
       backgroundColor: `${TERTIARY_COLOR} !important`,
@@ -175,7 +175,6 @@ function Signup({classes}) {
         {error && <Alert severity="error">{error}</Alert>}
         {login}
       </Box>
-      <Navbar />     
     </div>
   )
 }

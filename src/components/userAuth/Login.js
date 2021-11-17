@@ -43,7 +43,8 @@ const styles = {
   },
   submitBtn: {
     textTransform: 'none !important',
-    color: `black !important`,
+    borderRadius: '16px',
+    color: `${PRIMARY_COLOR} !important`,
     backgroundColor: `${SECONDARY_COLOR} !important`,
     '&:hover': {
       backgroundColor: `${TERTIARY_COLOR} !important`,
@@ -148,7 +149,6 @@ function Login({classes}) {
         {signup}
         {forget}
       </Box>
-      <Navbar />     
     </div>
   )
 }

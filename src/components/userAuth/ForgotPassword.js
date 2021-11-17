@@ -48,7 +48,7 @@ const styles = {
 
   submitBtn: {
     textTransform: 'none !important',
-    color: `black !important`,
+    color: `${PRIMARY_COLOR} !important`,
     backgroundColor: `${SECONDARY_COLOR} !important`,
     '&:hover': {
       backgroundColor: `${TERTIARY_COLOR} !important`,
@@ -144,8 +144,7 @@ function ForgotPassword({classes}) {
         {message && <Alert severity="success">{message}</Alert>}
         {login}
         {signup}
-      </Box>
-      <Navbar />     
+      </Box>    
     </div>
   )
 }

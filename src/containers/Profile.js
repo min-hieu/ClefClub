@@ -23,23 +23,28 @@ import { getUserInfo } from "../contexts/AuthContext"
 const styles = {
   profile: {
     margin: '0 auto',
-    marginTop: 0,
+    marginTop: 6,
     background: TERTIARY_COLOR,
     padding: '15px',
     width: '90%',
     borderRadius: 2,
-    height: 130,
+    height: 160,
     overflow: 'hidden',
   },
   logout: {
-    textAlign: 'right',
+    textAlign: 'center',
+    fontSize: '15px',
+    borderRadius: '16px',
+    width: '100px',
+    padding: '5px 9px',
     margin: '0 auto',
-    marginTop: 4,
-    padding: '15px',
-    width: '90%',
-    borderRadius: 2,
-    height: 50,
-    overflow: 'hidden',
+    color: SECONDARY_COLOR,
+    userSelect: 'none',
+    '&:hover': {
+      color: PRIMARY_COLOR,
+      // background: SECONDARY_COLOR,
+      cursor: 'pointer',
+    },
   },
   avatar: {
     width: 100,
@@ -196,7 +201,6 @@ function Profile(props) {
 
   async function handleLogout() {
     setError("")
-
     try {
       await logout()
       history.push("/login")
@@ -255,11 +259,11 @@ function Profile(props) {
 
   return (
     <div>
-      <Grid container sx={styles.logout}>
+      {/* <Grid container sx={styles.logout}>
             <Typography sx={styles.title} onClick={{handleLogout}} >
               Log Out
             </Typography>
-      </Grid>
+      </Grid> */}
       <Grid container sx={styles.profile}>
         <Grid item xs={8} container direction="column" justifyContent="center">
           <Grid item>
@@ -271,7 +275,14 @@ function Profile(props) {
         </Grid>
         <Grid item xs={2}>
           <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
+          {/* <Grid item xs={4}> */}
+          <Typography sx={styles.logout} onClick={handleLogout} >
+                Log Out
+            </Typography>
+          {/* </Grid> */}
         </Grid>
+        
+        
       </Grid>
 
       <Grid container sx={styles.titleBar}>
