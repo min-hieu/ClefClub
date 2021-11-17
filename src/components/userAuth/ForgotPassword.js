@@ -67,54 +67,30 @@ const FancyTextField = styled(TextField)({
   },
 });
 
-function Signup({classes}) {
-  const { signup } = useAuth()
-  const history = useHistory()
-
+function ForgotPassword({classes}) {
+  const { resetPassword } = useAuth()
   const [error, setError] = useState("")
+  const [message, setMessage] = useState("")
   const [loading, setLoading] = useState(false)
-  const [name, setName] = React.useState('');
+
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [cfPassword, setcfPassword] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (! (password && cfPassword && name && email)) {
-      return setError("Please enter all required fields")
-    }
-
-    if (password !== cfPassword) {
-      return setError("Passwords do not match")
-    }
 
     try {
+      setMessage("")
       setError("")
       setLoading(true)
-      await signup(email, password)
-      history.push("/")
-      db.collection("users").doc(email).set({
-        nickname: name,
-        email: email,
-        sessions: [],
-      });
-    } 
-    catch {
-      setError("Please use the correct email and make a safe password")
+      await resetPassword(email)
+      setMessage("Please check your email's inbox")
+    } catch {
+      setError("Please type your email correctly")
     }
 
     setLoading(false)
   }
-
-  const title = <Typography className={classes.title}>Sign up</Typography>
-  const nameField =
-    <FancyTextField
-      label="First Name"
-      variant="outlined"
-      required
-      value={name}
-      onChange={e => setName(e.target.value)}
-    />;
+  const title = <Typography className={classes.title}>Reset password</Typography>
   const emailField =
       <FancyTextField
         label="Email"
@@ -124,33 +100,21 @@ function Signup({classes}) {
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
-  const pwField1 = 
-    <FancyTextField
-      label="Password"
-      variant="outlined"
-      type="password"
-      required
-      value={password}
-      onChange={e => setPassword(e.target.value)}
-    />
-  const pwField2 = 
-    <FancyTextField
-      label="Confirm Password"
-      variant="outlined"
-      type="password"
-      required
-      value={cfPassword}
-      onChange={e => setcfPassword(e.target.value)}
-    />
   const submitBtn = 
-    // <Link to='/profile' style={{ textDecoration: 'none' }}>         
+    <Link to='/profile' style={{ textDecoration: 'none' }}>         
       <Button variant="contained" className={classes.submitBtn} onClick = {handleSubmit}>
-        <Typography className={classes.btnText}> Sign up </Typography>
+        <Typography className={classes.btnText}> Reset password </Typography>
       </Button>
-    // </Link>
+    </Link>
+
+  const signup = 
+    <Typography className={classes.signup} >
+      Need an account? <Link to="/signup">Sign Up</Link>
+    </Typography>
+
   const login = 
-    <Typography className={classes.login} >
-      Already have an account? <Link to="/login">Log In</Link>
+    <Typography className={classes.signup} >
+      <Link to="/login">Log in </Link>
     </Typography>
 
     return (
@@ -161,17 +125,16 @@ function Signup({classes}) {
         sx={{'& > :not(style)': { m: 1 }}}
         className={classes.root}
       >
-        {nameField}
         {emailField}
-        {pwField1}
-        {pwField2}
         {submitBtn}
         {error && <Alert severity="error">{error}</Alert>}
+        {message && <Alert severity="success">{message}</Alert>}
         {login}
+        {signup}
       </Box>
       <Navbar />     
     </div>
   )
 }
 
-export default withStyles(styles)(Signup)
+export default withStyles(styles)(ForgotPassword)
