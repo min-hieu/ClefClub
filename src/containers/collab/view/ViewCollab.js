@@ -46,12 +46,12 @@ const styles = {
     bottom: 20,
   },
   video: {
-    bottom: 50,
+    bottom: 83,
     position: 'relative',
   },
   iconList: {
-    bottom: 20,
-    right: 40,
+    bottom: 9,
+    right: 52,
     width: 30,
   },
   cmtSection: {
@@ -158,7 +158,7 @@ function CollabView(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:118.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:131.1 }}/>
 
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
