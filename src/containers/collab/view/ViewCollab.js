@@ -11,6 +11,8 @@ import Grid from '@mui/material/Grid';
 import ViewSession from '../../session/view/ViewSession';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import style from './clap.css';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useHistory  } from 'react-router-dom';
 
 
 const styles = {
@@ -67,9 +69,11 @@ const styles = {
   },
   closeCmt: {
     position: 'absolute',
+    background: 'rgba(2,2,2,0.7)',
+    borderRadius: 20,
     top: 0,
-    width: 400,
-    height: 800,
+    width: 374,
+    height: 700,
     left: '50%',
     transform: "translate(-50%,0)",
   },
@@ -122,13 +126,16 @@ function CollabView(props) {
       position="absolute"
       sx={styles.iconList}
     >
-      <Grid item xs={4}>
+      <Grid item xs={3}>
+        <GroupAddIcon onClick={(e)=>goToLink('')}/>
+      </Grid>
+      <Grid item xs={3}>
         <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <img src={ClapIcon} style={{width:24,height:24}}/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <ChatIcon
         onClick={(e) => {setShowComments(true)}}
         />
@@ -140,6 +147,9 @@ function CollabView(props) {
 
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
+  const history = useHistory();
+  const goToLink = (link) =>
+    history.push(link);
 
   return (
     <>

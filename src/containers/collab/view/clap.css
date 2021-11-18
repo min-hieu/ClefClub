@@ -5,6 +5,7 @@
   animation: fly 2s infinite linear;
   font-size: 35px;
   opacity: 0;
+  pointer-events: none;
 }
 
 #clap1 {
