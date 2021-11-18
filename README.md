@@ -18,13 +18,13 @@ To run locally, execute:<br>
     -  containers: main page containers
     -  components: reusable components that can be shared among pages
 
-# Coding convention:
+# Coding convention
 - Functional component (Please use () => {}) and hook for stateful component.
 - Shared component MUST be put in components/shared/
 - Not-shared but big component SHOULD be put in components/ (Example, a complex component of session/view page should be in components/session/view/)
 - Avoid putting too much nested JSX. Consider make it at max 3 layers (Use variable to make smaller components and build up from there)
 
-# Authors: 
+# Authors
 - Charlie (Hieu)
 - John
 - Assem
