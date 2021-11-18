@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -7,7 +8,6 @@ import { PRIMARY_COLOR } from '../Constant';
 import testImg from '../assets/test/test_img.png';
 import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
-import CollabHeading from '../components/shared/CollabHeading';
 import testImg1 from '../assets/test/test_img.png';
 import testImg2 from '../assets/test/jam.jpeg';
 import testImg3 from '../assets/test/jam2.jpeg';
@@ -33,6 +33,16 @@ const styles = {
     padding: 10,
   },
   homeCardList: {},
+  select: {
+    minWidth: 80,
+    margin: 10,
+    background: 'white',
+    color: PRIMARY_COLOR,
+    fontSize: 18,
+    '&:focus':{
+      backgroundColor: 'white',
+    },
+  },
 };
 
 function Home({ classes }) {
@@ -79,17 +89,34 @@ function Home({ classes }) {
       </CardActionArea>
     </Card>
 
-    const topCollabs =
-      <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+  const sortOptions = ['Hot', 'New', 'Rising'];
+  const [sortOption, setSortOption] = React.useState(sortOptions[0]);
+  const sortSelect =
+    <Select
+      native
+      value={sortOption}
+      onChange={(e) => setSortOption(e.target.value)}
+      disableUnderline
+      classes={{ root: classes.select }}
+    >
+      {sortOptions.map((option) => (
+        <option value={option}>
+          {option}
+        </option>
+      ))}
+    </Select>
 
-    return (
-      <>
-        {banner}
-        <CollabHeading text="This week's top jams" />
-        {topCollabs}
-        <Navbar />
-      </>
-    );
+  const topCollabs =
+    <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+
+  return (
+    <>
+      {banner}
+      {sortSelect}
+      {topCollabs}
+      <Navbar />
+    </>
+  );
 }
 
 export default withStyles(styles)(Home);
