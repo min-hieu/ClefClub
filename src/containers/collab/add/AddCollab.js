@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useLocation } from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +14,11 @@ import CheckIcon from '@material-ui/icons/Check';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import testCover from '../../../assets/test/test_cover.png'
 import Navbar from '../../../components/shared/Navbar';
+
+import { storage, db } from "../../../firebase"
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {getCollab} from "../../../contexts/DBContext"
+import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
 
 const styles = {
   backIcon: {
@@ -112,6 +117,104 @@ const StyledFab = styled(Fab)({
 });
 
 function AddCollab({ classes }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [video, setVideo] = useState(null);
+  const [url, setUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [title, setTitle] = useState("Upload video");
+  const [collabId, setCollabId] = useState()
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabDescription, setCollabDescription] = useState()
+  const [collabSize, setCollabSize] = useState()
+  const [collabOwners, setCollabOwners] = useState([])
+  const [userName, setUserName] = useState([])
+  const history = useHistory()
+  const [formData, setFormData] = useState({})
+  const { currentUser } = useAuth()
+
+  const hiddenFileInput = React.useRef(null);
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleChoose = e => {
+    if (e.target.files[0]) {
+      setVideo(e.target.files[0]);
+    }
+    setTitle("Video is chosen!");
+  };
+
+  const handleClickUpload = e => {
+    hiddenFileInput.current.click();
+  }
+
+
+  const handleVideoUpload = () => {
+
+    console.log("Uploading the video!\n");
+    console.log(video.name);
+
+    const storageRef = ref(storage, 'videos/' + video.name);
+    const metadata = {
+      username: 'firstUser',
+    };    
+    const uploadTask = uploadBytesResumable(storageRef, video, metadata);
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+    (snapshot) => {
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setTitle('Just a moment:' + Math.round(progress) + '%');
+      console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) {
+        case 'paused':
+          setTitle('Upload is paused');
+          console.log('Upload is paused');
+          break;
+        case 'running':
+          console.log('Upload is running');
+          break;
+      }
+    }, 
+    (error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/unauthorized':
+          // User doesn't have permission to access the object
+          break;
+        case 'storage/canceled':
+          // User canceled the upload
+          break;
+        case 'storage/unknown':
+          // Unknown error occurred, inspect error.serverResponse
+          break;
+      }
+    }, 
+    () => {
+      // Upload completed successfully, now we can get the download URL
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+        db.collection("requests").add({
+          ...formData,
+          collabTitle: collabTitle,
+          status: "pending",
+          acceptedIds: [],
+          declinedIds: [],
+          videoURL: downloadURL,
+          requesterId: currentUser.email,
+          requesterName: userName,
+          receiverIds: collabOwners,
+        });
+      });
+      alert("Your request is sent!");
+      history.push("/notification")
+    }
+    );
+  };
+
   const mainCover =
 		{ img: testCover,
 			title: 'test cover' };
@@ -119,20 +222,17 @@ function AddCollab({ classes }) {
   const [open, setOpen] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const submit = async () => {
+    handleVideoUpload()
     setOpen(true);
     await delay(1000);
     window.location.href = '/';
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   const successMessage =
     <div className={classes.successMessage}>
       <CheckIcon />
       <span> Your jam has been submitted! </span>
     </div>
-
-  const history = useHistory();
 
   const header =
     <Grid container alignItems="center" justifyContent="center">
@@ -148,31 +248,14 @@ function AddCollab({ classes }) {
     </Grid>
 
   const videoUpload =
-    uploaded ? (
-      <>
-        <iframe
-          className={classes.preview}
-          width="304"
-          height="380"
-          src={"https://www.youtube.com/embed/-xEpxWPAYXU?start=28&end=41"}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          title="Embedded youtube"
-        />
-        <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
-          <RefreshIcon />
-        </StyledFab>
-      </>
-    ) : (
       <div className={classes.videoWrapper}>
         <img src={mainCover.img} alt={mainCover.title} className={classes.cover} />
-        <div className={classes.dropzone} onClick={() => setUploaded(true)}>
-          <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
-          <Typography className={classes.addText}>Upload video</Typography>
+        <div className={classes.dropzone}>
+          <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+          <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+          <Typography className={classes.addText}>{title}</Typography>
         </div>
       </div>
-    )
 
   const messageToOwner =
     <Input
