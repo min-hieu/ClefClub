@@ -63,7 +63,7 @@ const Navbar = ({classes}) => {
   const NotiOption = IconWrapper(<NotificationsNoneIcon className={classes.navIcon}/>,  '/notification')
   const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
   const AddOption =
-    <Link to='/session/new'>
+    <Link to='/collab/new'>
       <StyledFab aria-label="add">
         <AddCircleRoundedIcon className={classes.addIcon}/>
       </StyledFab>

@@ -75,7 +75,7 @@ const styles = {
   },
   publishButton: {
     color: TERTIARY_COLOR,
-    backgroundColor: SECONDARY_COLOR,
+    backgroundColor: PRIMARY_COLOR,
     fontSize: 18,
     fontWeight: 'bold',
     justifyContent: 'center !important',
