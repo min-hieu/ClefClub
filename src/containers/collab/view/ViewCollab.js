@@ -46,7 +46,7 @@ const styles = {
     bottom: 20,
   },
   video: {
-    bottom: 50,
+    bottom: 83,
     position: 'relative',
   },
   iconList: {
