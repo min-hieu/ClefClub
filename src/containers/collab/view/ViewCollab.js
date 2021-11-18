@@ -1,5 +1,5 @@
-import React,{ useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {useLocation} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -10,9 +10,14 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ClapIcon from '../../../assets/clap.svg';
-import ViewSession from '../../session/view/ViewSession';
+import ViewSession from '../ViewSession';
 import style from './clap.css';
+import { Link, useHistory } from "react-router-dom"
+import { useAuth } from "../../../contexts/AuthContext"
+import { getCollab } from "../../../contexts/DBContext"
 
+
+import { db } from "../../../firebase"
 
 const styles = {
   overlay: {
@@ -91,6 +96,15 @@ const styles = {
     position: 'sticky',
     color: TERTIARY_COLOR,
   },
+  clap: {
+    '&:hover': {
+      color: 'SECONDARY_COLOR',
+      // background: SECONDARY_COLOR,
+      cursor: 'pointer',
+    },
+    width: 24,
+    height: 24,
+  },
 };
 
 
@@ -109,7 +123,63 @@ function ViewCollab(props) {
       style={styles.backIcon}
       onClick={() => history.goBack()}
     />
+  const [collabId, setCollabId] = useState()
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabClaps, setCollabClaps] = useState()
+  const [collabSize, setCollabSize] = useState()
+  const [collabDescription, setCollabDescription] = useState()
+  const { currentUser } = useAuth()
 
+
+  const { state } = useLocation();
+ 
+  useEffect(() => {
+    setCollabId(state.collabId)
+    let collab = getCollab (state.collabId);
+    collab.then(collab => {
+      // console.log(collab.title)
+      setCollabTitle(collab.title)
+      setCollabDescription(collab.description)
+      setCollabSize(collab.userIds.length)
+      setCollabClaps(collab.claps)
+    
+      })
+    
+  }, [collabId,collabTitle,collabClaps,collabSize,collabDescription]);
+
+
+
+  async function handleJam() {
+    try {
+      history.push( {pathname: "/collab/contribute/", state: {collabId: collabId}})
+    } catch {
+      console.log("Failed to join")
+    }
+  }
+
+  const handleLikes  = () => {
+    setShowFlower(true);
+    var collab = db.collection("sessions").doc(collabId);
+    collab.get().then(function (doc) {
+      if (doc.exists) {
+        collab.get().then((snapshot) => {
+          var claps = snapshot.data().claps;
+          var clappedIds = snapshot.data().clappedIds;
+          if (clappedIds && !clappedIds.includes(currentUser.email)){
+            console.log(clappedIds)
+            collab.update({
+              claps: claps+1,
+              clappedIds: clappedIds.concat([currentUser.email])
+            });
+            console.log("Clap!")
+          }
+        });
+      } else {
+        alert("session is no longer available");
+      }
+    });    
+  }
+  
   const video =
     <YoutubeEmbed
       embedId={ tmpVideoId }
@@ -120,14 +190,19 @@ function ViewCollab(props) {
 
   const title =
     <Typography sx={styles.title}>
-      <span style={{color:SECONDARY_COLOR}}>John</span>
-      - 69K views - 6 days ago
+      <span style={{color:SECONDARY_COLOR}}>{collabTitle} </span>
+       - {collabClaps} claps - 6 days ago
     </Typography>
 
   const description =
+  <>
     <Typography sx={styles.desc}>
-      Ayo whassubdog...
+      {collabSize} joined 
     </Typography>
+      <Typography sx={styles.desc}>
+      {collabDescription}
+    </Typography>
+  </>
 
   const iconList =
     <Grid
@@ -140,13 +215,13 @@ function ViewCollab(props) {
       sx={styles.iconList}
     >
       <Grid item xs={3}>
-        <GroupAddIcon onClick={(e)=>goToLink('/collab/add')}/>
+        <GroupAddIcon onClick={handleJam}/>
       </Grid>
       <Grid item xs={3}>
-        <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
+        <LocalFloristIcon onClick={handleLikes}/>
       </Grid>
       <Grid item xs={3}>
-        <img src={ClapIcon} style={{width:24,height:24}}/>
+        <img src={ClapIcon} style={style.clap}/>
       </Grid>
       <Grid item xs={3}>
         <ChatIcon

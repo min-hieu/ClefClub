@@ -1,6 +1,6 @@
 import React from 'react';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
-import CommentExampleComment from '../../../components/shared/CommentSection';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
+import CommentExampleComment from '../../components/shared/CommentSection';
 import { Container } from "semantic-ui-react";
 
 const styles = {

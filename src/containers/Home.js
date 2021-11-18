@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react"
 import { withStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
@@ -14,6 +14,14 @@ import testImg4 from '../assets/test/jam69.jpeg';
 import testImg5 from '../assets/test/jam1.jpeg';
 import testImg6 from '../assets/test/jam4.jpeg';
 import testImg7 from '../assets/test/jam5.jpeg';
+
+
+import { useAuth } from "../contexts/AuthContext"
+import { useHistory } from "react-router-dom"
+import { getAllCollabs } from "../contexts/DBContext"
+
+
+
 
 const styles = {
   media: {
@@ -45,41 +53,76 @@ const styles = {
 };
 
 function Home({ classes }) {
+  const { currentUser } = useAuth();
+  const history = useHistory();
+  const [allCollabs, setAllCollabs] = useState();
 
-  const topCollabData = [
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg2,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg3,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg4,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg5,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg6,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg7,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-  ];
+
+  useEffect(() => {
+    // Run! Like go get some data from an API.
+    if (!currentUser) {
+      history.push("/login")
+      return;
+    }else{
+
+      let claps = getAllCollabs ();
+      claps.then(claps => {
+        setAllCollabs(claps)
+      })
+
+    }
+  }, []);
+
+  // const topCollabData = [
+  //   {   img: testImg1,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg2,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg3,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg4,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg5,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg6,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg1,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  //   {   img: testImg7,
+  //     title: 'this is a jam',
+  //      link: '/collab/view',
+  //      clap: 123},
+  // ];
+
+  var topCollabData=[];
+  if (allCollabs){
+      for(var i=0;i<allCollabs.length;i++){
+        topCollabData.push({   img: testImg3,
+          video: allCollabs[i].videos[0],
+          title: allCollabs[i].title,
+          link: '/collab/view',
+          clap: allCollabs[i].claps,
+          collabId: allCollabs[i].collabId,
+          collabSize: allCollabs[i].userIds.length,
+        });
+      }
+  }
+  // console.log("Elements topCollabData:",topCollabData)
+
 
   const banner =
     <Card>
