@@ -6,6 +6,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import ClapIcon from '../../assets/clap.svg';
+import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 
 
 const styles = {
@@ -35,21 +36,24 @@ const CardList = ({ data, conSx }) => {
   const goToLink = (link, cId) =>
     // history.push(link);
     history.push({pathname: link, state: {collabId: cId}})
-    
+
   const drawTile = (item) => (
     <ImageListItem key={item.video} onClick={(e) => goToLink(item.link, item.collabId)}>
         <video
           // src={`${item.img}?w=248&fit=crop&auto=format`}
-          src={item.video}
+          // src={item.video}
+          src={`${item.video}?w=248&fit=crop&auto=format`}
+          srcSet={`${item.video}?w=248&fit=crop&auto=format&dpr=2 2x`}
           autoPlay
           tiny
           loop
           muted
-          width={170}
+          width="180px"
           // fluid
           alt={item.title}
+          loading="lazy"
         />
-        
+
         <ImageListItemBar
           sx={styles.overlayBottom}
           title={item.clap}
@@ -59,10 +63,10 @@ const CardList = ({ data, conSx }) => {
                 sx={styles.actionicon}
                 aria-label={`star ${item.title}`}
               >
-                
-                {item.claps} 
-                <img src={ ClapIcon } style={{ width:'20px', height:'20px' }}/>
-                
+
+                {item.claps}
+                <FilterVintageIcon sx={{ width:'20px', height:'20px' }}/>
+
               </IconButton>
             }
             actionPosition="left"

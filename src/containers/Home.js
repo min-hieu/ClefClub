@@ -73,40 +73,6 @@ function Home({ classes }) {
     }
   }, []);
 
-  // const topCollabData = [
-  //   {   img: testImg1,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg2,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg3,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg4,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg5,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg6,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg1,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  //   {   img: testImg7,
-  //     title: 'this is a jam',
-  //      link: '/collab/view',
-  //      clap: 123},
-  // ];
 
   var topCollabData=[];
   if (allCollabs){
@@ -121,11 +87,15 @@ function Home({ classes }) {
         });
       }
   }
-  // console.log("Elements topCollabData:",topCollabData)
-
 
   const banner =
-    <Card>
+    <Card onClick={(e)=>{
+      history.push(
+        {
+          pathname:'/collab/view',
+          state:{collabId:"lQr-MMn639Q?autoplay=1"
+        }
+      })}}>
       <CardActionArea>
         <CardMedia className={classes.media} image={require('../assets/test/test_img.png')}/>
       </CardActionArea>
