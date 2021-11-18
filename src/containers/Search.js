@@ -11,7 +11,7 @@ import InputBase from '@material-ui/core/InputBase';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@mui/material/Avatar';
-import { PRIMARY_COLOR, TERTIARY_COLOR } from '../Constant';
+import { PRIMARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import picture from '../assets/test/monkey.jpeg';
 

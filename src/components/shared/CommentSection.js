@@ -1,37 +1,37 @@
 import React from 'react'
-import { Button, Comment, Form, Header } from 'semantic-ui-react'
+import { Button, Comment, Form } from 'semantic-ui-react'
 import { withStyles } from '@material-ui/core/styles';
-import {Typography, Grid, Hidden} from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
 
 const styles = {
-    title: {
-      fontSize: 30,
-      fontWeight: 'bold',
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  submitBtn: {
+    textTransform: 'none !important',
+    color: `black !important`,
+    backgroundColor: `${SECONDARY_COLOR} !important`,
+    '&:hover': {
+      backgroundColor: `${TERTIARY_COLOR} !important`,
+      color: `${PRIMARY_COLOR} !important`,
     },
-    submitBtn: {
-        textTransform: 'none !important',
+  },
+  author: {
+    color: `${PRIMARY_COLOR} !important`,
+    '&:hover': {
         color: `black !important`,
-        backgroundColor: `${SECONDARY_COLOR} !important`,
-        '&:hover': {
-          backgroundColor: `${TERTIARY_COLOR} !important`,
-          color: `${PRIMARY_COLOR} !important`,
-        },
       },
-    author: {
-        color: `${PRIMARY_COLOR} !important`,
-        '&:hover': {
-            color: `black !important`,
-          },  
-    },
-    smallText:{
-        color: `${SECONDARY_COLOR} !important`,
-    },
-    mainText: {
-        color: `${PRIMARY_COLOR} !important`,
-    }
+  },
+  smallText:{
+    color: `${SECONDARY_COLOR} !important`,
+  },
+  mainText: {
+    color: `${PRIMARY_COLOR} !important`,
+  },
+};
 
-}  
 const CommentExampleComment = ({classes, data}) => {
     const makeCommentCard = (comment) => (
         <Comment>

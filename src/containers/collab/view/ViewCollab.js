@@ -1,19 +1,17 @@
 import React,{ useState } from 'react';
-import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
-import testImg from '../../../assets/test/test_img.png';
-import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
+import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
-import ViewSession from '../../session/view/ViewSession';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
-import style from './clap.css';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
+import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
+import ClapIcon from '../../../assets/clap.svg';
+import ViewSession from '../../session/view/ViewSession';
+import style from './clap.css';
 
 
 const styles = {
@@ -96,7 +94,7 @@ const styles = {
 };
 
 
-function CollabView(props) {
+function ViewCollab(props) {
   const {
     videoId,
     videoUser,
@@ -191,5 +189,4 @@ function CollabView(props) {
   );
 }
 
-// export default withStyles(styles)(CollabView);
-export default CollabView;
+export default ViewCollab;

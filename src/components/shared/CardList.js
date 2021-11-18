@@ -5,7 +5,6 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ClapIcon from '../../assets/clap.svg';
 
 
@@ -52,7 +51,7 @@ const CardList = ({ data, conSx }) => {
                 sx={styles.actionicon}
                 aria-label={`star ${item.title}`}
               >
-                <img src={ ClapIcon } style={{ width:'20px', height:'20px' }}/>
+                <img alt="clap" src={ ClapIcon } style={{ width:'20px', height:'20px' }}/>
               </IconButton>
             }
             actionPosition="left"

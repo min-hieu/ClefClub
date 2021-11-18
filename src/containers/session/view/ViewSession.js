@@ -1,18 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
-import Navbar from '../../../components/shared/Navbar';
-import testImg from '../../../assets/test/test_img.png'
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import CardList from '../../../components/shared/CardList';
-import CollapsibleDescription from '../../../components/shared/CollapsibleDescription';
 import CommentExampleComment from '../../../components/shared/CommentSection';
-import { Container, Header, List } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 const styles = {
   main: {

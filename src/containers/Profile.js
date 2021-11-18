@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import CollabHeading from '../components/shared/CollabHeading';
 import CardList from '../components/shared/CardList';
 import testImg1 from '../assets/test/test_img.png';
 import testImg2 from '../assets/test/jam.jpeg';

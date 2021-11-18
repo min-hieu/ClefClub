@@ -3,15 +3,10 @@ import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { PRIMARY_COLOR, TERTIARY_COLOR } from '../../Constant';
 
 const styles = {
@@ -91,8 +86,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const MediaControlCard = ({text, data}) => {
-  const classes = useStyles();
   const theme = useTheme();
+  const classes = useStyles(theme);
 
   return (
     <Card className={classes.root}>

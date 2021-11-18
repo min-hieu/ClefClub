@@ -4,7 +4,6 @@ import Profile from './containers/Profile';
 import Notification from './containers/Notification';
 import Search from './containers/Search';
 import NewCollab from './containers/collab/new/NewCollab';
-import ViewSession from './containers/session/view/ViewSession';
 import AddCollab from './containers/collab/add/AddCollab';
 import PreviewCollab from './containers/collab/preview/PreviewCollab';
 import ViewCollab from './containers/collab/view/ViewCollab';
@@ -35,7 +34,7 @@ function App({ classes }) {
     <Router>
       <div className="App">
         <div style={styles.root}>
-          <img src={ iphoneX } style={styles.iphoneOverlay}/>
+          <img alt="ipx" src={ iphoneX } style={styles.iphoneOverlay}/>
           <Switch>
             <Route exact path="/"> <Home /> </Route>
             <Route exact path="/profile">

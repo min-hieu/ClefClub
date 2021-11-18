@@ -5,7 +5,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { PRIMARY_COLOR } from '../Constant';
-import testImg from '../assets/test/test_img.png';
 import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
 import testImg1 from '../assets/test/test_img.png';
