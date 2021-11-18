@@ -1,18 +1,19 @@
 import React,{ useState } from 'react';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { PRIMARY_COLOR, SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
 import testImg from '../../../assets/test/test_img.png';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
 import ViewSession from '../../session/view/ViewSession';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import style from './clap.css';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { useHistory  } from 'react-router-dom';
 
 
 const styles = {
@@ -83,7 +84,15 @@ const styles = {
     top: 0,
     width: 50,
     height: 50,
-  }
+  },
+  backIcon: {
+    zIndex: 999,
+    fontSize: 30,
+    top: 40,
+    left: 20,
+    position: 'sticky',
+    color: TERTIARY_COLOR,
+  },
 };
 
 
@@ -95,7 +104,13 @@ function CollabView(props) {
     videoDescription,
   } = props
 
+  const history = useHistory();
   const tmpVideoId = "lQr-MMn639Q?autoplay=1";
+  const backIcon =
+    <ArrowBackIosIcon
+      style={styles.backIcon}
+      onClick={() => history.goBack()}
+    />
 
   const video =
     <YoutubeEmbed
@@ -127,7 +142,7 @@ function CollabView(props) {
       sx={styles.iconList}
     >
       <Grid item xs={3}>
-        <GroupAddIcon onClick={(e)=>goToLink('')}/>
+        <GroupAddIcon onClick={(e)=>goToLink('/collab/add')}/>
       </Grid>
       <Grid item xs={3}>
         <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
@@ -137,23 +152,23 @@ function CollabView(props) {
       </Grid>
       <Grid item xs={3}>
         <ChatIcon
-        onClick={(e) => {setShowComments(true)}}
+          onClick={(e) => {setShowComments(true)}}
         />
       </Grid>
     </Grid>
 
   const flower =
-        <FilterVintageIcon sx={{position: 'absolute',right:23.4,bottom:118.1}}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:118.1 }}/>
 
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
-  const history = useHistory();
   const goToLink = (link) =>
     history.push(link);
 
   return (
     <>
-      { video }
+      {backIcon}
+      {video}
       <div style={styles.overlay}>
         <div style={styles.overlayBg}/>
         <div style={styles.textWrapper}>

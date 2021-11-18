@@ -1,6 +1,8 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Navbar from '../../../components/shared/Navbar';
 import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import {Typography, Grid} from '@material-ui/core'
@@ -21,10 +23,20 @@ let num_decline = 1;
 let num_owners = 5;
 
 const styles = {
+  backIcon: {
+    zIndex: 999,
+    fontSize: 30,
+    top: 40,
+    left: 20,
+    position: 'sticky',
+    color: PRIMARY_COLOR,
+  },
   title: {
+    textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
     margin: 10,
+    marginLeft: -35,
   },
   subTitle: {
     marginTop: '15px !important',
@@ -70,21 +82,29 @@ const styles = {
 };
 
 const CollabPreview = ({ classes }) => {
-  const title = 
+  const history = useHistory();
+
+  const title =
     <Grid container alignItems="center" justifyContent="center">
-      <Grid item>
+      <Grid item xs={2}>
+        <ArrowBackIosIcon
+          style={styles.backIcon}
+          onClick={() => history.goBack()}
+        />
+      </Grid>
+      <Grid item xs={10}>
         <Typography className={classes.title}>CARPE DIEM</Typography>
       </Grid>
     </Grid>
 
-  const subTitle1 = 
+  const subTitle1 =
   <Grid container alignItems="center" justifyContent="center">
     <Grid item>
       <Typography className={classes.subTitle}>Contribution requested by {requester}</Typography>
     </Grid>
   </Grid>
 
-  const subTitle2 = 
+  const subTitle2 =
       <Grid container alignItems="center" justifyContent="center">
         <Grid item>
           <Typography className={classes.subTitle}>Still not sure? Let's see how it currently looks like</Typography>
@@ -99,15 +119,15 @@ const CollabPreview = ({ classes }) => {
     approved = false;
     num_decline += 1;
   }
-  const approveButton = 
-    <Link to='/notification' style={{ textDecoration: 'none' }}>         
+  const approveButton =
+    <Link to='/notification' style={{ textDecoration: 'none' }}>
       <Button className={classes.acceptButton} color="success" onClick={handleApprove}>
           <CheckIcon />
           <Typography className={classes.btnText}> Accept </Typography>
       </Button>
     </Link>
   const declineButton =
-    <Link to='/notification' style={{ textDecoration: 'none' }}>         
+    <Link to='/notification' style={{ textDecoration: 'none' }}>
       <Button className={classes.declineButton} color="error" onClick = {handleDecline}>
           <ClearIcon />
           <Typography className={classes.btnText}> Decline </Typography>
@@ -115,43 +135,44 @@ const CollabPreview = ({ classes }) => {
     </Link>
 
   const decisionText = final_approved === null
-    ? `You have ${approved ? 'approved' : 'declined'} this contribution` 
+    ? `You have ${approved ? 'approved' : 'declined'} this contribution`
     : `This contribution has been ${final_approved ? 'approved' : 'declined'}`
 
-  const decision = 
+  const decision =
     final_approved === null && approved === null
     ? <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
         {approveButton}
         {declineButton}
       </Stack>
     : <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-        <Typography variant="body1" className={final_approved || approved ? classes.approveText : classes.declineText}> 
-          {decisionText} 
-        </Typography>        
+        <Typography variant="body1" className={final_approved || approved ? classes.approveText : classes.declineText}>
+          {decisionText}
+        </Typography>
       </Stack>
 
-  const progressInstance =   
+  const progressInstance =
       <Stack direction="column" spacing={5} alignItems="center">
         <ProgressBar style={{width: '90%', marginTop: '20px'}}>
           <ProgressBar variant="success" now={num_approve/num_owners*100} key={1}/>
           <ProgressBar variant="danger" now={num_decline/num_owners*100} key={2}/>
         </ProgressBar>
         <Stack direction="row" spacing={1} alignItems="center" className={classes.caption}>
-          <Typography variant="caption" className={classes.approveText}> Approved by {num_approve}/{num_owners} owner(s) </Typography>        
-          <Typography variant="caption"> - </Typography>        
-          <Typography variant="caption" className={classes.declineText}> Declined by {num_decline}/{num_owners} owner(s) </Typography> 
-        </Stack>       
+          <Typography variant="caption" className={classes.approveText}> Approved by {num_approve}/{num_owners} owner(s) </Typography>
+          <Typography variant="caption"> - </Typography>
+          <Typography variant="caption" className={classes.declineText}> Declined by {num_decline}/{num_owners} owner(s) </Typography>
+        </Stack>
       </Stack>;
 
   return (
     <>
+      <br/>
       <br/>
       {title}
       {subTitle1}
       <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" />
       {receive ? decision : null}
       {progressInstance}
-      {receive 
+      {receive
         ? <>
             {subTitle2}
             <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>
