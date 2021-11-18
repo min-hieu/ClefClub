@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +10,11 @@ import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ClapIcon from '../../../assets/clap.svg';
 import Grid from '@mui/material/Grid';
+import ViewSession from '../../session/view/ViewSession';
+import FilterVintageIcon from '@mui/icons-material/FilterVintage';
+import style from './clap.css';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
 
 const styles = {
   overlay: {
@@ -49,6 +54,37 @@ const styles = {
     right: 40,
     width: 30,
   },
+  cmtSection: {
+    bottom: 0,
+  },
+  cmtBg: {
+    position: 'absolute',
+    background: 'white',
+    bottom: 20,
+    borderRadius: 20,
+    width: 360,
+    height: 450,
+    left: '50%',
+    transform: "translate(-50%,0)",
+    transition: "all .3s ease-out",
+  },
+  closeCmt: {
+    position: 'absolute',
+    background: 'rgba(2,2,2,0.7)',
+    borderRadius: 20,
+    top: 0,
+    width: 374,
+    height: 700,
+    left: '50%',
+    transform: "translate(-50%,0)",
+  },
+  flyClap: {
+    position: 'absolute',
+    opacity: 0,
+    top: 0,
+    width: 50,
+    height: 50,
+  },
   backIcon: {
     zIndex: 999,
     fontSize: 30,
@@ -58,6 +94,7 @@ const styles = {
     color: TERTIARY_COLOR,
   },
 };
+
 
 function CollabView(props) {
   const {
@@ -104,16 +141,29 @@ function CollabView(props) {
       position="absolute"
       sx={styles.iconList}
     >
-      <Grid item xs={4}>
-        <LocalFloristIcon />
+      <Grid item xs={3}>
+        <GroupAddIcon onClick={(e)=>goToLink('/collab/add')}/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
+        <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
+      </Grid>
+      <Grid item xs={3}>
         <img src={ClapIcon} style={{width:24,height:24}}/>
       </Grid>
-      <Grid item xs={4}>
-        <ChatIcon/>
+      <Grid item xs={3}>
+        <ChatIcon
+          onClick={(e) => {setShowComments(true)}}
+        />
       </Grid>
     </Grid>
+
+  const flower =
+    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:118.1 }}/>
+
+  const [showComments, setShowComments] = useState(false);
+  const [showFlower, setShowFlower] = useState(false);
+  const goToLink = (link) =>
+    history.push(link);
 
   return (
     <>
@@ -124,9 +174,19 @@ function CollabView(props) {
         <div style={styles.textWrapper}>
           {title}
           {description}
+          {showFlower ? flower : null}
           {iconList}
         </div>
       </div>
+      <img src={ClapIcon} className="flyClaps" id="clap1"/>
+      <img src={ClapIcon} className="flyClaps" id="clap2"/>
+      <img src={ClapIcon} className="flyClaps" id="clap3"/>
+      <img src={ClapIcon} className="flyClaps" id="clap4"/>
+      <img src={ClapIcon} className="flyClaps" id="clap5"/>
+      <img src={ClapIcon} className="flyClaps" id="clap6"/>
+      { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
+      { showComments ? <div style={styles.cmtBg} /> : null }
+      { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
     </>
   );
 }
