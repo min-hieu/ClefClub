@@ -150,9 +150,14 @@ function ViewCollab(props) {
     </Typography>
 
   const description =
+  <>
     <Typography sx={styles.desc}>
+      {collabSize} joined 
+    </Typography>
+      <Typography sx={styles.desc}>
       {collabDescription}
     </Typography>
+  </>
 
   const iconList =
     <Grid

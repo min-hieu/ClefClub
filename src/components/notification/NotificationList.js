@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     color: SECONDARY_COLOR,
     paddingLeft: 16,
-    // padding: 10,
+    paddingTop: 10,
     textAlign: 'center',
   },
   sectionDesc: {
@@ -122,6 +122,12 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 16,
     padding: 4,
     color: PRIMARY_COLOR
+  },
+  sectionTime: {
+    fontSize: 14,
+    paddingLeft: 16,
+    padding: 4,
+    color: '#abb8c3'
   },
 }));
 
@@ -145,6 +151,8 @@ const MediaControlCard = ({text, data}) => {
        <CardContent className={classes.content} alignItems='center'> 
         <Typography className={classes.sectionUser}> From {data.requesterName}:</Typography>
         <Typography className={classes.sectionDesc}> "{data.message}" </Typography>
+        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>
+        
         </CardContent>
       </div>
     </Card>
@@ -153,18 +161,7 @@ const MediaControlCard = ({text, data}) => {
 
 const NotificationList = ({classes, data, section, notifPage}) => {
     const drawTile = (data) => {
-        const message = data.receive 
-        ? data.finalAccept === null 
-          ? `Jam: ${data.title} \n Requester: ${data.requesterName} \n Message: ${data.message} ` 
-          : `Your jam ${data.title} just ${data.finalAccept ? 'approved' : 'declined'} a new contribution` 
-        : data.finalAccept === null 
-        ? `Your contribution to ${data.title} has been sent.`
-        : data.finalAccept
-          ? `Your contribution to ${data.title} has been approved.`
-          : `Your contribution to ${data.title} has been declined.`
-      const link = data.receive 
-        ? '/collab/preview'
-        : '/collab/preview'
+      const link =  {pathname: '/collab/preview', state: data}
       return (
         <Link to={link} style={{ textDecoration: 'none' }}>     
           <Grid item xs={12}>

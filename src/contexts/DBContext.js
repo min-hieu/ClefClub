@@ -72,6 +72,12 @@ export const getUser = async (id) => {
   return (await db.collection("users").doc(id).get()).data();
 };
 
+// function to get request with ID
+export const getRequest = async (id) => {
+  return (await db.collection("requests").doc(id).get()).data();
+};
+
+
 // function to get all outgoing requests of user with ID
 export const getOutgoingRequests = async (id) => {
   // debugger
@@ -83,7 +89,9 @@ export const getOutgoingRequests = async (id) => {
     if (doc.data().requesterId == id){
       if (doc.data().status == 'pending'){
           pending.push({
+            requestId: doc.id,
             collabId: doc.data().collabId,
+            requesterId: doc.data().requesterId,
             collabTitle: doc.data().collabTitle,
             requesterName: doc.data().requesterName,
             acceptedN: doc.data().acceptedIds.length,
@@ -93,13 +101,15 @@ export const getOutgoingRequests = async (id) => {
           })
       }else{
           closed.push({
+            requestId: doc.id,
             collabId: doc.data().collabId,
-          collabTitle: doc.data().collabTitle,
-          requesterName: doc.data().requesterName,
-         acceptedN: doc.data().acceptedIds.length,
-         declinedN: doc.data().declinedIds.length,
-         message: doc.data().message,
-         videoURL: doc.data().videoURL,
+            requesterId: doc.data().requesterId,
+            collabTitle: doc.data().collabTitle,
+            requesterName: doc.data().requesterName,
+            acceptedN: doc.data().acceptedIds.length,
+            declinedN: doc.data().declinedIds.length,
+            message: doc.data().message,
+            videoURL: doc.data().videoURL,
           })
       } 
     }
@@ -119,25 +129,29 @@ export const getIncomingRequests = async (id) => {
   requests.docs.map((doc) => {
     // console.log("receiverIds:",doc.data().receiverIds)
     if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status == 'pending'){
-      if ( !doc.data().acceptedIds.includes(id)|| !doc.data().declinedIds.includes(id)){
+      if ( !doc.data().acceptedIds.includes(id) && !doc.data().declinedIds.includes(id)){
         waiting.push({
+          requestId: doc.id,
           collabId: doc.data().collabId,
           collabTitle: doc.data().collabTitle,
+          requesterId: doc.data().requesterId,
           requesterName: doc.data().requesterName,
-         acceptedN: doc.data().acceptedIds.length,
-         declinedN: doc.data().declinedIds.length,
-         message: doc.data().message,
-         videoURL: doc.data().videoURL,
+          acceptedN: doc.data().acceptedIds.length,
+          declinedN: doc.data().declinedIds.length,
+          message: doc.data().message,
+          videoURL: doc.data().videoURL,
         })
       }else{
         unpublished.push({
+          requestId: doc.id,
           collabId: doc.data().collabId,
+          requesterId: doc.data().requesterId,
           collabTitle: doc.data().collabTitle,
           requesterName: doc.data().requesterName,
-         acceptedN: doc.data().acceptedIds.length,
-         declinedN: doc.data().declinedIds.length,
-         message: doc.data().message,
-         videoURL: doc.data().videoURL,
+          acceptedN: doc.data().acceptedIds.length,
+          declinedN: doc.data().declinedIds.length,
+          message: doc.data().message,
+          videoURL: doc.data().videoURL,
         })
       } 
     }

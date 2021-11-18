@@ -156,6 +156,9 @@ function Notification({ classes }) {
     console.log("userWaitingRequests:",userWaitingRequests)
       for(var i=0;i<userWaitingRequests.length;i++){
         IncomingDataInProgress.push({ 
+          requestId: userWaitingRequests[i].requestId,
+          requesterId: userWaitingRequests[i].requesterId,
+          collabId: userWaitingRequests[i].collabId,
           requesterName: userWaitingRequests[i].requesterName,
           title: userWaitingRequests[i].collabTitle,
           video: userWaitingRequests[i].videoURL,
@@ -178,6 +181,9 @@ function Notification({ classes }) {
       for(var i=0;i<userUnpublishedRequests.length;i++){
 
         IncomingDataClosed.push({ 
+          requestId: userUnpublishedRequests[i].requestId,
+          requesterId: userUnpublishedRequests[i].requesterId,
+          collabId: userUnpublishedRequests[i].collabId,
           requesterName: userUnpublishedRequests[i].requesterName,
           title: userUnpublishedRequests[i].collabTitle,
           video: userUnpublishedRequests[i].videoURL,
@@ -198,6 +204,9 @@ function Notification({ classes }) {
   if (userPendingRequests){
       for(var i=0;i<userPendingRequests.length;i++){
         OutcomingDataInprogress.push({ 
+          requestId: userPendingRequests[i].requestId,
+          requesterId: userPendingRequests[i].requesterId,
+          collabId: userPendingRequests[i].collabId,
           requesterName: userPendingRequests[i].requesterName,
           title: userPendingRequests[i].collabTitle,
           video: userPendingRequests[i].videoURL,
@@ -217,6 +226,9 @@ function Notification({ classes }) {
   if (userUnpublishedRequests){
       for(var i=0;i<userUnpublishedRequests.length;i++){
         OutcomingDataInprogress.push({ 
+          requestId: userUnpublishedRequests[i].requestId,
+          requesterId: userUnpublishedRequests[i].requesterId,
+          collabId: userUnpublishedRequests[i].collabId,
           requesterName: userUnpublishedRequests[i].requesterName,
           title: userUnpublishedRequests[i].collabTitle,
           video: userUnpublishedRequests[i].videoURL,

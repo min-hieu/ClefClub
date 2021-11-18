@@ -12,10 +12,9 @@ import Stack from '@mui/material/Stack';
 import ClearIcon from '@mui/icons-material/Clear';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { useAuth } from "../../../contexts/AuthContext"
-import { getRequest, getCollab } from "../../../contexts/DBContext"
+import { getRequest } from "../../../contexts/DBContext"
 
-import { db } from "../../../firebase"
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { db, arrayUnion } from "../../../firebase"
 
 const receive = true;
 const requester = 'ABMs';
@@ -80,13 +79,11 @@ const CollabPreview = ({ classes }) => {
   const [collabTitle, setCollabTitle] = useState()
   const [requestId, setRequestId] = useState()
   const [requesterName, setRequesterName] = useState()
-  const [requesterId, setRequesterId] = useState()
   const [acceptN, setAcceptN] = useState()
   const [declineN, setDeclineN] = useState()
   const [num_owners, setNumOwners] = useState()
   const { currentUser } = useAuth()
   const { state } = useLocation();
-  const [accepted, setAccepted] = useState();
  
   useEffect(() => {
     console.log(state)
@@ -95,17 +92,19 @@ const CollabPreview = ({ classes }) => {
     setCollabTitle(state.title)
     setRequestId(state.requestId)
     setRequesterName(state.requesterName)
-    setRequesterId(state.requesterId)
     setAcceptN(state.acceptN)
     setDeclineN(state.declineN)
 
     let request = getRequest (state.requestId);
     request.then(request => {
-      setAccepted(request.acceptedIds.includes(currentUser.email) ? 'accepted' : (request.declinedIds.includes(currentUser.email) ? 'decline' : 'unknown'));
+
       setNumOwners(request.receiverIds.length)
-    })
     
-  }, [accepted,num_owners,acceptN,declineN]);
+      })
+    
+  }, []);
+
+
 
 
   const title = 
@@ -128,74 +127,35 @@ const CollabPreview = ({ classes }) => {
           <Typography className={classes.subTitle}>Still not sure? Let's see how it currently looks like</Typography>
         </Grid>
       </Grid>
-  const handleApprove = () => {
-    // approved = true;
-    // num_approve += 1;
-    console.log('acceptN,num_owners:',acceptN,num_owners)
-    if (acceptN/num_owners>=0.5){
-      db.collection("requests").doc(requestId).update({
-        acceptedIds: arrayUnion(currentUser.email),
-        status: 'accepted',
-      });
-      console.log('requesterId',requesterId,collabId)
-      db.collection("sessions").doc(collabId).update({
-        userIds: arrayUnion(requesterId),
-      });
-      setAccepted('accepted');
-    }else{
-      db.collection("requests").doc(requestId).update({
-        acceptedIds: arrayUnion(currentUser.email),
-      });
-    }
-    console.log('Approved btn:',accepted)
-    setAcceptN(acceptN + 1);
-    
-  }
-  const handleDecline = () => {
-    if (declineN/num_owners>=0.5){
-      db.collection("requests").doc(requestId).update({
-        declinedIds: arrayUnion(currentUser.email),
-        status: 'declined',
-      });
-      setAccepted('declined')
-    }else{
-      db.collection("requests").doc(requestId).update({
-        declinedIds: arrayUnion(currentUser.email),
-      });
-    }
-    setDeclineN(declineN + 1);
 
-  }
 
   const approveButton = 
-    <Link to='/notification' style={{ textDecoration: 'none' }}>         
+    <Link  to="/notification" style={{ textDecoration: 'none' }}>         
       <Button className={classes.acceptButton} color="success" onClick={handleApprove}>
           <CheckIcon />
           <Typography className={classes.btnText}> Accept </Typography>
       </Button>
     </Link>
   const declineButton =
-    <Link to='/notification' style={{ textDecoration: 'none' }}>         
+    <Link to="/notification" style={{ textDecoration: 'none' }}>         
       <Button className={classes.declineButton} color="error" onClick = {handleDecline}>
           <ClearIcon />
           <Typography className={classes.btnText}> Decline </Typography>
       </Button>
     </Link>
 
-  const decisionText = (requesterId == currentUser.email ) ?
-  `Your request is still under the decision`:
-  (((acceptN+declineN)/num_owners>0.5 && accepted!='unknown') 
-    ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution` 
-    : `This contribution has been ${acceptN>declineN ? 'approved' : 'declined'}`)
+  const decisionText = final_approved === null
+    ? `You have ${approved ? 'approved' : 'declined'} this contribution` 
+    : `This contribution has been ${final_approved ? 'approved' : 'declined'}`
 
   const decision = 
-  ((acceptN+declineN)/num_owners<0.5) && accepted =='unknown' && (requesterId != currentUser.email )
+    final_approved === null && approved === null
     ? <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
         {approveButton}
         {declineButton}
       </Stack>
     : <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-        <Typography variant="body1" className={accepted =='accepted' ? classes.approveText : ( accepted =='declined' ?classes.declineText : null)}> 
+        <Typography variant="body1" className={final_approved || approved ? classes.approveText : classes.declineText}> 
           {decisionText} 
         </Typography>        
       </Stack>
@@ -219,9 +179,9 @@ const CollabPreview = ({ classes }) => {
       {title}
       {subTitle1}
       <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" />
-      {decision}
+      {receive ? decision : null}
       {progressInstance}
-      {accepted=='unknown' && (requesterId != currentUser.email )
+      {receive 
         ? <>
             {subTitle2}
             <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>

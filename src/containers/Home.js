@@ -107,6 +107,7 @@ function Home({ classes }) {
           link: '/collab/view',
           clap: allCollabs[i].claps,
           collabId: allCollabs[i].collabId,
+          collabSize: allCollabs[i].userIds.length,
         });
       }
   }
