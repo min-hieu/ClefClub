@@ -45,28 +45,29 @@ function App({ classes }) {
       <div className="App">
         <div style={styles.root}>
           <img alt="ipx" src={ iphoneX } style={styles.iphoneOverlay}/>
-          <AuthProvider />
-          <Switch>
-            <Route exact path="/"> <Home /> </Route>
-            <Route exact path="/profile">
-              <Profile
-                name = "Charlie"
-                picture = {monkey}
-                collabs="169"
-              />
-            </Route>
-            <PrivateRoute path="/update-profile" component={UpdateProfile} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/login" component={Login} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <Route exact path="/notification"> <Notification /> </Route>
-            <Route exact path="/search"> <Search /> </Route>
-            <Route exact path="/collab/new"> <NewCollab /> </Route>
-            <Route exact path="/collab/contribute/"> <ContributeToCollab /> </Route>
-            <Route exact path="/collab/view"> <ViewCollab /> </Route>
-            <Route exact path="/collab/preview"> <PreviewCollab /> </Route>
-            <Route exact path="/collab/add"> <AddCollab /> </Route>
-          </Switch>
+          <AuthProvider>
+            <Switch>
+              <Route exact path="/"> <Home /> </Route>
+              <Route exact path="/profile">
+                <Profile
+                  name = "Charlie"
+                  picture = {monkey}
+                  collabs="169"
+                />
+              </Route>
+              <PrivateRoute path="/update-profile" component={UpdateProfile} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/login" component={Login} />
+              <Route path="/forgot-password" component={ForgotPassword} />
+              <Route exact path="/notification"> <Notification /> </Route>
+              <Route exact path="/search"> <Search /> </Route>
+              <Route exact path="/collab/new"> <NewCollab /> </Route>
+              <Route exact path="/collab/contribute/"> <ContributeToCollab /> </Route>
+              <Route exact path="/collab/view"> <ViewCollab /> </Route>
+              <Route exact path="/collab/preview"> <PreviewCollab /> </Route>
+              <Route exact path="/collab/add"> <AddCollab /> </Route>
+            </Switch>
+        </AuthProvider>
         </div>
       </div>
     </Router>
