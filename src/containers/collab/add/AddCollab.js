@@ -1,7 +1,10 @@
 import React from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
@@ -13,6 +16,14 @@ import testCover from '../../../assets/test/test_cover.png'
 import Navbar from '../../../components/shared/Navbar';
 
 const styles = {
+  backIcon: {
+    zIndex: 999,
+    fontSize: 30,
+    top: 40,
+    left: 20,
+    position: 'sticky',
+    color: PRIMARY_COLOR,
+  },
   main: {
     margin: '50px 35px 20px 35px',
   },
@@ -20,7 +31,7 @@ const styles = {
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 15,
+    marginLeft: -45,
   },
   videoWrapper: {
     display: 'flex',
@@ -121,7 +132,21 @@ function AddCollab({ classes }) {
       <span> Your jam has been submitted! </span>
     </div>
 
-  const header = <Typography className={classes.title}>Add to Jam</Typography>
+  const history = useHistory();
+
+  const header =
+    <Grid container alignItems="center" justifyContent="center">
+      <Grid item xs={2}>
+        <ArrowBackIosIcon
+          style={styles.backIcon}
+          onClick={() => history.goBack()}
+        />
+      </Grid>
+      <Grid item xs={10}>
+        <Typography className={classes.title}>Add to Jam</Typography>
+      </Grid>
+    </Grid>
+
   const videoUpload =
     uploaded ? (
       <>
@@ -179,6 +204,7 @@ function AddCollab({ classes }) {
   return (
     <div className={classes.main}>
       {header}
+      <br />
       {videoUpload}
       {messageToOwner}
       {submitButton}
