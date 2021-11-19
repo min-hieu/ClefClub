@@ -11,6 +11,7 @@ const styles = {
   container: {
     overflow: 'auto',
     height: 375,
+    width: 375,
   },
   overlayTop: {
     background:
