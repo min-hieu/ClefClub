@@ -136,26 +136,8 @@ function AddCollab({ classes }) {
 
   const updateFormData = (key, value) => {
     setFormData({...formData, [key]: value})
-  };
-  const { state } = useLocation();
+  }
 
-  useEffect(() => {
-    setCollabId(state.collabId)
-    let collab = getCollab (state.collabId);
-    collab.then(collab => {
-      // console.log(collab.title)
-      setCollabTitle(collab.title)
-      setCollabDescription(collab.description)
-      setCollabSize(collab.userIds.length)
-      setCollabOwners(collab.userIds)
-
-      })
-    let user = getUserInfo (currentUser.email);
-    // console.log("Found a user:\n",user)
-        user.then(user => {
-      setUserName(user.nickname)
-      })
-  }, [collabId,collabTitle,collabDescription]);
   const hiddenFileInput = React.useRef(null);
   const handleClose = () => {
     setOpen(false);
