@@ -146,6 +146,7 @@ export const getIncomingRequests = async (id) => {
           videoURL: doc.data().videoURL,
         })
       }
+    }
     if (doc.data().receiverIds && doc.data().receiverIds.includes(id)
       && (doc.data().acceptedIds.includes(id) || doc.data().declinedIds.includes(id))
       ){
@@ -163,7 +164,6 @@ export const getIncomingRequests = async (id) => {
           videoURL: doc.data().videoURL,
         })
       } 
-    }
   });
   // console.log("Incoming: waiting, closed:",waiting,closed)
   return [waiting, closed];
