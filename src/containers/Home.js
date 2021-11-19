@@ -94,7 +94,7 @@ function Home({ classes }) {
       history.push(
         {
           pathname:'/collab/view',
-          state:{collabId:"lQr-MMn639Q?autoplay=1"
+          state:{collabId:"2STQPpgbcBeOoOc1uwAl"
         }
       })}}>
       <CardActionArea>
