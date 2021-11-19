@@ -8,6 +8,18 @@
   pointer-events: none;
 }
 
+.userClap {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: fly 2s forwards linear;
+  font-size: 35px;
+  opacity: 0;
+  pointer-events: none;
+  top: 469px;
+  left: 169px;
+}
+
 #clap1 {
   top: 369px;
   left: 100px;

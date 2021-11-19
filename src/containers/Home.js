@@ -3,7 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 import { PRIMARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
@@ -16,14 +17,25 @@ import testImg6 from '../assets/test/jam4.jpeg';
 import testImg7 from '../assets/test/jam5.jpeg';
 
 
-import { useAuth } from "../contexts/AuthContext"
-import { useHistory } from "react-router-dom"
-import { getAllCollabs } from "../contexts/DBContext"
+import { useAuth } from "../contexts/AuthContext";
+import { useHistory } from "react-router-dom";
+import { getAllCollabs } from "../contexts/DBContext";
+import { getCollab } from "../contexts/DBContext";
 
 
 
 
 const styles = {
+  bannerTitle: {
+    position: 'absolute',
+    left: "50%",
+    transform: "translate(-50%,0)",
+    color: 'white',
+    top: 140,
+    fontSize: 30,
+    fontWeight: 'bold',
+    width: 'fit-content',
+  },
   media: {
     height: 300,
     borderRadius: '20px 20px 0 0',
@@ -76,6 +88,7 @@ function Home({ classes }) {
 
 
   var topCollabData=[];
+  let bannerThumbnail = "";
   if (allCollabs){
       for(var i=0;i<allCollabs.length;i++){
         topCollabData.push({   img: testImg3,
@@ -86,8 +99,12 @@ function Home({ classes }) {
           collabId: allCollabs[i].collabId,
           collabSize: allCollabs[i].userIds.length,
         });
-      }
+      };
+      bannerThumbnail = allCollabs[0].videos[0];
+      console.log("This is banner")
+      console.log(bannerThumbnail);
   }
+
 
   const banner =
     <Card onClick={(e)=>{
@@ -98,7 +115,14 @@ function Home({ classes }) {
         }
       })}}>
       <CardActionArea>
-        <CardMedia className={classes.media} image={require('../assets/test/test_img.png')}/>
+        <Typography sx={styles.bannerTitle}>
+          Collab of the week!
+        </Typography>
+        <video
+          style={styles.media}
+          src={bannerThumbnail}
+          autoPlay
+        />
       </CardActionArea>
     </Card>
 

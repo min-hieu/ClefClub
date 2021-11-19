@@ -97,13 +97,13 @@ const styles = {
     color: TERTIARY_COLOR,
   },
   clap: {
-    '&:hover': {
-      color: 'SECONDARY_COLOR',
-      // background: SECONDARY_COLOR,
-      cursor: 'pointer',
-    },
+    cursor: 'pointer',
     width: 24,
     height: 24,
+    "&:hover": {
+      width: 30,
+      height: 30,
+    },
   },
 };
 
@@ -124,6 +124,7 @@ function ViewCollab(props) {
       onClick={() => history.goBack()}
     />
   const [collabId, setCollabId] = useState()
+  const [collabUserId, setCollabUserId] = useState()
   const [collabTitle, setCollabTitle] = useState()
   const [collabClaps, setCollabClaps] = useState()
   const [collabSize, setCollabSize] = useState()
@@ -132,7 +133,6 @@ function ViewCollab(props) {
 
 
   const { state } = useLocation();
- 
   useEffect(() => {
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
@@ -142,9 +142,7 @@ function ViewCollab(props) {
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
       setCollabClaps(collab.claps)
-    
       })
-    
   }, [collabId,collabTitle,collabClaps,collabSize,collabDescription]);
 
 
@@ -177,9 +175,15 @@ function ViewCollab(props) {
       } else {
         alert("session is no longer available");
       }
-    });    
+    });
   }
-  
+
+  const handleClap = () => {
+    setClaps(claps => [...claps, <img src={ClapIcon} className="userClap"/>])
+    console.log(claps);
+    console.log("clapped");
+  }
+
   const video =
     <YoutubeEmbed
       embedId={ tmpVideoId }
@@ -191,7 +195,7 @@ function ViewCollab(props) {
   const title =
     <Typography sx={styles.title}>
       <span style={{color:SECONDARY_COLOR}}>{collabTitle} </span>
-       - {collabClaps} flowers - 2 days ago
+       - 2 days ago
     </Typography>
 
   const description =
@@ -221,7 +225,7 @@ function ViewCollab(props) {
         <LocalFloristIcon onClick={handleLikes}/>
       </Grid>
       <Grid item xs={3}>
-        <img src={ClapIcon} style={style.clap}/>
+        <img src={ClapIcon} style={styles.clap} onClick={handleClap}/>
       </Grid>
       <Grid item xs={3}>
         <ChatIcon
@@ -231,10 +235,12 @@ function ViewCollab(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:131.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:20.4, bottom:137.1 }}/>
+
 
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
+  const [claps, setClaps] = useState([]);
   const goToLink = (link) =>
     history.push(link);
 
@@ -257,6 +263,7 @@ function ViewCollab(props) {
       <img src={ClapIcon} className="flyClaps" id="clap4"/>
       <img src={ClapIcon} className="flyClaps" id="clap5"/>
       <img src={ClapIcon} className="flyClaps" id="clap6"/>
+      { claps }
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
       { showComments ? <ViewSession sx={styles.cmtSection}/> : null }

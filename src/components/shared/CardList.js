@@ -7,7 +7,6 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 
-
 const styles = {
   container: {
     overflow: 'auto',
@@ -16,12 +15,12 @@ const styles = {
   overlayTop: {
     background:
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
-      'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+      'rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)',
   },
   overlayBottom: {
     background:
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, ' +
-      'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+      'rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)',
     pointerEvents: 'none',
   },
   actionicon: {
@@ -54,8 +53,14 @@ const CardList = ({ data, conSx }) => {
         />
 
         <ImageListItemBar
+          sx={styles.overlayTop}
+          title={item.title}
+          position="top"
+        />
+
+        <ImageListItemBar
           sx={styles.overlayBottom}
-          title={item.clap}
+          title=""
           position="bottom"
           actionIcon={
               <IconButton
@@ -63,7 +68,6 @@ const CardList = ({ data, conSx }) => {
                 aria-label={`star ${item.title}`}
               >
 
-                {item.claps}
                 <FilterVintageIcon sx={{ width:'20px', height:'20px' }}/>
 
               </IconButton>
