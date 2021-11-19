@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useLocation } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
@@ -130,9 +130,33 @@ function AddCollab({ classes }) {
   const [collabOwners, setCollabOwners] = useState([]);
   const [userName, setUserName] = useState([]);
   const history = useHistory();
+  const { state } = useLocation();
   const [formData, setFormData] = useState({});
   const { currentUser } = useAuth();
   const [uploaded, setUploaded] = useState(false);
+
+
+  useEffect(() => {
+    
+    setCollabId(state.collabId)
+    let collab = getCollab (state.collabId);
+    collab.then(collab => {
+      // console.log(collab.title)
+      setCollabTitle(collab.title)
+      setCollabDescription(collab.description)
+      setCollabSize(collab.userIds.length)
+      setCollabOwners(collab.userIds)
+
+      })
+
+    let user = getUserInfo (currentUser.email);
+    // console.log("Found a user:\n",user)
+        user.then(user => {
+      setUserName(user.nickname)
+      })
+    
+  }, []);
+
 
   const updateFormData = (key, value) => {
     setFormData({...formData, [key]: value})
@@ -215,8 +239,7 @@ function AddCollab({ classes }) {
           receiverIds: collabOwners,
         });
       });
-      alert("Your request is sent!");
-      history.push("/notification")
+      // alert("Your request is sent!");
     }
     );
   };
@@ -230,7 +253,9 @@ function AddCollab({ classes }) {
     handleVideoUpload()
     setOpen(true);
     await delay(1000);
-    window.location.href = '/';
+    // window.location.href = '/';
+    history.push("/notification");
+
   };
 
   const successMessage =

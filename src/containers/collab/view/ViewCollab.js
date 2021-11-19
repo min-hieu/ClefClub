@@ -151,7 +151,7 @@ function ViewCollab(props) {
 
   async function handleJam() {
     try {
-      history.push( {pathname: "/collab/contribute/", state: {collabId: collabId}})
+      history.push( {pathname: "/collab/add/", state: {collabId: collabId}})
     } catch {
       console.log("Failed to join")
     }

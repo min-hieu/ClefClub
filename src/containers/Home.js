@@ -60,6 +60,7 @@ function Home({ classes }) {
 
   useEffect(() => {
     // Run! Like go get some data from an API.
+
     if (!currentUser) {
       history.push("/login")
       return;
