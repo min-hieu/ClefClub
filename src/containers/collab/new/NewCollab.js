@@ -1,20 +1,23 @@
 import React, { useRef, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { styled, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Fab from '@material-ui/core/Fab';
 import Navbar from '../../../components/shared/Navbar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import { useAuth } from "../../../contexts/AuthContext"
-
 import { storage } from "../../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../../firebase"
 import {createId} from "../../../contexts/DBContext"
 import { useHistory } from "react-router-dom"
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 
 const styles = {
@@ -24,6 +27,9 @@ const styles = {
   title: {
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  snackbar: {
+    background: PRIMARY_COLOR,
   },
   done: {
     fontSize: 20,
@@ -52,9 +58,30 @@ const styles = {
     height: 300,
     justifyContent: 'center',
   },
+  newdropzone: {
+    flex: '1',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderRadius: 20,
+    // borderColor: PRIMARY_COLOR,
+    // borderStyle: 'dashed',
+    // backgroundColor: TERTIARY_COLOR,
+    color: SECONDARY_COLOR,
+    outline: 'none',
+    transition: 'border .24s ease-in-out',
+    width: 300,
+    height: 80,
+    justifyContent: 'center',
+  },
   addIcon: {
     color: PRIMARY_COLOR,
     fontSize: 72,
+  },
+  refreshIcon: {
+    color: PRIMARY_COLOR,
+    fontSize: 50,
   },
   addText: {
     fontSize: 20,
@@ -96,24 +123,37 @@ const styles = {
   }
 };
 
+const StyledFab = styled(Fab)({
+  position: 'absolute',
+  top: 405,
+  right: 50,
+  color: TERTIARY_COLOR,
+  background: SECONDARY_COLOR,
+  zIndex: 1,
+  margin: '0 auto',
+  '&:hover': {
+    background: TERTIARY_COLOR,
+    color: SECONDARY_COLOR
+  },
+});
 function NewCollab({ classes }) {
   const [formData, setFormData] = useState({})
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [video, setVideo] = useState(null);
   const [url, setUrl] = useState("");
-  const [progress, setProgress] = useState(0);
+  const [uploaded, setUploaded] = useState(false);
   const [title, setTitle] = useState("Upload video");
   const { currentUser, logout } = useAuth()
   const descriptionRef = useRef()
   const titleRef = useRef()
   const history = useHistory()
+  const [open, setOpen] = useState(false);
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const updateFormData = (key, value) => {
     setFormData({...formData, [key]: value})
   }
 
-  var videoChosen = false;
 
   const hiddenFileInput = React.useRef(null);
 
@@ -132,9 +172,8 @@ function NewCollab({ classes }) {
 
   const handleChoose = e => {
     if (e.target.files[0]) {
-      setVideo(e.target.files[0]);
+      handleVideoUpload(e.target.files[0]);
     }
-    setTitle("Video is chosen!");
   };
 
   const handleClickUpload = e => {
@@ -145,7 +184,25 @@ function NewCollab({ classes }) {
   //   document.getElementById("load_text").innerHTML = 'New Phrase';
   // };
 
-  const handleVideoUpload = () => {
+  const addCollabToDB  = async () =>{
+    db.collection("sessions").add({
+      ...formData,
+      claps: 0,
+      clappedIds: [currentUser.email],
+      userIds: [currentUser.email],
+      comments: [],
+      createdAt: Date.now(),
+      videos: [url],
+      requests: []
+    });
+
+  setOpen(true);
+  await delay(1000);
+  history.push( {pathname: "/profile"})
+
+  }
+
+  const handleVideoUpload = (video) => {
     console.log("Uploading the video!\n");
     console.log(video.name);
 
@@ -164,6 +221,7 @@ function NewCollab({ classes }) {
           console.log('Upload is paused');
           break;
         case 'running':
+          setTitle('Loading...');
           console.log('Upload is running');
           break;
       }
@@ -187,37 +245,14 @@ function NewCollab({ classes }) {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
-
-        const sessionId = createId(20);
-        // console.log({
-        //   ...formData,
-        //   likes: 0,
-        //   userIds: ['userId'],
-        //   comments: [],
-        //   createdAt: Date.now(),
-        //   videos: [downloadURL],
-        // })
-        db.collection("sessions").add({
-          ...formData,
-          claps: 0,
-          clappedIds: [currentUser.email],
-          userIds: [currentUser.email],
-          comments: [],
-          createdAt: Date.now(),
-          videos: [downloadURL],
-          requests: []
-        });
-
-        try {
-          history.push( {pathname: "/profile"})
-        } catch {
-          console.log("Failed to create a jam!")
-        }
+        setUrl(downloadURL)
+        setTitle("Video is chosen!");
+        setUploaded(true);
       });
-      alert("You jam is created!");
     }
     );
   };
+
 
 
   const header =
@@ -226,12 +261,19 @@ function NewCollab({ classes }) {
       <Typography className={classes.subtitle}>Start cooking up some joy!</Typography>
     </>
 
-const addZone = 
-    <div className={classes.dropzone}>
-      <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-      <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-      <Typography className={classes.addText}>{title}</Typography>
-    </div>
+const addZone = uploaded ? (
+                   <div className={classes.newdropzone}>
+                   <RefreshIcon className={classes.refreshIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+                   <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+                   <Typography className={classes.addText}>{title}</Typography>
+                   </div>
+                ) : (
+                  <div className={classes.dropzone}>
+                    <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+                    <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+                    <Typography className={classes.addText}>{title}</Typography>
+                    </div>
+                )
 
   const titleField =
     <InputBase
@@ -257,18 +299,49 @@ const addZone =
     />
 
   const publishButton =
-    <Button onClick = {handleVideoUpload} variant="contained" className={classes.publishButton}>
+    <Button onClick = {addCollabToDB} variant="contained" className={classes.publishButton}>
       Publish your jam
     </Button>
+
+  const videoDisplay = uploaded ? 
+  <div class="d-inline-flex p-2">
+   <br/>
+  <video
+          src={url}
+          controls
+          width="290px"
+          loading="lazy"
+        />
+  </div>
+  : null
+
+  const successSnackbar =
+  <Snackbar
+    open={open}
+    onClose={handleClose}
+    ContentProps={{
+      classes: {
+        root: classes.snackbar
+      }
+    }}
+    message={"Your request is sent!"}
+  />
 
   return (
     <div className={classes.main}>
       {header}
       {addZone}
+      {videoDisplay}
       {titleField}
       {descriptionField}
       {publishButton}
+      {successSnackbar}
 			<Navbar />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
   );
 }
