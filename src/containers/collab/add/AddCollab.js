@@ -13,8 +13,8 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import CheckIcon from '@material-ui/icons/Check';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import testCover from '../../../assets/test/test_cover.png'
+import testAddCollab from '../../../assets/test/testAddCollab.png'
 import Navbar from '../../../components/shared/Navbar';
-
 import { storage, db } from "../../../firebase"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {getCollab} from "../../../contexts/DBContext"
@@ -104,7 +104,7 @@ const styles = {
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
-  top: 420,
+  top: 405,
   right: 50,
   color: TERTIARY_COLOR,
   background: SECONDARY_COLOR,
@@ -123,15 +123,16 @@ function AddCollab({ classes }) {
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState("Upload video");
-  const [collabId, setCollabId] = useState()
+  const [collabId, setCollabId] = useState();
   const [collabTitle, setCollabTitle] = useState()
   const [collabDescription, setCollabDescription] = useState()
-  const [collabSize, setCollabSize] = useState()
-  const [collabOwners, setCollabOwners] = useState([])
-  const [userName, setUserName] = useState([])
-  const history = useHistory()
-  const [formData, setFormData] = useState({})
-  const { currentUser } = useAuth()
+  const [collabSize, setCollabSize] = useState();
+  const [collabOwners, setCollabOwners] = useState([]);
+  const [userName, setUserName] = useState([]);
+  const history = useHistory();
+  const [formData, setFormData] = useState({});
+  const { currentUser } = useAuth();
+  const [uploaded, setUploaded] = useState(false);
 
   const hiddenFileInput = React.useRef(null);
   const handleClose = () => {
@@ -144,6 +145,7 @@ function AddCollab({ classes }) {
       setVideo(e.target.files[0]);
     }
     setTitle("Video is chosen!");
+    setUploaded(true);
   };
 
   const handleClickUpload = e => {
@@ -218,7 +220,6 @@ function AddCollab({ classes }) {
   const mainCover =
 		{ img: testCover,
 			title: 'test cover' };
-  const [uploaded, setUploaded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const submit = async () => {
@@ -251,9 +252,20 @@ function AddCollab({ classes }) {
       <div className={classes.videoWrapper}>
         <img src={mainCover.img} alt={mainCover.title} className={classes.cover} />
         <div className={classes.dropzone}>
-          <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-          <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-          <Typography className={classes.addText}>{title}</Typography>
+          {uploaded ? (
+            <>
+            <img src={testAddCollab} alt="test add collab" style={{ height: '100%', width: '100%' }}/>
+              <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
+                <RefreshIcon />
+              </StyledFab>
+            </>
+          ) : (
+            <>
+              <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+              <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+              <Typography className={classes.addText}>{title}</Typography>
+            </>
+          )}
         </div>
       </div>
 
