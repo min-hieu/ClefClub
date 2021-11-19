@@ -250,11 +250,16 @@ function AddCollab({ classes }) {
   const [open, setOpen] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const submit = async () => {
-    handleVideoUpload()
-    setOpen(true);
-    await delay(1000);
-    // window.location.href = '/';
-    history.push("/notification");
+      try{
+        handleVideoUpload()
+        setOpen(true);
+        await delay(1000);
+        // window.location.href = '/';
+        history.goBack();
+      }catch{
+        alert("Please choose a video first!")
+      }
+
 
   };
 

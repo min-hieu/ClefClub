@@ -165,7 +165,7 @@ export const getIncomingRequests = async (id) => {
         })
       } 
   });
-  // console.log("Incoming: waiting, closed:",waiting,closed)
+  console.log("Incoming: waiting, closed:",waiting,closed)
   return [waiting, closed];
 };
 
