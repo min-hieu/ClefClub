@@ -119,7 +119,12 @@ function Home({ classes }) {
     </Select>
 
   const topCollabs =
-    <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+    <>
+      <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+      <br />
+      <br />
+      <br />
+    </>
 
   return (
     <>

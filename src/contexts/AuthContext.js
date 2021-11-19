@@ -19,7 +19,7 @@ export const getUserInfo = async (id) => {
   var users = await db.collection("users").get();
   var user;
   users.docs.map((doc) => {
-    if (doc.data().email == id)
+    if (doc.data().email === id)
       user = doc.data();
   });
   return user;

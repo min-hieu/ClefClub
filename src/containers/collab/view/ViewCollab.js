@@ -191,7 +191,7 @@ function ViewCollab(props) {
   const title =
     <Typography sx={styles.title}>
       <span style={{color:SECONDARY_COLOR}}>{collabTitle} </span>
-       - {collabClaps} claps - 6 days ago
+       - {collabClaps} flowers - 2 days ago
     </Typography>
 
   const description =

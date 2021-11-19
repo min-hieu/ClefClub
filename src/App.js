@@ -3,7 +3,7 @@ import Home from './containers/Home';
 import Profile from './containers/Profile';
 import Notification from './containers/Notification';
 import Search from './containers/Search';
-import NewCollab from './containers/collab/NewCollab';
+import NewCollab from './containers/collab/new/NewCollab';
 import AddCollab from './containers/collab/add/AddCollab';
 import PreviewCollab from './containers/collab/preview/PreviewCollab';
 import ViewCollab from './containers/collab/view/ViewCollab';

@@ -5,7 +5,6 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
-import ClapIcon from '../../assets/clap.svg';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 
 
