@@ -235,7 +235,7 @@ function ViewCollab(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:20.4, bottom:137.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:130.1 }}/>
 
 
   const [showComments, setShowComments] = useState(false);
@@ -253,8 +253,8 @@ function ViewCollab(props) {
         <div style={styles.textWrapper}>
           {title}
           {description}
-          {showFlower ? flower : null}
           {iconList}
+          {showFlower ? flower : null}
         </div>
       </div>
       <img src={ClapIcon} className="flyClaps" id="clap1"/>

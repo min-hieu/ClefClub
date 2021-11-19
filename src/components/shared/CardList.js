@@ -10,8 +10,6 @@ import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 const styles = {
   container: {
     overflow: 'auto',
-    height: 375,
-    width: 375,
   },
   overlayTop: {
     background:
@@ -26,7 +24,7 @@ const styles = {
   },
   actionicon: {
     color: 'white',
-  }
+  },
 };
 
 const CardList = ({ data, conSx }) => {
@@ -37,7 +35,11 @@ const CardList = ({ data, conSx }) => {
     history.push({pathname: link, state: {collabId: cId}})
 
   const drawTile = (item) => (
-    <ImageListItem key={item.video} onClick={(e) => goToLink(item.link, item.collabId)}>
+    <ImageListItem
+      key={item.video}
+      onClick={
+        (e) => goToLink(item.link, item.collabId)}
+    >
         <video
           // src={`${item.img}?w=248&fit=crop&auto=format`}
           // src={item.video}
