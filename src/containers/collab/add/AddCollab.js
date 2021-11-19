@@ -146,7 +146,6 @@ function AddCollab({ classes }) {
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
       setCollabOwners(collab.userIds)
-
       })
 
     let user = getUserInfo (currentUser.email);
@@ -229,6 +228,7 @@ function AddCollab({ classes }) {
         console.log('File available at', downloadURL);
         db.collection("requests").add({
           ...formData,
+          collabId: collabId,
           collabTitle: collabTitle,
           status: "pending",
           acceptedIds: [],

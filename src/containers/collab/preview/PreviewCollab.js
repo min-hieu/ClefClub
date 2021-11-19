@@ -89,34 +89,43 @@ const CollabPreview = ({ classes }) => {
   const history = useHistory()
   const [collabId, setCollabId] = useState()
   const [collabTitle, setCollabTitle] = useState()
+  const [videoURL, setVideoURL] = useState()
   const [requestId, setRequestId] = useState()
   const [requesterName, setRequesterName] = useState()
   const [requesterId, setRequesterId] = useState()
   const [acceptN, setAcceptN] = useState()
+  const [acceptedIds, setAcceptedIds] = useState()
   const [declineN, setDeclineN] = useState()
+  const [declinedIds, setDeclinedIds] = useState()
+  const [finalDecision, setFinalDecision] = useState()
+
   const [num_owners, setNumOwners] = useState()
   const { currentUser } = useAuth()
   const { state } = useLocation();
   const [accepted, setAccepted] = useState();
  
   useEffect(() => {
-    console.log(state)
+    // console.log(state)
 
     setCollabId(state.collabId)
     setCollabTitle(state.title)
+    setVideoURL(state.video)
     setRequestId(state.requestId)
     setRequesterName(state.requesterName)
     setRequesterId(state.requesterId)
     setAcceptN(state.acceptN)
     setDeclineN(state.declineN)
+    setAcceptedIds(state.acceptedIds)
+    setDeclinedIds(state.declinedIds)
 
     let request = getRequest (state.requestId);
     request.then(request => {
-      setAccepted(request.acceptedIds.includes(currentUser.email) ? 'accepted' : (request.declinedIds.includes(currentUser.email) ? 'decline' : 'unknown'));
+      setFinalDecision(request.status)
+      setAccepted(request.acceptedIds.includes(currentUser.email) ? 'accepted' : (request.declinedIds.includes(currentUser.email) ? 'declined' : 'unknown'));
       setNumOwners(request.receiverIds.length)
     })
     
-  }, [accepted,num_owners,acceptN,declineN]);
+  }, [accepted]);
 
 
   const title = 
@@ -148,23 +157,22 @@ const CollabPreview = ({ classes }) => {
   const handleApprove = () => {
     // approved = true;
     // num_approve += 1;
-    console.log('acceptN,num_owners:',acceptN,num_owners)
-    if (acceptN/num_owners>=0.5){
+    db.collection("requests").doc(requestId).update({
+      acceptedIds: arrayUnion(currentUser.email),
+    });
+    if ((acceptN+1)/num_owners>=0.5){
       db.collection("requests").doc(requestId).update({
         acceptedIds: arrayUnion(currentUser.email),
         status: 'accepted',
       });
-      console.log('requesterId',requesterId,collabId)
+      // console.log('requesterId',requesterId,collabId)
       db.collection("sessions").doc(collabId).update({
         userIds: arrayUnion(requesterId),
+        videos: arrayUnion(videoURL),
       });
       setAccepted('accepted');
-    }else{
-      db.collection("requests").doc(requestId).update({
-        acceptedIds: arrayUnion(currentUser.email),
-      });
     }
-    console.log('Approved btn:',accepted)
+    // console.log('Approved btn:',accepted)
     setAcceptN(acceptN + 1);
     
   }
@@ -198,23 +206,35 @@ const CollabPreview = ({ classes }) => {
       </Button>
     </Link>
 
-  const decisionText = (requesterId == currentUser.email ) ?
-  `Your request is still under the decision`:
-  (((acceptN+declineN)/num_owners>0.5 && accepted!='unknown') 
-    ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution` 
-    : `This contribution has been ${acceptN>declineN ? 'approved' : 'declined'}`)
 
-  const decision = 
-  ((acceptN+declineN)/num_owners<0.5) && accepted =='unknown' && (requesterId != currentUser.email )
-    ? <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
+  const decisionText = () => {
+    if  (requesterId == currentUser.email){
+      console.log(accepted)
+      if (finalDecision == 'pending'){
+        return `Your request is still under the decision`
+      }else{
+        return `Your request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
+      }
+    }
+    if (accepted != 'unknown'){
+      return `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
+    }else{
+      return null
+    }
+}
+
+
+  const vote =
+      <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
         {approveButton}
         {declineButton}
       </Stack>
-    : <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-        <Typography variant="body1" className={accepted =='accepted' ? classes.approveText : ( accepted =='declined' ?classes.declineText : null)}> 
-          {decisionText} 
-        </Typography>        
-      </Stack>
+  const decision =
+        <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
+          <Typography variant="body1" className={(accepted =='accepted' || finalDecision == 'accepted') ? classes.approveText : ( (accepted =='declined' || finalDecision == 'declined') ?classes.declineText : null)}> 
+            {decisionText()} 
+          </Typography>        
+        </Stack>
 
   const progressInstance =
       <Stack direction="column" spacing={5} alignItems="center">
@@ -235,10 +255,25 @@ const CollabPreview = ({ classes }) => {
       <br/>
       {title}
       {subTitle1}
-      <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" />
-      {decision}
+      {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
+      <video
+          src={videoURL}
+          autoplay="true"
+          controls
+          width="99%"
+          loading="lazy"
+        />
+      {(requesterId != currentUser.email ) && accepted=='unknown'
+        ? <>
+        {vote}
+          </>
+        : <>
+        {decision}
+          </> 
+      
+      }
       {progressInstance}
-      {accepted=='unknown' && (requesterId != currentUser.email )
+      {(requesterId != currentUser.email ) && accepted=='unknown'
         ? <>
             {subTitle2}
             <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>

@@ -92,14 +92,14 @@ function Notification({ classes }) {
 
       let outResult = getOutgoingRequests (currentUser.email);
       outResult.then(outResult => {
-        console.log("Pending Out",outResult)
+        // console.log("Pending Out",outResult)
         setUserPendingRequests(outResult[0])
         setUserClosedRequests(outResult[1])
       })
 
       let inResult = getIncomingRequests (currentUser.email);
       inResult.then(inResult => {
-        console.log("Pending In",inResult)
+        // console.log("Pending In",inResult)
         setUserWaitingRequests(inResult[0])
         setUserUnpublishedRequests(inResult[1])
       })
@@ -152,7 +152,7 @@ function Notification({ classes }) {
 
   var IncomingDataInProgress=[];
   if (userWaitingRequests){
-    console.log("userWaitingRequests:",userWaitingRequests)
+    // console.log("userWaitingRequests:",userWaitingRequests)
       for(var i=0;i<userWaitingRequests.length;i++){
         IncomingDataInProgress.push({ 
           requestId: userWaitingRequests[i].requestId,
@@ -166,17 +166,19 @@ function Notification({ classes }) {
           finalAccept: null, 
           acceptN:  userWaitingRequests[i].acceptedN,
           declineN:  userWaitingRequests[i].declinedN,
+          acceptedIds:  userWaitingRequests[i].acceptedIds,
+          declinedIds:  userWaitingRequests[i].declinedIds,
           message: userWaitingRequests[i].message
 
         });
       }
   }
-  console.log("Elements IncomingDataInProgress:",IncomingDataInProgress)
+  // console.log("Elements IncomingDataInProgress:",IncomingDataInProgress)
 
 
   var IncomingDataClosed=[];
   if (userUnpublishedRequests){
-    console.log("userWaitingRequests:",userWaitingRequests)
+    // console.log("userWaitingRequests:",userWaitingRequests)
       for(var i=0;i<userUnpublishedRequests.length;i++){
 
         IncomingDataClosed.push({ 
@@ -191,6 +193,8 @@ function Notification({ classes }) {
           finalAccept: null, 
           acceptN:  userUnpublishedRequests[i].acceptedN,
           declineN:  userUnpublishedRequests[i].declinedN,
+          acceptedIds:  userUnpublishedRequests[i].acceptedIds,
+          declinedIds:  userUnpublishedRequests[i].declinedIds,
           message: userUnpublishedRequests[i].message
 
         });
@@ -214,34 +218,39 @@ function Notification({ classes }) {
           finalAccept: null, 
           acceptN:  userPendingRequests[i].acceptedN,
           declineN:  userPendingRequests[i].declinedN,
+          acceptedIds:  userPendingRequests[i].acceptedIds,
+          declinedIds:  userPendingRequests[i].declinedIds,
           message: userPendingRequests[i].message
 
         });
       }
   }
-  console.log("Elements OutcomingDataInprogress:",OutcomingDataInprogress)
+  // console.log("Elements OutcomingDataInprogress:",OutcomingDataInprogress)
 
   var OutcomingDataClosed=[];
-  if (userUnpublishedRequests){
-      for(var i=0;i<userUnpublishedRequests.length;i++){
-        OutcomingDataInprogress.push({ 
-          requestId: userUnpublishedRequests[i].requestId,
-          requesterId: userUnpublishedRequests[i].requesterId,
-          collabId: userUnpublishedRequests[i].collabId,
-          requesterName: userUnpublishedRequests[i].requesterName,
-          title: userUnpublishedRequests[i].collabTitle,
-          video: userUnpublishedRequests[i].videoURL,
+  if (userClosedRequests){
+      for(var i=0;i<userClosedRequests.length;i++){
+        OutcomingDataClosed.push({ 
+          requestId: userClosedRequests[i].requestId,
+          requesterId: userClosedRequests[i].requesterId,
+          collabId: userClosedRequests[i].collabId,
+          // collabVideo: userUnpublishedRequests[i].collabVideo,
+          requesterName: userClosedRequests[i].requesterName,
+          title: userClosedRequests[i].collabTitle,
+          video: userClosedRequests[i].videoURL,
           receive: false,
           accept: null,
           finalAccept: null, 
-          acceptN:  userUnpublishedRequests[i].acceptedN,
-          declineN:  userUnpublishedRequests[i].declinedN,
-          message: userUnpublishedRequests[i].message
+          acceptN:  userClosedRequests[i].acceptedN,
+          declineN:  userClosedRequests[i].declinedN,
+          acceptedIds:  userClosedRequests[i].acceptedIds,
+          declinedIds:  userClosedRequests[i].declinedIds,
+          message: userClosedRequests[i].message
 
         });
       }
   }
-  console.log("Elements OutcomingDataClosed:",OutcomingDataClosed)
+  // console.log("Elements OutcomingDataClosed:",OutcomingDataClosed)
 
 
   return (

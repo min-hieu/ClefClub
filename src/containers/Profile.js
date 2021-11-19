@@ -231,6 +231,10 @@ function Profile(props) {
       { showClaps ? <CardList data={topClapData}/> : null }
 
       <Navbar />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
   );
 }

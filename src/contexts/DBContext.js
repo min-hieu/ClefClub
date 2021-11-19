@@ -85,9 +85,7 @@ export const getOutgoingRequests = async (id) => {
   var closed = [];
   var pending = [];
   requests.docs.map((doc) => {
-    
-    if (doc.data().requesterId == id){
-      if (doc.data().status == 'pending'){
+    if (doc.data().requesterId == id && doc.data().status == 'pending'){
           pending.push({
             requestId: doc.id,
             collabId: doc.data().collabId,
@@ -96,10 +94,13 @@ export const getOutgoingRequests = async (id) => {
             requesterName: doc.data().requesterName,
             acceptedN: doc.data().acceptedIds.length,
             declinedN: doc.data().declinedIds.length,
+            acceptedIds: doc.data().acceptedIds,
+            declinedIds: doc.data().declinedIds,
             message: doc.data().message,
             videoURL: doc.data().videoURL,
           })
-      }else{
+      }
+      if (doc.data().requesterId == id && doc.data().status != 'pending'){
           closed.push({
             requestId: doc.id,
             collabId: doc.data().collabId,
@@ -108,13 +109,14 @@ export const getOutgoingRequests = async (id) => {
             requesterName: doc.data().requesterName,
             acceptedN: doc.data().acceptedIds.length,
             declinedN: doc.data().declinedIds.length,
+            acceptedIds: doc.data().acceptedIds,
+            declinedIds: doc.data().declinedIds,
             message: doc.data().message,
             videoURL: doc.data().videoURL,
           })
       } 
-    }
   });
-  console.log("Pending out:",pending.length, "Closed out:", closed.length)
+  console.log("Pending out:",pending, "Closed out:", closed)
   return [pending, closed];
 };
 
@@ -124,7 +126,7 @@ export const getIncomingRequests = async (id) => {
   var requests = await db.collection("requests").get();
 
   var waiting = [];
-  var unpublished = [];
+  var closed = [];
 
   requests.docs.map((doc) => {
     // console.log("receiverIds:",doc.data().receiverIds)
@@ -138,11 +140,16 @@ export const getIncomingRequests = async (id) => {
           requesterName: doc.data().requesterName,
           acceptedN: doc.data().acceptedIds.length,
           declinedN: doc.data().declinedIds.length,
+          acceptedIds: doc.data().acceptedIds,
+          declinedIds: doc.data().declinedIds,
           message: doc.data().message,
           videoURL: doc.data().videoURL,
         })
-      }else{
-        unpublished.push({
+      }
+    if (doc.data().receiverIds && doc.data().receiverIds.includes(id)
+      && (doc.data().acceptedIds.includes(id) || doc.data().declinedIds.includes(id))
+      ){
+        closed.push({
           requestId: doc.id,
           collabId: doc.data().collabId,
           requesterId: doc.data().requesterId,
@@ -150,13 +157,16 @@ export const getIncomingRequests = async (id) => {
           requesterName: doc.data().requesterName,
           acceptedN: doc.data().acceptedIds.length,
           declinedN: doc.data().declinedIds.length,
+          acceptedIds: doc.data().acceptedIds,
+          declinedIds: doc.data().declinedIds,
           message: doc.data().message,
           videoURL: doc.data().videoURL,
         })
       } 
     }
   });
-  return [waiting, unpublished];
+  // console.log("Incoming: waiting, closed:",waiting,closed)
+  return [waiting, closed];
 };
 
 
