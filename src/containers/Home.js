@@ -125,6 +125,7 @@ function Home({ classes }) {
           width="364px"
           autoPlay={true}
           muted
+          loop
         />
       </CardActionArea>
     </Card>

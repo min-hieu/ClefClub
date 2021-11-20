@@ -51,6 +51,8 @@ const styles = {
   video: {
     bottom: 83,
     position: 'relative',
+    backgroundColor: 'black',
+
   },
   iconList: {
     bottom: 9,
@@ -128,6 +130,7 @@ function ViewCollab(props) {
   const [collabTitle, setCollabTitle] = useState()
   const [collabClaps, setCollabClaps] = useState()
   const [collabSize, setCollabSize] = useState()
+  const [collabVideo, setCollabVideo] = useState()
   const [collabDescription, setCollabDescription] = useState()
   const { currentUser } = useAuth()
 
@@ -138,6 +141,7 @@ function ViewCollab(props) {
     let collab = getCollab (state.collabId);
     collab.then(collab => {
       // console.log(collab.title)
+      setCollabVideo(collab.videos[0])
       setCollabTitle(collab.title)
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
@@ -185,12 +189,21 @@ function ViewCollab(props) {
   }
 
   const video =
-    <YoutubeEmbed
-      embedId={ tmpVideoId }
-      w="375"
-      h="700"
-      sx={styles.video}
-    />
+    // <YoutubeEmbed
+    //   embedId={ tmpVideoId }
+    //   w="375"
+    //   h="700"
+    //   sx={styles.video}
+    // />
+    <video
+          style={styles.video}
+          src={collabVideo}
+          width="375px"
+          height='700'
+          autoPlay={true}
+          loop
+        />
+
 
   const title =
     <Typography sx={styles.title}>
