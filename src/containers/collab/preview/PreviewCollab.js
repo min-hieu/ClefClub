@@ -259,8 +259,8 @@ const messageText =
         loading="lazy"
       />
       {(requesterId !== currentUser.email ) && accepted==='unknown'
-        ? ({vote})
-        : ({decision})
+        ? <>({vote})</>
+        : <>({decision})</>
       }
       {progressInstance}
       {(requesterId !== currentUser.email ) && accepted==='unknown'

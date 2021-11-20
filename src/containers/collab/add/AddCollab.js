@@ -177,8 +177,8 @@ function AddCollab({ classes }) {
   }
 
   const addCollabToDB  = async () =>{
-    const acceptedIds = collabOwners.includes(currentUser) ? [] : [currentUser]
-    const status = acceptedIds.length/setCollabOwners.length > 0.5 ? 'accepted' : 'pending'
+    const acceptedIds = collabOwners.includes(currentUser.email) ? [currentUser.email] : [];
+    const status = acceptedIds.length/setCollabOwners.length > 0.5 ? 'accepted' : 'pending';
     try{
       db.collection("requests").add({
         ...formData,
