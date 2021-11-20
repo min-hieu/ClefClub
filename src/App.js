@@ -7,20 +7,15 @@ import NewCollab from './containers/collab/new/NewCollab';
 import AddCollab from './containers/collab/add/AddCollab';
 import PreviewCollab from './containers/collab/preview/PreviewCollab';
 import ViewCollab from './containers/collab/view/ViewCollab';
-import ContributeToCollab from './containers/collab/ContributeToCollab';
-
 import Login from "./components/userAuth/Login";
 import Signup from "./components/userAuth/Signup";
 import ForgotPassword from "./components/userAuth/ForgotPassword";
 import PrivateRoute from "./components/userAuth/PrivateRoute";
 import UpdateProfile from "./components/userAuth/UpdateProfile";
-
 import { AuthProvider } from "./contexts/AuthContext"
-
 import './css/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import iphoneX from './assets/iPhoneX.png'
-
 import monkey from './assets/test/monkey.jpeg';
 
 const styles = {
@@ -62,7 +57,6 @@ function App({ classes }) {
               <Route exact path="/notification"> <Notification /> </Route>
               <Route exact path="/search"> <Search /> </Route>
               <Route exact path="/collab/new"> <NewCollab /> </Route>
-              <Route exact path="/collab/contribute/"> <ContributeToCollab /> </Route>
               <Route exact path="/collab/view"> <ViewCollab /> </Route>
               <Route exact path="/collab/preview"> <PreviewCollab /> </Route>
               <Route exact path="/collab/add"> <AddCollab /> </Route>

@@ -8,7 +8,6 @@ import Grid from '@mui/material/Grid';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
-import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ClapIcon from '../../../assets/clap.svg';
 import ViewSession from '../ViewSession';
 import style from './clap.css';
@@ -188,20 +187,14 @@ function ViewCollab(props) {
   }
 
   const video =
-    // <YoutubeEmbed
-    //   embedId={ tmpVideoId }
-    //   w="375"
-    //   h="700"
-    //   sx={styles.video}
-    // />
     <video
-          style={styles.video}
-          src={collabVideo}
-          width="375px"
-          height='700'
-          autoPlay={true}
-          loop
-        />
+      style={styles.video}
+      src={collabVideo}
+      width="375px"
+      height='700'
+      autoPlay={true}
+      loop
+    />
 
 
   const title =
@@ -213,7 +206,7 @@ function ViewCollab(props) {
   const description =
   <>
     <Typography sx={styles.desc}>
-      {collabSize} joined 
+      {collabSize} joined
     </Typography>
       <Typography sx={styles.desc}>
       {collabDescription}

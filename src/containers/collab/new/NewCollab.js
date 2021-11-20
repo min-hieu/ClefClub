@@ -1,20 +1,17 @@
 import React, { useRef, useState } from 'react';
-import { styled, withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import Fab from '@material-ui/core/Fab';
 import Navbar from '../../../components/shared/Navbar';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import { useAuth } from "../../../contexts/AuthContext"
 import { storage } from "../../../firebase"
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../../firebase"
-import {createId} from "../../../contexts/DBContext"
 import { useHistory } from "react-router-dom"
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -123,22 +120,8 @@ const styles = {
   }
 };
 
-const StyledFab = styled(Fab)({
-  position: 'absolute',
-  top: 405,
-  right: 50,
-  color: TERTIARY_COLOR,
-  background: SECONDARY_COLOR,
-  zIndex: 1,
-  margin: '0 auto',
-  '&:hover': {
-    background: TERTIARY_COLOR,
-    color: SECONDARY_COLOR
-  },
-});
 function NewCollab({ classes }) {
   const [formData, setFormData] = useState({})
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [url, setUrl] = useState("");
   const [uploaded, setUploaded] = useState(false);
@@ -157,19 +140,6 @@ function NewCollab({ classes }) {
 
   const hiddenFileInput = React.useRef(null);
 
-  const handleClickButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleChoose = e => {
     if (e.target.files[0]) {
       handleVideoUpload(e.target.files[0]);
@@ -179,10 +149,6 @@ function NewCollab({ classes }) {
   const handleClickUpload = e => {
     hiddenFileInput.current.click();
   }
-
-  // const videoChosen () => {
-  //   document.getElementById("load_text").innerHTML = 'New Phrase';
-  // };
 
   const addCollabToDB  = async () =>{
     db.collection("sessions").add({
@@ -318,7 +284,6 @@ const addZone = uploaded ? (
   const successSnackbar =
   <Snackbar
     open={open}
-    onClose={handleClose}
     ContentProps={{
       classes: {
         root: classes.snackbar
