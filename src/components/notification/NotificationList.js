@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
+import TruncateMarkup from "react-truncate-markup";
 
 const styles = {
   sectionHeading: {
@@ -72,11 +73,12 @@ const useStyles = makeStyles((theme) => ({
   details: {
     display: 'flex',
     flexDirection: 'column',
-    width: '90%',
   },
   content: {
-    flex: '1 0 auto',
-    width: '90%',
+    margin: 'auto',
+    // flex: '1 0 auto',
+    width: '95%',
+    marginRight: 15,
   },
   cover: {
     // width: '26%',
@@ -84,10 +86,9 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     width: 60,
     margin: 'auto',
-    marginLeft: 15,
-    marginTop: 15,
     borderRadius: 90,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: TERTIARY_COLOR,
+    border: '1px solid rgba(0, 0, 0, 0.1)',
   },
   controls: {
     display: 'flex',
@@ -119,11 +120,13 @@ const useStyles = makeStyles((theme) => ({
     color: PRIMARY_COLOR
   },
   sectionTime: {
-    fontSize: 14,
-    paddingLeft: 16,
-    padding: 4,
+    fontSize: 10,
+    margin: 'auto',
     color: '#abb8c3'
   },
+  timeStamp:{
+    margin: 'auto',
+  }
 }));
 
 
@@ -133,23 +136,24 @@ const MediaControlCard = ({text, data}) => {
 
   return (
     <Card className={classes.root}>
-      <div>
-      <CardMedia
-        component='video'
-        className={classes.cover}
-        image={data.video}
-        title="Live from space album cover"
-      />
-      <Typography className={classes.subtitle}> {data.title} </Typography>
-      </div>
-      <div className={classes.details}>
-       <CardContent className={classes.content} alignItems='center'> 
-        <Typography className={classes.sectionUser}> From {data.requesterName}:</Typography>
-        <Typography className={classes.sectionDesc}> "{data.message}" </Typography>
-        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>
-        
-        </CardContent>
-      </div>
+      <Grid className={classes.details} xs={3}>
+        <CardMedia
+          component='video'
+          className={classes.cover}
+          image={data.video}
+          title="Live from space album cover"
+        />
+      </Grid>
+      <Grid className={classes.content} xs={8}>
+        <TruncateMarkup lines = {3}>
+          <Typography component="h10" variant="h10">
+            The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}"
+          </Typography>
+        </TruncateMarkup>  
+      </Grid>
+      <Grid xs={1} className={classes.timeStamp}>
+        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>  
+      </Grid>     
     </Card>
   );
 }
@@ -164,18 +168,18 @@ const NotificationList = ({classes, data, section, notifPage}) => {
           </Grid>
         </Link>
       )
-  }
-        const descr = section == "In progress" 
-        ? notifPage == 'inReq'
-          ?`You have awaiting contributions for these jams`
-          :`You have awaiting requests for approval for these jams`
-        : notifPage == 'outReq'
-          ? `These are the results of your requests for following jams`
-          :`These jams are about to be concluded when others approve`
+    }
+    const descr = section == "In progress" 
+    ? notifPage == 'inReq'
+      ? `You have awaiting contributions for these jams`
+      : `You have awaiting requests for approval for these jams`
+    : notifPage == 'outReq'
+      ? `These are the results of your requests for following jams`
+      : `These jams are about to be concluded when others approve`
     return (
       <>
       <Typography variant='body1' className={classes.sectionHeading}>{section}</Typography>
-      <Typography className={classes.sectionDesc}> {descr} </Typography>  
+      {/* <Typography className={classes.sectionDesc}> {descr} </Typography>   */}
       <div className={classes.gridListWrapper}>
         <Grid className={classes.gridList} xs={12} spacing={2} direction='column'>
           {data.map(drawTile)}

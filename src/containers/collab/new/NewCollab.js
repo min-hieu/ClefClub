@@ -185,21 +185,25 @@ function NewCollab({ classes }) {
   // };
 
   const addCollabToDB  = async () =>{
-    db.collection("sessions").add({
-      ...formData,
-      claps: 0,
-      clappedIds: [currentUser.email],
-      userIds: [currentUser.email],
-      comments: [],
-      createdAt: Date.now(),
-      videos: [url],
-      requests: []
-    });
+    try {
+      db.collection("sessions").add({
+        ...formData,
+        claps: 0,
+        clappedIds: [currentUser.email],
+        userIds: [currentUser.email],
+        comments: [],
+        createdAt: Date.now(),
+        videos: [url],
+        requests: []
+      });
 
-  setOpen(true);
-  await delay(1000);
-  history.push( {pathname: "/profile"})
-
+      setOpen(true);
+      await delay(1000);
+      history.push( {pathname: "/profile"})
+    }
+    catch{
+      alert("Please choose a video first!")
+    }
   }
 
   const handleVideoUpload = (video) => {
@@ -304,7 +308,7 @@ const addZone = uploaded ? (
     </Button>
 
   const videoDisplay = uploaded ? 
-  <div class="d-inline-flex p-2">
+  <div className="d-inline-flex p-2">
    <br/>
   <video
           src={url}
@@ -324,7 +328,7 @@ const addZone = uploaded ? (
         root: classes.snackbar
       }
     }}
-    message={"Your request is sent!"}
+    message={"Your request is submitted!"}
   />
 
   return (

@@ -73,8 +73,8 @@ const styles = {
 
 
 function Notification({ classes }) {
-  const [showIncoming, setshowIncoming] = useState(false);
-  const [showMy, setshowMy] = useState(true);
+  const [showIncoming, setshowIncoming] = useState(true);
+  const [showMy, setshowMy] = useState(false);
   const { currentUser } = useAuth()
   const history = useHistory()
   const [userPendingRequests, setUserPendingRequests] = useState()
@@ -260,8 +260,8 @@ function Notification({ classes }) {
       {tabNames}
       { showIncoming 
         ? <>
-            <NotificationList data = {IncomingDataInProgress} section = 'In progress' notifPage="inReq"></NotificationList>
-            <NotificationList data = {IncomingDataClosed} section = 'Closed' notifPage="inReq"></NotificationList>
+            <NotificationList data = {IncomingDataInProgress.filter(e => e.requesterId != currentUser.email)} section = 'In progress' notifPage="inReq"></NotificationList>
+            <NotificationList data = {IncomingDataClosed.filter(e => e.requesterId != currentUser.email)} section = 'Closed' notifPage="inReq"></NotificationList>
           </>
         : null 
       }

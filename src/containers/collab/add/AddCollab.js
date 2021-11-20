@@ -142,9 +142,8 @@ function AddCollab({ classes }) {
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
     collab.then(collab => {
-      // console.log(collab.title)
       setCollabVideo(collab.videos[0])
-      setCollabTitle(collab.title)
+      setCollabTitle(collab.title ? collab.title : "")
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
       setCollabOwners(collab.userIds)
@@ -170,6 +169,7 @@ function AddCollab({ classes }) {
   };
 
   const handleChoose = e => {
+    console.log(e.target.files);
     if (e.target.files[0]) {
       // setVideo(e.target.files[0]);
       handleVideoUpload(e.target.files[0]);
@@ -199,7 +199,8 @@ function AddCollab({ classes }) {
       setOpen(true);
       await delay(1000);
       history.goBack();
-    }catch{
+    } catch (e) {
+      alert(e)
       alert("Please choose a video first!")
     }
   }
@@ -219,7 +220,7 @@ function AddCollab({ classes }) {
     (snapshot) => {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setTitle('Just a moment:' + Math.round(progress) + '%');
+      setTitle('Just a moment: ' + Math.round(progress) + '%');
       setProgress(progress);
       console.log('Upload is ' + progress + '% done');
       switch (snapshot.state) {
@@ -272,7 +273,9 @@ function AddCollab({ classes }) {
         await delay(1000);
         // window.location.href = '/';
         history.goBack();
-      }catch{
+      }catch (e){
+        alert(e);
+        console.log(e)
         alert("Please choose a video first!")
       }
   };
@@ -280,7 +283,7 @@ function AddCollab({ classes }) {
   const successMessage =
     <div className={classes.successMessage}>
       <CheckIcon />
-      <span> Your jam has been submitted! </span>
+      <span> Your jam is published! </span>
     </div>
 
   const header =

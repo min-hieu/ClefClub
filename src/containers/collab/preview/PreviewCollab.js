@@ -89,6 +89,7 @@ const CollabPreview = ({ classes }) => {
   const history = useHistory()
   const [collabId, setCollabId] = useState()
   const [collabTitle, setCollabTitle] = useState()
+  const [message, setMessage] = useState()
   const [videoURL, setVideoURL] = useState()
   const [requestId, setRequestId] = useState()
   const [requesterName, setRequesterName] = useState()
@@ -109,6 +110,7 @@ const CollabPreview = ({ classes }) => {
 
     setCollabId(state.collabId)
     setCollabTitle(state.title)
+    setMessage(state.message)
     setVideoURL(state.video)
     setRequestId(state.requestId)
     setRequesterName(state.requesterName)
@@ -144,9 +146,20 @@ const CollabPreview = ({ classes }) => {
   const subTitle1 =
   <Grid container alignItems="center" justifyContent="center">
     <Grid item>
-      <Typography className={classes.subTitle}>Contribution requested by {requesterName}</Typography>
+      <Typography className={classes.subTitle}>
+        Contribution requests by <span style={{fontWeight: 'bold'}}>{requesterName}</span>:
+      </Typography>
     </Grid>
   </Grid>
+
+const messageText =
+<Grid container alignItems="center" justifyContent="center">
+  <Grid item>
+    <Typography variant="h10">
+      "{message}"
+    </Typography>
+  </Grid>
+</Grid>
 
   const subTitle2 =
       <Grid container alignItems="center" justifyContent="center">
@@ -208,19 +221,13 @@ const CollabPreview = ({ classes }) => {
 
 
   const decisionText = () => {
-    if  (requesterId == currentUser.email){
-      console.log(accepted)
-      if (finalDecision == 'pending'){
-        return `Your request is still under the decision`
-      }else{
-        return `Your request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
-      }
-    }
-    if (accepted != 'unknown'){
-      return `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
-    }else{
-      return null
-    }
+    return requesterId == currentUser.email
+      ? finalDecision == 'pending'
+        ? `Your request is still under review`
+        : `Your request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
+      : accepted != 'unknown' 
+        ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
+        : null
 }
 
 
@@ -255,6 +262,7 @@ const CollabPreview = ({ classes }) => {
       <br/>
       {title}
       {subTitle1}
+      {messageText}
       {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
       <video
           src={videoURL}

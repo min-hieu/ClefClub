@@ -214,7 +214,7 @@ function ViewCollab(props) {
   const description =
   <>
     <Typography sx={styles.desc}>
-      {collabSize} joined 
+      Joined by {collabSize}
     </Typography>
       <Typography sx={styles.desc}>
       {collabDescription}
