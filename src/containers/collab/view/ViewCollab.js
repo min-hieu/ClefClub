@@ -54,9 +54,9 @@ const styles = {
     backgroundColor: 'black',
   },
   iconList: {
+    width: 'fit-content',
     bottom: 9,
-    right: 52,
-    width: 30,
+    right: 20,
   },
   cmtSection: {
     bottom: 0,
@@ -247,7 +247,7 @@ function ViewCollab(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:130.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:22, bottom:106 }}/>
 
 
   const [showComments, setShowComments] = useState(false);
