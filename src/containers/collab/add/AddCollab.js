@@ -310,7 +310,7 @@ function AddCollab({ classes }) {
             <Typography className={classes.addText}>{title}</Typography>
             </>
             : null}
-            <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop muted/>
+            <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop/>
             {/* <img src={testAddCollab} alt="test add collab" style={{ height: '100%', width: '100%' }}/> */}
               <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
                 <RefreshIcon />
