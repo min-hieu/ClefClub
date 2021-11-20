@@ -259,17 +259,16 @@ const messageText =
         loading="lazy"
       />
       {(requesterId !== currentUser.email ) && accepted==='unknown'
-        ? <>({vote})</>
-        : <>({decision})</>
+        ? <>{vote}</>
+        : <>{decision}</>
       }
       {progressInstance}
       {(requesterId !== currentUser.email ) && accepted==='unknown'
-          && (
+          &&
             <>
               {subTitle2}
               <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>
             </>
-          )
       }
       <br/>
       <br/>
