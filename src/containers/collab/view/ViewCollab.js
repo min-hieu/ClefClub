@@ -52,7 +52,6 @@ const styles = {
     bottom: 83,
     position: 'relative',
     backgroundColor: 'black',
-
   },
   iconList: {
     bottom: 9,
@@ -258,7 +257,7 @@ function ViewCollab(props) {
     history.push(link);
 
   return (
-    <>
+    <div style={{height: 690}}>
       {backIcon}
       {video}
       <div style={styles.overlay}>
@@ -281,7 +280,7 @@ function ViewCollab(props) {
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
       { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
-    </>
+    </div>
   );
 }
 
