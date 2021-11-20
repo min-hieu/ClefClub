@@ -39,6 +39,7 @@ const styles = {
   media: {
     height: 300,
     borderRadius: '20px 20px 0 0',
+    backgroundColor: 'black',
   },
   mediaList: {
     width: 133,
@@ -121,7 +122,9 @@ function Home({ classes }) {
         <video
           style={styles.media}
           src={bannerThumbnail}
-          autoPlay
+          width="364px"
+          autoPlay={true}
+          muted
         />
       </CardActionArea>
     </Card>
