@@ -87,7 +87,7 @@ function Home({ classes }) {
           collabSize: allCollabs[i].userIds.length,
         });
       };
-      bannerThumbnail = allCollabs[0].videos[0];
+      bannerThumbnail = allCollabs[12].videos[0];
       console.log("This is banner")
       console.log(bannerThumbnail);
   }
@@ -98,7 +98,7 @@ function Home({ classes }) {
       history.push(
         {
           pathname:'/collab/view',
-          state:{collabId:"2STQPpgbcBeOoOc1uwAl"
+          state:{collabId:"eBJmTdjzrV6dStrQWNB3"
         }
       })}}>
       <CardActionArea>
