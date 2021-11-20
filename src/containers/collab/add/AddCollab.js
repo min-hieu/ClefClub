@@ -171,7 +171,8 @@ function AddCollab({ classes }) {
 
   const handleChoose = e => {
     if (e.target.files[0]) {
-      setVideo(e.target.files[0]);
+      // setVideo(e.target.files[0]);
+      handleVideoUpload(e.target.files[0]);
     }
     setTitle("Video is chosen!");
     setUploaded(true);
@@ -181,8 +182,29 @@ function AddCollab({ classes }) {
     hiddenFileInput.current.click();
   }
 
+  const addCollabToDB  = async () =>{
+    try{
+      db.collection("requests").add({
+        ...formData,
+        collabId: collabId,
+        collabTitle: collabTitle,
+        status: "pending",
+        acceptedIds: [],
+        declinedIds: [],
+        videoURL: url,
+        requesterId: currentUser.email,
+        requesterName: userName,
+        receiverIds: collabOwners,
+      });
+      setOpen(true);
+      await delay(1000);
+      history.goBack();
+    }catch{
+      alert("Please choose a video first!")
+    }
+  }
 
-  const handleVideoUpload = () => {
+  const handleVideoUpload = (video) => {
 
     console.log("Uploading the video!\n");
     console.log(video.name);
@@ -198,6 +220,7 @@ function AddCollab({ classes }) {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setTitle('Just a moment:' + Math.round(progress) + '%');
+      setProgress(progress);
       console.log('Upload is ' + progress + '% done');
       switch (snapshot.state) {
         case 'paused':
@@ -228,18 +251,8 @@ function AddCollab({ classes }) {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
-        db.collection("requests").add({
-          ...formData,
-          collabId: collabId,
-          collabTitle: collabTitle,
-          status: "pending",
-          acceptedIds: [],
-          declinedIds: [],
-          videoURL: downloadURL,
-          requesterId: currentUser.email,
-          requesterName: userName,
-          receiverIds: collabOwners,
-        });
+        setUrl(downloadURL)
+        setUploaded(true);
       });
       // alert("Your request is sent!");
     }
@@ -251,6 +264,7 @@ function AddCollab({ classes }) {
 			title: 'test cover' };
   const [open, setOpen] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
+
   const submit = async () => {
       try{
         handleVideoUpload()
@@ -261,8 +275,6 @@ function AddCollab({ classes }) {
       }catch{
         alert("Please choose a video first!")
       }
-
-
   };
 
   const successMessage =
@@ -291,7 +303,15 @@ function AddCollab({ classes }) {
         <div className={classes.dropzone}>
           {uploaded ? (
             <>
-            <img src={testAddCollab} alt="test add collab" style={{ height: '100%', width: '100%' }}/>
+            {progress<100?
+            <>
+            <br/>
+            <br/>
+            <Typography className={classes.addText}>{title}</Typography>
+            </>
+            : null}
+            <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop muted/>
+            {/* <img src={testAddCollab} alt="test add collab" style={{ height: '100%', width: '100%' }}/> */}
               <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
                 <RefreshIcon />
               </StyledFab>
@@ -319,7 +339,7 @@ function AddCollab({ classes }) {
   const submitButton =
     <Button
       className={classes.submitButton}
-      onClick={submit}
+      onClick={addCollabToDB}
     >
       Submit your jam
     </Button>
@@ -345,6 +365,10 @@ function AddCollab({ classes }) {
       {submitButton}
       {successSnackbar}
       <Navbar />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
   );
 }
