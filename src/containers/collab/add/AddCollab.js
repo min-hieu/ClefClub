@@ -124,6 +124,7 @@ function AddCollab({ classes }) {
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState("Upload video");
   const [collabId, setCollabId] = useState();
+  const [collabVideo, setCollabVideo] = useState();
   const [collabTitle, setCollabTitle] = useState()
   const [collabDescription, setCollabDescription] = useState()
   const [collabSize, setCollabSize] = useState();
@@ -142,6 +143,7 @@ function AddCollab({ classes }) {
     let collab = getCollab (state.collabId);
     collab.then(collab => {
       // console.log(collab.title)
+      setCollabVideo(collab.videos[0])
       setCollabTitle(collab.title)
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
@@ -284,7 +286,8 @@ function AddCollab({ classes }) {
 
   const videoUpload =
       <div className={classes.videoWrapper}>
-        <img src={mainCover.img} alt={mainCover.title} className={classes.cover} />
+        {/* <img src={mainCover.img} alt={mainCover.title} className={classes.cover} /> */}
+        <video src = {collabVideo} className={classes.cover} autoPlay loop muted/>
         <div className={classes.dropzone}>
           {uploaded ? (
             <>
