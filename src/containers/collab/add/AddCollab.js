@@ -9,15 +9,18 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import CheckIcon from '@material-ui/icons/Check';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import Navbar from '../../../components/shared/Navbar';
 import { storage, db } from "../../../firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {getCollab} from "../../../contexts/DBContext"
 import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const styles = {
   backIcon: {
@@ -90,12 +93,6 @@ const styles = {
       background: TERTIARY_COLOR,
       color: SECONDARY_COLOR,
     },
-  },
-  snackbar: {
-    background: PRIMARY_COLOR,
-  },
-  alertSnackbar: {
-    background: 'red',
   },
   snackbarMessage: {
     display: 'flex',
@@ -248,21 +245,12 @@ function AddCollab({ classes }) {
     );
   };
 
-  const [open, setOpen] = React.useState(false);
-  const [openAlert, setOpenAlert] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  const successMessage =
-    <div className={classes.snackbarMessage}>
-      <CheckIcon />
-      <span> Your jam is published! </span>
-    </div>
-
-  const alertMessage =
-    <div className={classes.snackbarMessage}>
-      <CancelOutlinedIcon />
-      <span> Unsupported file type! </span>
-    </div>
+  const successMessage = "Your request is submitted!";
+  const alertMessage = "Unsupported file type!";
 
   const header =
     <Grid container alignItems="center" justifyContent="center">
@@ -332,8 +320,11 @@ function AddCollab({ classes }) {
           root: classes.alertSnackbar
         }
       }}
-      message={successMessage}
-    />
+    >
+      <Alert severity="success" onClose={handleClose}>
+        {successMessage}
+      </Alert>
+    </Snackbar>
 
   const alertSnackbar =
     <Snackbar
@@ -344,8 +335,11 @@ function AddCollab({ classes }) {
           root: classes.alertSnackbar
         }
       }}
-      message={alertMessage}
-    />
+    >
+      <Alert severity="error" onClose={handleCloseAlert}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
 
   return (
     <div className={classes.main}>

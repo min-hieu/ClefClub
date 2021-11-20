@@ -4,6 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom"
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import Navbar from '../../../components/shared/Navbar';
@@ -12,8 +15,10 @@ import { useAuth } from "../../../contexts/AuthContext"
 import { storage } from "../../../firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../../firebase"
-import { useHistory } from "react-router-dom"
-import Snackbar from '@material-ui/core/Snackbar';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const styles = {
   main: {
@@ -115,7 +120,12 @@ const styles = {
     },
     width: '100%',
     marginTop: 20,
-  }
+  },
+  snackbarMessage: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
 };
 
 function NewCollab({ classes }) {
@@ -126,6 +136,7 @@ function NewCollab({ classes }) {
   const { currentUser } = useAuth()
   const history = useHistory()
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const updateFormData = (key, value) => {
@@ -136,9 +147,16 @@ function NewCollab({ classes }) {
   const hiddenFileInput = React.useRef(null);
 
   const handleChoose = e => {
-    if (e.target.files[0]) {
-      handleVideoUpload(e.target.files[0]);
-    }
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+      if (!chosenFile.type.includes('video')) {
+        setOpenAlert(true);
+        return;
+      }
+      handleVideoUpload(chosenFile);
+      setTitle("Video is chosen!");
+      setUploaded(true);
+    };
   };
 
   const handleClickUpload = e => {
@@ -278,16 +296,45 @@ function NewCollab({ classes }) {
     </div>
   );
 
+  const successMessage = "Your jam is published!";
+  const alertMessage = "Unsupported file type!";
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+
+  const alertSnackbar =
+    <Snackbar
+      open={openAlert}
+      onClose={handleCloseAlert}
+      ContentProps={{
+        classes: {
+          root: classes.alertSnackbar
+        }
+      }}
+    >
+      <Alert severity="error" onClose={handleCloseAlert}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
+
   const successSnackbar =
     <Snackbar
       open={open}
+      onClose={handleClose}
       ContentProps={{
         classes: {
           root: classes.snackbar
         }
       }}
-      message={"Your request is submitted!"}
-    />
+    >
+      <Alert severity="success" onClose={handleClose}>
+        {successMessage}
+      </Alert>
+    </Snackbar>
 
   return (
     <div className={classes.main}>
@@ -298,6 +345,7 @@ function NewCollab({ classes }) {
       {descriptionField}
       {publishButton}
       {successSnackbar}
+      {alertSnackbar}
 			<Navbar />
     </div>
   );
