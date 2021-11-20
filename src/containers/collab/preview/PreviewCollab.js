@@ -190,7 +190,7 @@ const messageText =
     
   }
   const handleDecline = () => {
-    if (declineN/num_owners>=0.5){
+    if (declineN/num_owners>0.5){
       db.collection("requests").doc(requestId).update({
         declinedIds: arrayUnion(currentUser.email),
         status: 'declined',
@@ -225,9 +225,11 @@ const messageText =
       ? finalDecision == 'pending'
         ? `Your request is still under review`
         : `Your request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
-      : accepted != 'unknown' 
-        ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
-        : null
+      : finalDecision != 'pending'
+        ? `The request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
+        : accepted != 'unknown' 
+          ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
+          : null
 }
 
 

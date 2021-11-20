@@ -161,7 +161,8 @@ function Notification({ classes }) {
           declineN:  userWaitingRequests[i].declinedN,
           acceptedIds:  userWaitingRequests[i].acceptedIds,
           declinedIds:  userWaitingRequests[i].declinedIds,
-          message: userWaitingRequests[i].message
+          message: userWaitingRequests[i].message,
+          status: userWaitingRequests[i].status,
 
         });
       }
@@ -188,7 +189,8 @@ function Notification({ classes }) {
           declineN:  userUnpublishedRequests[i].declinedN,
           acceptedIds:  userUnpublishedRequests[i].acceptedIds,
           declinedIds:  userUnpublishedRequests[i].declinedIds,
-          message: userUnpublishedRequests[i].message
+          message: userUnpublishedRequests[i].message,
+          status: userUnpublishedRequests[i].status,
 
         });
       }
@@ -213,7 +215,8 @@ function Notification({ classes }) {
           declineN:  userPendingRequests[i].declinedN,
           acceptedIds:  userPendingRequests[i].acceptedIds,
           declinedIds:  userPendingRequests[i].declinedIds,
-          message: userPendingRequests[i].message
+          message: userPendingRequests[i].message,
+          status: userPendingRequests[i].status,
 
         });
       }
@@ -238,8 +241,8 @@ function Notification({ classes }) {
           declineN:  userClosedRequests[i].declinedN,
           acceptedIds:  userClosedRequests[i].acceptedIds,
           declinedIds:  userClosedRequests[i].declinedIds,
-          message: userClosedRequests[i].message
-
+          message: userClosedRequests[i].message,
+          status: userClosedRequests[i].status,
         });
       }
   }

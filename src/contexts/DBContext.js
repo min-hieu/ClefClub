@@ -98,6 +98,7 @@ export const getOutgoingRequests = async (id) => {
             declinedIds: doc.data().declinedIds,
             message: doc.data().message,
             videoURL: doc.data().videoURL,
+            status: doc.data().status,
           })
       }
       if (doc.data().requesterId == id && doc.data().status != 'pending'){
@@ -113,6 +114,7 @@ export const getOutgoingRequests = async (id) => {
             declinedIds: doc.data().declinedIds,
             message: doc.data().message,
             videoURL: doc.data().videoURL,
+            status: doc.data().status,
           })
       } 
   });
@@ -144,6 +146,7 @@ export const getIncomingRequests = async (id) => {
           declinedIds: doc.data().declinedIds,
           message: doc.data().message,
           videoURL: doc.data().videoURL,
+          status: doc.data().status,
         })
       }
     }
@@ -162,6 +165,7 @@ export const getIncomingRequests = async (id) => {
           declinedIds: doc.data().declinedIds,
           message: doc.data().message,
           videoURL: doc.data().videoURL,
+          status: doc.data().status,
         })
       } 
   });

@@ -147,7 +147,7 @@ const MediaControlCard = ({text, data}) => {
       <Grid className={classes.content} xs={8}>
         <TruncateMarkup lines = {3}>
           <Typography component="h10" variant="h10">
-            The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}"
+            {text}
           </Typography>
         </TruncateMarkup>  
       </Grid>
@@ -161,10 +161,19 @@ const MediaControlCard = ({text, data}) => {
 const NotificationList = ({classes, data, section, notifPage}) => {
     const drawTile = (data) => {
       const link =  {pathname: '/collab/preview', state: data}
+      const text =  
+        section == "In progress" 
+          ? notifPage == 'inReq'
+            ? <div> The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}") </div>
+            : <div> The request you sent to the jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> is under review </div>
+          : notifPage == 'inReq'
+            ? <div> The request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span> has been {data.status} </div>
+            : <div> Your request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has been {data.status} </div>
+
       return (
         <Link to={link} style={{ textDecoration: 'none' }}>     
           <Grid item xs={12}>
-            <MediaControlCard data={data}></MediaControlCard>
+            <MediaControlCard text = {text} data={data}></MediaControlCard>
           </Grid>
         </Link>
       )
