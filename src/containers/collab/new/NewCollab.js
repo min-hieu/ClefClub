@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -14,8 +14,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../../firebase"
 import { useHistory } from "react-router-dom"
 import Snackbar from '@material-ui/core/Snackbar';
-
-
 
 const styles = {
   main: {
@@ -122,13 +120,10 @@ const styles = {
 
 function NewCollab({ classes }) {
   const [formData, setFormData] = useState({})
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [url, setUrl] = useState("");
   const [uploaded, setUploaded] = useState(false);
   const [title, setTitle] = useState("Upload video");
-  const { currentUser, logout } = useAuth()
-  const descriptionRef = useRef()
-  const titleRef = useRef()
+  const { currentUser } = useAuth()
   const history = useHistory()
   const [open, setOpen] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -176,7 +171,7 @@ function NewCollab({ classes }) {
     console.log("Uploading the video!\n");
     console.log(video.name);
 
-    const storageRef = ref(storage, 'videos/' + video.name);   
+    const storageRef = ref(storage, 'videos/' + video.name);
     const uploadTask = uploadBytesResumable(storageRef, video);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on('state_changed',
@@ -195,7 +190,7 @@ function NewCollab({ classes }) {
           console.log('Upload is running');
           break;
       }
-    }, 
+    },
     (error) => {
       // A full list of error codes is available at
       // https://firebase.google.com/docs/storage/web/handle-errors
@@ -210,7 +205,7 @@ function NewCollab({ classes }) {
           // Unknown error occurred, inspect error.serverResponse
           break;
       }
-    }, 
+    },
     () => {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -223,27 +218,25 @@ function NewCollab({ classes }) {
     );
   };
 
-
-
   const header =
     <>
       <Typography className={classes.title}>New Jam</Typography>
       <Typography className={classes.subtitle}>Start cooking up some joy!</Typography>
     </>
 
-const addZone = uploaded ? (
-                   <div className={classes.newdropzone}>
-                   <RefreshIcon className={classes.refreshIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-                   <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-                   <Typography className={classes.addText}>{title}</Typography>
-                   </div>
-                ) : (
-                  <div className={classes.dropzone}>
-                    <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-                    <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-                    <Typography className={classes.addText}>{title}</Typography>
-                    </div>
-                )
+  const addZone = uploaded ? (
+      <div className={classes.newdropzone}>
+        <RefreshIcon className={classes.refreshIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+        <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+        <Typography className={classes.addText}>{title}</Typography>
+      </div>
+  ) : (
+    <div className={classes.dropzone}>
+      <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+      <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+      <Typography className={classes.addText}>{title}</Typography>
+    </div>
+  )
 
   const titleField =
     <InputBase
@@ -273,28 +266,28 @@ const addZone = uploaded ? (
       Publish your jam
     </Button>
 
-  const videoDisplay = uploaded ? 
-  <div className="d-inline-flex p-2">
-   <br/>
-  <video
-          src={url}
-          controls
-          width="290px"
-          loading="lazy"
-        />
-  </div>
-  : null
+  const videoDisplay = uploaded && (
+    <div className="d-inline-flex p-2">
+      <br/>
+      <video
+        src={url}
+        controls
+        width="290px"
+        loading="lazy"
+      />
+    </div>
+  );
 
   const successSnackbar =
-  <Snackbar
-    open={open}
-    ContentProps={{
-      classes: {
-        root: classes.snackbar
-      }
-    }}
-    message={"Your request is submitted!"}
-  />
+    <Snackbar
+      open={open}
+      ContentProps={{
+        classes: {
+          root: classes.snackbar
+        }
+      }}
+      message={"Your request is submitted!"}
+    />
 
   return (
     <div className={classes.main}>
@@ -306,11 +299,6 @@ const addZone = uploaded ? (
       {publishButton}
       {successSnackbar}
 			<Navbar />
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
     </div>
   );
 }

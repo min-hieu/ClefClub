@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { withStyles } from '@material-ui/core/styles';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -8,9 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from "../../Constant";
 import Alert from '@mui/material/Alert';
 import { useAuth } from "../../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
-import { db } from "../../firebase"
-import Navbar from "../shared/Navbar"
+import { Link } from "react-router-dom"
 
 const styles = {
   main: {
@@ -39,13 +37,6 @@ const styles = {
       color: SECONDARY_COLOR
     }
   },
-  link: {
-    color: PRIMARY_COLOR,
-    '&:hover': {
-      color: SECONDARY_COLOR
-    }
-  },
-
   submitBtn: {
     textTransform: 'none !important',
     color: `${PRIMARY_COLOR} !important`,

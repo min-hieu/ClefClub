@@ -13,18 +13,9 @@ import Stack from '@mui/material/Stack';
 import ClearIcon from '@mui/icons-material/Clear';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { useAuth } from "../../../contexts/AuthContext"
-import { getRequest, getCollab } from "../../../contexts/DBContext"
-
+import { getRequest } from "../../../contexts/DBContext"
 import { db } from "../../../firebase"
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-
-const receive = true;
-const requester = 'ABMs';
-let approved = null;
-let final_approved = null;
-let num_approve = 2;
-let num_decline = 1;
-let num_owners = 5;
+import { arrayUnion } from "firebase/firestore";
 
 const styles = {
   backIcon: {
@@ -95,16 +86,14 @@ const CollabPreview = ({ classes }) => {
   const [requesterName, setRequesterName] = useState()
   const [requesterId, setRequesterId] = useState()
   const [acceptN, setAcceptN] = useState()
-  const [acceptedIds, setAcceptedIds] = useState()
   const [declineN, setDeclineN] = useState()
-  const [declinedIds, setDeclinedIds] = useState()
   const [finalDecision, setFinalDecision] = useState()
 
   const [num_owners, setNumOwners] = useState()
   const { currentUser } = useAuth()
   const { state } = useLocation();
   const [accepted, setAccepted] = useState();
- 
+
   useEffect(() => {
     // console.log(state)
 
@@ -117,8 +106,6 @@ const CollabPreview = ({ classes }) => {
     setRequesterId(state.requesterId)
     setAcceptN(state.acceptN)
     setDeclineN(state.declineN)
-    setAcceptedIds(state.acceptedIds)
-    setDeclinedIds(state.declinedIds)
 
     let request = getRequest (state.requestId);
     request.then(request => {
@@ -126,11 +113,10 @@ const CollabPreview = ({ classes }) => {
       setAccepted(request.acceptedIds.includes(currentUser.email) ? 'accepted' : (request.declinedIds.includes(currentUser.email) ? 'declined' : 'unknown'));
       setNumOwners(request.receiverIds.length)
     })
-    
   }, [accepted]);
 
 
-  const title = 
+  const title =
     <Grid container alignItems="center" justifyContent="center">
     <Grid item xs={2}>
         <ArrowBackIosIcon
@@ -153,20 +139,21 @@ const CollabPreview = ({ classes }) => {
   </Grid>
 
 const messageText =
-<Grid container alignItems="center" justifyContent="center">
-  <Grid item>
-    <Typography variant="h10">
-      "{message}"
-    </Typography>
+  <Grid container alignItems="center" justifyContent="center">
+    <Grid item>
+      <Typography variant="h10">
+        "{message}"
+      </Typography>
+    </Grid>
   </Grid>
-</Grid>
 
   const subTitle2 =
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid item>
-          <Typography className={classes.subTitle}>Still not sure? Let's see how it currently looks like</Typography>
-        </Grid>
+    <Grid container alignItems="center" justifyContent="center">
+      <Grid item>
+        <Typography className={classes.subTitle}>Still not sure? Let's see how it currently looks like</Typography>
       </Grid>
+    </Grid>
+
   const handleApprove = () => {
     // approved = true;
     // num_approve += 1;
@@ -187,8 +174,8 @@ const messageText =
     }
     // console.log('Approved btn:',accepted)
     setAcceptN(acceptN + 1);
-    
-  }
+  };
+
   const handleDecline = () => {
     if (declineN/num_owners>0.5){
       db.collection("requests").doc(requestId).update({
@@ -218,17 +205,15 @@ const messageText =
           <Typography className={classes.btnText}> Decline </Typography>
       </Button>
     </Link>
-
-
   const decisionText = () => {
-    return requesterId == currentUser.email
-      ? finalDecision == 'pending'
+    return requesterId === currentUser.email
+      ? finalDecision === 'pending'
         ? `Your request is still under review`
-        : `Your request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
-      : finalDecision != 'pending'
-        ? `The request has been ${finalDecision=="accepted" ? 'approved' : 'declined'}`
-        : accepted != 'unknown' 
-          ? `You have ${accepted=="accepted" ? 'approved' : 'declined'} this contribution`
+        : `Your request has been ${finalDecision==="accepted" ? 'approved' : 'declined'}`
+      : finalDecision !== 'pending'
+        ? `The request has been ${finalDecision==="accepted" ? 'approved' : 'declined'}`
+        : accepted !== 'unknown'
+          ? `You have ${accepted==="accepted" ? 'approved' : 'declined'} this contribution`
           : null
 }
 
@@ -240,9 +225,9 @@ const messageText =
       </Stack>
   const decision =
         <Stack className = {classes.decision} direction="row" spacing={5} justifyContent="center">
-          <Typography variant="body1" className={(accepted =='accepted' || finalDecision == 'accepted') ? classes.approveText : ( (accepted =='declined' || finalDecision == 'declined') ?classes.declineText : null)}> 
-            {decisionText()} 
-          </Typography>        
+          <Typography variant="body1" className={(accepted ==='accepted' || finalDecision === 'accepted') ? classes.approveText : ( (accepted ==='declined' || finalDecision === 'declined') ?classes.declineText : null)}>
+            {decisionText()}
+          </Typography>
         </Stack>
 
   const progressInstance =
@@ -252,10 +237,10 @@ const messageText =
           <ProgressBar variant="danger" now={declineN/num_owners*100} key={2}/>
         </ProgressBar>
         <Stack direction="row" spacing={1} alignItems="center" className={classes.caption}>
-          <Typography variant="caption" className={classes.approveText}> Approved by {acceptN}/{num_owners} owner(s) </Typography>        
-          <Typography variant="caption"> - </Typography>        
-          <Typography variant="caption" className={classes.declineText}> Declined by {declineN}/{num_owners} owner(s) </Typography> 
-        </Stack>       
+          <Typography variant="caption" className={classes.approveText}> Approved by {acceptN}/{num_owners} owner(s) </Typography>
+          <Typography variant="caption"> - </Typography>
+          <Typography variant="caption" className={classes.declineText}> Declined by {declineN}/{num_owners} owner(s) </Typography>
+        </Stack>
       </Stack>;
 
   return (
@@ -267,28 +252,24 @@ const messageText =
       {messageText}
       {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
       <video
-          src={videoURL}
-          autoplay="true"
-          controls
-          width="99%"
-          loading="lazy"
-        />
-      {(requesterId != currentUser.email ) && accepted=='unknown'
-        ? <>
-        {vote}
-          </>
-        : <>
-        {decision}
-          </> 
-      
+        src={videoURL}
+        autoplay="true"
+        controls
+        width="99%"
+        loading="lazy"
+      />
+      {(requesterId !== currentUser.email ) && accepted==='unknown'
+        ? ({vote})
+        : ({decision})
       }
       {progressInstance}
-      {(requesterId != currentUser.email ) && accepted=='unknown'
-        ? <>
-            {subTitle2}
-            <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>
-          </>
-        : null
+      {(requesterId !== currentUser.email ) && accepted==='unknown'
+          && (
+            <>
+              {subTitle2}
+              <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>
+            </>
+          )
       }
       <br/>
       <br/>

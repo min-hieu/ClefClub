@@ -13,11 +13,9 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import CheckIcon from '@material-ui/icons/Check';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
-import testCover from '../../../assets/test/test_cover.png'
-import testAddCollab from '../../../assets/test/testAddCollab.png'
 import Navbar from '../../../components/shared/Navbar';
 import { storage, db } from "../../../firebase"
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {getCollab} from "../../../contexts/DBContext"
 import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
 
@@ -121,16 +119,12 @@ const StyledFab = styled(Fab)({
 });
 
 function AddCollab({ classes }) {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [video, setVideo] = useState(null);
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState("Upload video");
   const [collabId, setCollabId] = useState();
   const [collabVideo, setCollabVideo] = useState();
   const [collabTitle, setCollabTitle] = useState()
-  const [collabDescription, setCollabDescription] = useState()
-  const [collabSize, setCollabSize] = useState();
   const [collabOwners, setCollabOwners] = useState([]);
   const [userName, setUserName] = useState([]);
   const history = useHistory();
@@ -142,12 +136,10 @@ function AddCollab({ classes }) {
 
   useEffect(() => {
     setCollabId(state.collabId)
-    let collab = getCollab (state.collabId);
+    let collab = getCollab(state.collabId);
     collab.then(collab => {
       setCollabVideo(collab.videos[0])
       setCollabTitle(collab.title ? collab.title : "")
-      setCollabDescription(collab.description)
-      setCollabSize(collab.userIds.length)
       setCollabOwners(collab.userIds)
       })
 
@@ -173,7 +165,6 @@ function AddCollab({ classes }) {
   const handleChoose = e => {
     const chosenFile = e.target.files[0];
     if (chosenFile) {
-      // setVideo(e.target.files[0]);
       if (!chosenFile.type.includes('video')) {
         setOpenAlert(true);
         return;
@@ -257,9 +248,6 @@ function AddCollab({ classes }) {
     );
   };
 
-  const mainCover =
-		{ img: testCover,
-			title: 'test cover' };
   const [open, setOpen] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -291,20 +279,18 @@ function AddCollab({ classes }) {
 
   const videoUpload =
       <div className={classes.videoWrapper}>
-        {/* <img src={mainCover.img} alt={mainCover.title} className={classes.cover} /> */}
         <video src = {collabVideo} className={classes.cover} autoPlay loop muted/>
         <div className={classes.dropzone}>
           {uploaded ? (
             <>
-            {progress<100?
-            <>
-            <br/>
-            <br/>
-            <Typography className={classes.addText}>{title}</Typography>
-            </>
-            : null}
-            <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop/>
-            {/* <img src={testAddCollab} alt="test add collab" style={{ height: '100%', width: '100%' }}/> */}
+              {progress<100 && (
+                <>
+                  <br/>
+                  <br/>
+                  <Typography className={classes.addText}>{title}</Typography>
+                </>
+              )}
+              <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop/>
               <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
                 <RefreshIcon />
               </StyledFab>

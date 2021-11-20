@@ -10,8 +10,8 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
 import ClapIcon from '../../../assets/clap.svg';
 import ViewSession from '../ViewSession';
-import style from './clap.css';
-import { Link, useHistory } from "react-router-dom"
+import './clap.css';
+import { useHistory } from "react-router-dom"
 import { useAuth } from "../../../contexts/AuthContext"
 import { getCollab } from "../../../contexts/DBContext"
 
@@ -108,23 +108,14 @@ const styles = {
 };
 
 
-function ViewCollab(props) {
-  const {
-    videoId,
-    videoUser,
-    videoTitle,
-    videoDescription,
-  } = props
-
+function ViewCollab() {
   const history = useHistory();
-  const tmpVideoId = "lQr-MMn639Q?autoplay=1";
   const backIcon =
     <ArrowBackIosIcon
       style={styles.backIcon}
       onClick={() => history.goBack()}
     />
   const [collabId, setCollabId] = useState()
-  const [collabUserId, setCollabUserId] = useState()
   const [collabTitle, setCollabTitle] = useState()
   const [collabClaps, setCollabClaps] = useState()
   const [collabSize, setCollabSize] = useState()
@@ -181,7 +172,7 @@ function ViewCollab(props) {
   }
 
   const handleClap = () => {
-    setClaps(claps => [...claps, <img src={ClapIcon} className="userClap"/>])
+    setClaps(claps => [...claps, <img src={ClapIcon} alt="clap" className="userClap"/>])
     console.log(claps);
     console.log("clapped");
   }
@@ -230,7 +221,7 @@ function ViewCollab(props) {
         <LocalFloristIcon onClick={handleLikes}/>
       </Grid>
       <Grid item xs={3}>
-        <img src={ClapIcon} style={styles.clap} onClick={handleClap}/>
+        <img src={ClapIcon} style={styles.clap} alt="clap" onClick={handleClap}/>
       </Grid>
       <Grid item xs={3}>
         <ChatIcon
@@ -246,8 +237,6 @@ function ViewCollab(props) {
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
   const [claps, setClaps] = useState([]);
-  const goToLink = (link) =>
-    history.push(link);
 
   return (
     <div style={{height: 690}}>
@@ -263,12 +252,12 @@ function ViewCollab(props) {
           {collabClaps ? flower : null}
         </div>
       </div>
-      <img src={ClapIcon} className="flyClaps" id="clap1"/>
-      <img src={ClapIcon} className="flyClaps" id="clap2"/>
-      <img src={ClapIcon} className="flyClaps" id="clap3"/>
-      <img src={ClapIcon} className="flyClaps" id="clap4"/>
-      <img src={ClapIcon} className="flyClaps" id="clap5"/>
-      <img src={ClapIcon} className="flyClaps" id="clap6"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap1"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap2"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap3"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap4"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap5"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap6"/>
       { claps }
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }

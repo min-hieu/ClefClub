@@ -1,8 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
-import { auth, db } from "../firebase"
-
-const DBContext = React.createContext()
-
+import { db } from "../firebase"
 
 export function createId(length) {
     var result = "";
@@ -21,13 +17,13 @@ export const getUserCollabs = async (id) => {
   var collabs = await db.collection("sessions").get();
   var joined = [];
   collabs.docs.map((doc) => {
-    
-    if (doc.data().userIds){
-      if (doc.data().userIds.includes(id)) joined.push(Object.assign({}, doc.data(), {collabId: doc.id}));
-    }else{
+    if (doc.data().userIds) {
+      if (doc.data().userIds.includes(id)) {
+        joined.push(Object.assign({}, doc.data(), {collabId: doc.id}));
+      }
+    } else {
       return null;
     }
-    
   });
   return joined;
 };
@@ -85,7 +81,7 @@ export const getOutgoingRequests = async (id) => {
   var closed = [];
   var pending = [];
   requests.docs.map((doc) => {
-    if (doc.data().requesterId == id && doc.data().status == 'pending'){
+    if (doc.data().requesterId === id && doc.data().status === 'pending'){
           pending.push({
             requestId: doc.id,
             collabId: doc.data().collabId,
@@ -101,7 +97,7 @@ export const getOutgoingRequests = async (id) => {
             status: doc.data().status,
           })
       }
-      if (doc.data().requesterId == id && doc.data().status != 'pending'){
+      if (doc.data().requesterId === id && doc.data().status !== 'pending'){
           closed.push({
             requestId: doc.id,
             collabId: doc.data().collabId,
@@ -132,7 +128,7 @@ export const getIncomingRequests = async (id) => {
 
   requests.docs.map((doc) => {
     // console.log("receiverIds:",doc.data().receiverIds)
-    if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status == 'pending'){
+    if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status === 'pending'){
       if ( !doc.data().acceptedIds.includes(id) && !doc.data().declinedIds.includes(id)){
         waiting.push({
           requestId: doc.id,

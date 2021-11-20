@@ -1,19 +1,17 @@
-import React, { useContext, useState, useEffect } from "react"
-import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
-import Navbar from '../components/shared/Navbar';
+import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
+import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
 import testImg3 from '../assets/test/jam2.jpeg';
-
-// mine
 import { useAuth } from "../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
 import { getUserCollabs } from "../contexts/DBContext"
 import { getUserClaps } from "../contexts/DBContext"
 import { getUserInfo } from "../contexts/AuthContext"
-
 
 const styles = {
   profile: {
@@ -83,31 +81,16 @@ const styles = {
     background: PRIMARY_COLOR,
     userSelect: 'none',
   },
+  snackbar: {
+    background: 'red',
+  },
 };
-
-// mine
-class CardVideo extends React.Component {   
-  render() {
-      return (
-          <div> 
-          <h2>{ this.props.value.title }</h2>
-          <h4>{ this.props.value.description }</h4>
-          <h4>Number of claps: { this.props.value.likes }</h4>
-          <video controls className="uploadedVideo" src={this.props.value.videos[0] } alt="firebase-video" />
-
-          </div>
-      );
-  }
-}
 
 function Profile(props) {
   const {
-    name,
     picture,
-    collabs,
   } = props
 
-  // mine
   const [error, setError] = useState("")
   const { currentUser, logout } = useAuth()
   const history = useHistory()
@@ -115,8 +98,6 @@ function Profile(props) {
   const [userClaps, setUserClaps] = useState()
   const [userName, setUserName] = useState("")
   const [userJamNumber, setUserJamNumber] = useState(0)
-
-
   const [showCollabs, setShowCollabs] = React.useState(true);
   const [showClaps, setShowClaps] = React.useState(false);
 
@@ -128,7 +109,6 @@ function Profile(props) {
     }else{
 
       let user = getUserInfo (currentUser.email);
-    // console.log("Found a user:\n",user)
        user.then(user => {
       setUserName(user.nickname)
       })
@@ -143,28 +123,26 @@ function Profile(props) {
       claps.then(claps => {
         setUserClaps(claps)
       })
-
     }
   }, []);
 
-
-
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   async function handleLogout() {
     setError("")
     try {
       await logout()
       history.push("/login")
     } catch {
+      setOpenSnackbar(true);
       setError("Failed to log out")
     }
   }
 
- 
-
   var topCollabData=[];
   if (userCollabs){
       for(var i=0;i<userCollabs.length;i++){
-        topCollabData.push({   img: testImg3,
+        topCollabData.push({
+          img: testImg3,
           video: userCollabs[i].videos[0],
           title: userCollabs[i].title,
           link: '/collab/view',
@@ -178,7 +156,8 @@ function Profile(props) {
   var topClapData=[];
   if (userClaps){
       for(var i=0;i<userClaps.length;i++){
-        topClapData.push({   img: testImg3,
+        topClapData.push({
+          img: testImg3,
           video: userClaps[i].videos[0],
           title: userClaps[i].title,
           link: '/collab/view',
@@ -188,6 +167,17 @@ function Profile(props) {
       }
   }
   console.log("Elements userClaps:",topClapData)
+
+  const handleClose = () => {
+    setOpenSnackbar(false);
+  };
+  const logoutFailedSnackbar =
+    <Snackbar
+      open={openSnackbar}
+      onClose={handleClose}
+      sx={styles.snackbar}
+      message={error}
+    />
 
   return (
     <div>
@@ -201,13 +191,11 @@ function Profile(props) {
           </Grid>
         </Grid>
         <Grid item xs={2}>
-          <Avatar sx={styles.avatar} alt={ name } src={ picture }/>
+          <Avatar sx={styles.avatar} alt={ userName } src={ picture }/>
           <Typography sx={styles.logout} onClick={handleLogout} >
                 Log Out
             </Typography>
         </Grid>
-        
-        
       </Grid>
 
       <Grid container sx={styles.titleBar}>
@@ -229,12 +217,8 @@ function Profile(props) {
 
       { showCollabs ? <CardList data={topCollabData}/> : null }
       { showClaps ? <CardList data={topClapData}/> : null }
-
+      {logoutFailedSnackbar}
       <Navbar />
-      <br/>
-      <br/>
-      <br/>
-      <br/>
     </div>
   );
 }
