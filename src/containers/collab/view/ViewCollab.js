@@ -268,6 +268,7 @@ function ViewCollab(props) {
           {description}
           {iconList}
           {showFlower ? flower : null}
+          {collabClaps ? flower : null}
         </div>
       </div>
       <img src={ClapIcon} className="flyClaps" id="clap1"/>
