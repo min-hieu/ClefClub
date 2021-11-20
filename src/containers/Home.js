@@ -3,27 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { PRIMARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
-import testImg1 from '../assets/test/test_img.png';
-import testImg2 from '../assets/test/jam.jpeg';
-import testImg3 from '../assets/test/jam2.jpeg';
-import testImg4 from '../assets/test/jam69.jpeg';
-import testImg5 from '../assets/test/jam1.jpeg';
-import testImg6 from '../assets/test/jam4.jpeg';
-import testImg7 from '../assets/test/jam5.jpeg';
-
-
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { getAllCollabs } from "../contexts/DBContext";
 import { getCollab } from "../contexts/DBContext";
-
-
-
 
 const styles = {
   bannerTitle: {
@@ -92,7 +79,7 @@ function Home({ classes }) {
   let bannerThumbnail = "";
   if (allCollabs){
       for(var i=0;i<allCollabs.length;i++){
-        topCollabData.push({   img: testImg3,
+        topCollabData.push({
           video: allCollabs[i].videos[0],
           title: allCollabs[i].title,
           link: '/collab/view',

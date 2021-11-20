@@ -3,7 +3,6 @@ import { auth, db } from "../firebase"
 
 const AuthContext = React.createContext()
 
-var userId;
 const getRemaining = (countDownDate) => {
   // Get today's date and time
   var now = new Date().getTime();
@@ -21,14 +20,9 @@ export const getUserInfo = async (id) => {
   users.docs.map((doc) => {
     if (doc.data().email === id)
       user = doc.data();
-  });
+    });
   return user;
 };
-
-
-
-
-
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()

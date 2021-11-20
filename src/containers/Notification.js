@@ -2,19 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Navbar from '../components/shared/Navbar';
 import NotificationList  from '../components/notification/NotificationList';
-import testImg from '../assets/test/test_img.png';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
-
-
-
-// mine
 import { useAuth } from "../contexts/AuthContext"
 import { useHistory } from "react-router-dom"
 import { getOutgoingRequests, getIncomingRequests, getUser, getCollab } from "../contexts/DBContext"
-
-
 
 const styles = {
   profile: {

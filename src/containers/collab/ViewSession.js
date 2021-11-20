@@ -37,10 +37,6 @@ const Jenny = {
   name: 'Jenny',
   img: 'https://react.semantic-ui.com/images/avatar/small/jenny.jpg'
 }
-const Joe = {
-  name: 'Joe',
-  img: 'https://react.semantic-ui.com/images/avatar/small/joe.jpg'
-};
 const commentData = [
   {
     author: Matt,

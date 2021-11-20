@@ -8,7 +8,6 @@ import Grid from '@mui/material/Grid';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
-import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ClapIcon from '../../../assets/clap.svg';
 import ViewSession from '../ViewSession';
 import style from './clap.css';
@@ -52,12 +51,11 @@ const styles = {
     bottom: 83,
     position: 'relative',
     backgroundColor: 'black',
-
   },
   iconList: {
+    width: 'fit-content',
     bottom: 9,
-    right: 52,
-    width: 30,
+    right: 20,
   },
   cmtSection: {
     bottom: 0,
@@ -189,20 +187,14 @@ function ViewCollab(props) {
   }
 
   const video =
-    // <YoutubeEmbed
-    //   embedId={ tmpVideoId }
-    //   w="375"
-    //   h="700"
-    //   sx={styles.video}
-    // />
     <video
-          style={styles.video}
-          src={collabVideo}
-          width="375px"
-          height='700'
-          autoPlay={true}
-          loop
-        />
+      style={styles.video}
+      src={collabVideo}
+      width="375px"
+      height='700'
+      autoPlay={true}
+      loop
+    />
 
 
   const title =
@@ -248,7 +240,7 @@ function ViewCollab(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:130.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:22, bottom:106 }}/>
 
 
   const [showComments, setShowComments] = useState(false);
@@ -258,7 +250,7 @@ function ViewCollab(props) {
     history.push(link);
 
   return (
-    <>
+    <div style={{height: 690}}>
       {backIcon}
       {video}
       <div style={styles.overlay}>
@@ -281,7 +273,7 @@ function ViewCollab(props) {
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
       { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { withStyles } from '@material-ui/core/styles';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -7,10 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@material-ui/core/Typography';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from "../../Constant";
 import Alert from '@mui/material/Alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 import { db } from "../../firebase"
-import Navbar from "../shared/Navbar"
 
 const styles = {
   main: {
@@ -48,6 +49,10 @@ const styles = {
       color: `${PRIMARY_COLOR} !important`,
     },
   },
+  backdrop: {
+    zIndex: 1000,
+    color: '#fff',
+  },
 }
 
 const FancyTextField = styled(TextField)({
@@ -57,7 +62,7 @@ const FancyTextField = styled(TextField)({
   '& .MuiInput-underline:after': {
     borderBottomColor: PRIMARY_COLOR,
   },
-  
+
   '& .MuiOutlinedInput-root': {
     backgroundColor: TERTIARY_COLOR,
     '& fieldset': {
@@ -104,11 +109,10 @@ function Signup({classes}) {
         email: email,
         sessions: [],
       });
-    } 
+    }
     catch {
       setError("Please use the correct email and make a safe password")
     }
-
     setLoading(false)
   }
 
@@ -130,7 +134,7 @@ function Signup({classes}) {
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
-  const pwField1 = 
+  const pwField1 =
     <FancyTextField
       label="Password"
       variant="outlined"
@@ -139,7 +143,7 @@ function Signup({classes}) {
       value={password}
       onChange={e => setPassword(e.target.value)}
     />
-  const pwField2 = 
+  const pwField2 =
     <FancyTextField
       label="Confirm Password"
       variant="outlined"
@@ -148,18 +152,22 @@ function Signup({classes}) {
       value={cfPassword}
       onChange={e => setcfPassword(e.target.value)}
     />
-  const submitBtn = 
-    // <Link to='/profile' style={{ textDecoration: 'none' }}>         
+  const submitBtn =
+    // <Link to='/profile' style={{ textDecoration: 'none' }}>
       <Button variant="contained" className={classes.submitBtn} onClick = {handleSubmit}>
         <Typography className={classes.btnText}> Sign up </Typography>
       </Button>
     // </Link>
-  const login = 
+  const login =
     <Typography className={classes.login} >
       Already have an account? <Link to="/login" className={classes.link}>Log In</Link>
     </Typography>
+  const backdrop =
+    <Backdrop className={classes.backdrop} open={loading}>
+      <CircularProgress color="inherit" />
+    </Backdrop>
 
-    return (
+  return (
     <div className={classes.main}>
       {title}
       <Box
@@ -174,6 +182,7 @@ function Signup({classes}) {
         {submitBtn}
         {error && <Alert severity="error">{error}</Alert>}
         {login}
+        {backdrop}
       </Box>
     </div>
   )

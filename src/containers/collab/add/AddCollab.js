@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import CheckIcon from '@material-ui/icons/Check';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
 import testCover from '../../../assets/test/test_cover.png'
 import testAddCollab from '../../../assets/test/testAddCollab.png'
@@ -95,7 +96,10 @@ const styles = {
   snackbar: {
     background: PRIMARY_COLOR,
   },
-  successMessage: {
+  alertSnackbar: {
+    background: 'red',
+  },
+  snackbarMessage: {
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
@@ -117,7 +121,6 @@ const StyledFab = styled(Fab)({
 });
 
 function AddCollab({ classes }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [video, setVideo] = useState(null);
   const [url, setUrl] = useState("");
@@ -138,7 +141,6 @@ function AddCollab({ classes }) {
 
 
   useEffect(() => {
-    
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
     collab.then(collab => {
@@ -150,11 +152,9 @@ function AddCollab({ classes }) {
       })
 
     let user = getUserInfo (currentUser.email);
-    // console.log("Found a user:\n",user)
         user.then(user => {
       setUserName(user.nickname)
       })
-    
   }, []);
 
 
@@ -165,17 +165,28 @@ function AddCollab({ classes }) {
   const hiddenFileInput = React.useRef(null);
   const handleClose = () => {
     setOpen(false);
-    setAnchorEl(null);
+  };
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   const handleChoose = e => {
+<<<<<<< HEAD
     console.log(e.target.files);
     if (e.target.files[0]) {
+=======
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+>>>>>>> 5331b9e8aacfb53a05e7dd7f5d02eabc54062e9b
       // setVideo(e.target.files[0]);
-      handleVideoUpload(e.target.files[0]);
-    }
-    setTitle("Video is chosen!");
-    setUploaded(true);
+      if (!chosenFile.type.includes('video')) {
+        setOpenAlert(true);
+        return;
+      }
+      handleVideoUpload(chosenFile);
+      setTitle("Video is chosen!");
+      setUploaded(true);
+    };
   };
 
   const handleClickUpload = e => {
@@ -206,14 +217,10 @@ function AddCollab({ classes }) {
   }
 
   const handleVideoUpload = (video) => {
-
-    console.log("Uploading the video!\n");
-    console.log(video.name);
-
     const storageRef = ref(storage, 'videos/' + video.name);
     const metadata = {
       username: 'firstUser',
-    };    
+    };
     const uploadTask = uploadBytesResumable(storageRef, video, metadata);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on('state_changed',
@@ -222,17 +229,14 @@ function AddCollab({ classes }) {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setTitle('Just a moment: ' + Math.round(progress) + '%');
       setProgress(progress);
-      console.log('Upload is ' + progress + '% done');
       switch (snapshot.state) {
         case 'paused':
           setTitle('Upload is paused');
-          console.log('Upload is paused');
           break;
         case 'running':
-          console.log('Upload is running');
           break;
       }
-    }, 
+    },
     (error) => {
       // A full list of error codes is available at
       // https://firebase.google.com/docs/storage/web/handle-errors
@@ -247,15 +251,13 @@ function AddCollab({ classes }) {
           // Unknown error occurred, inspect error.serverResponse
           break;
       }
-    }, 
+    },
     () => {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL);
         setUrl(downloadURL)
         setUploaded(true);
       });
-      // alert("Your request is sent!");
     }
     );
   };
@@ -264,26 +266,19 @@ function AddCollab({ classes }) {
 		{ img: testCover,
 			title: 'test cover' };
   const [open, setOpen] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  const submit = async () => {
-      try{
-        handleVideoUpload()
-        setOpen(true);
-        await delay(1000);
-        // window.location.href = '/';
-        history.goBack();
-      }catch (e){
-        alert(e);
-        console.log(e)
-        alert("Please choose a video first!")
-      }
-  };
-
   const successMessage =
-    <div className={classes.successMessage}>
+    <div className={classes.snackbarMessage}>
       <CheckIcon />
       <span> Your jam is published! </span>
+    </div>
+
+  const alertMessage =
+    <div className={classes.snackbarMessage}>
+      <CancelOutlinedIcon />
+      <span> Unsupported file type! </span>
     </div>
 
   const header =
@@ -353,10 +348,22 @@ function AddCollab({ classes }) {
       onClose={handleClose}
       ContentProps={{
         classes: {
-          root: classes.snackbar
+          root: classes.alertSnackbar
         }
       }}
       message={successMessage}
+    />
+
+  const alertSnackbar =
+    <Snackbar
+      open={openAlert}
+      onClose={handleCloseAlert}
+      ContentProps={{
+        classes: {
+          root: classes.alertSnackbar
+        }
+      }}
+      message={alertMessage}
     />
 
   return (
@@ -367,6 +374,7 @@ function AddCollab({ classes }) {
       {messageToOwner}
       {submitButton}
       {successSnackbar}
+      {alertSnackbar}
       <Navbar />
       <br/>
       <br/>
