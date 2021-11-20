@@ -24,7 +24,6 @@ let approved = null;
 let final_approved = null;
 let num_approve = 2;
 let num_decline = 1;
-let num_owners = 5;
 
 const styles = {
   backIcon: {

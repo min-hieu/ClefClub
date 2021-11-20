@@ -248,7 +248,7 @@ const addZone = uploaded ? (
   const titleField =
     <InputBase
       onChange={(event) => {
-        updateFormData('title', event.target.value)
+        updateFormData('title', event.target.value || 'Untitled')
       }}
       className={classes.name}
       placeholder="Jam Title"

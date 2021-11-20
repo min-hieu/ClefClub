@@ -133,7 +133,6 @@ export const getIncomingRequests = async (id) => {
   requests.docs.map((doc) => {
     // console.log("receiverIds:",doc.data().receiverIds)
     if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status == 'pending'){
-      if ( !doc.data().acceptedIds.includes(id) && !doc.data().declinedIds.includes(id)){
         waiting.push({
           requestId: doc.id,
           collabId: doc.data().collabId,
@@ -149,10 +148,7 @@ export const getIncomingRequests = async (id) => {
           status: doc.data().status,
         })
       }
-    }
-    if (doc.data().receiverIds && doc.data().receiverIds.includes(id)
-      && (doc.data().acceptedIds.includes(id) || doc.data().declinedIds.includes(id))
-      ){
+    if (doc.data().receiverIds && doc.data().receiverIds.includes(id) && doc.data().status != 'pending'){
         closed.push({
           requestId: doc.id,
           collabId: doc.data().collabId,
