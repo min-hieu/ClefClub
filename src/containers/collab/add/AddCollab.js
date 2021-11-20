@@ -171,13 +171,8 @@ function AddCollab({ classes }) {
   };
 
   const handleChoose = e => {
-<<<<<<< HEAD
-    console.log(e.target.files);
-    if (e.target.files[0]) {
-=======
     const chosenFile = e.target.files[0];
     if (chosenFile) {
->>>>>>> 5331b9e8aacfb53a05e7dd7f5d02eabc54062e9b
       // setVideo(e.target.files[0]);
       if (!chosenFile.type.includes('video')) {
         setOpenAlert(true);
