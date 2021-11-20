@@ -9,8 +9,6 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from "../../Constant";
 import Alert from '@mui/material/Alert';
 import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import { db } from "../../firebase"
-import Navbar from "../shared/Navbar"
 
 const styles = {
   main: {

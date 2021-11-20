@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { PRIMARY_COLOR,SECONDARY_COLOR,TERTIARY_COLOR } from '../Constant';
 import { useAuth } from "../contexts/AuthContext"
 import { useHistory } from "react-router-dom"
-import { getOutgoingRequests, getIncomingRequests, getUser, getCollab } from "../contexts/DBContext"
+import { getOutgoingRequests, getIncomingRequests } from "../contexts/DBContext"
 
 const styles = {
   profile: {
@@ -251,24 +251,21 @@ function Notification({ classes }) {
 
   return (
     <>
-      <br/>
-      <br/>
+      <br />
+      <br />
       {tabNames}
-      { showIncoming 
-        ? <>
+      { showIncoming && (
+          <>
             <NotificationList data = {IncomingDataInProgress.filter(e => e.requesterId != currentUser.email)} section = 'In progress' notifPage="inReq"></NotificationList>
             <NotificationList data = {IncomingDataClosed.filter(e => e.requesterId != currentUser.email)} section = 'Closed' notifPage="inReq"></NotificationList>
           </>
-        : null 
-      }
-      { showMy 
-        ? <>
+      )}
+      { showMy && (
+          <>
             <NotificationList data = {OutcomingDataInprogress} section = 'In progress' notifPage="outReq"></NotificationList>
             <NotificationList data = {OutcomingDataClosed} section = 'Closed' notifPage="outReq"></NotificationList> 
           </>
-        : null 
-      }
-
+      )}
       <br/>
       <br/>
       <br/>

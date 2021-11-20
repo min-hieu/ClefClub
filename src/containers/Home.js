@@ -10,7 +10,6 @@ import CardList from '../components/shared/CardList';
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { getAllCollabs } from "../contexts/DBContext";
-import { getCollab } from "../contexts/DBContext";
 
 const styles = {
   bannerTitle: {

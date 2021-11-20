@@ -3,16 +3,16 @@ import { auth, db } from "../firebase"
 
 const AuthContext = React.createContext()
 
-const getRemaining = (countDownDate) => {
-  // Get today's date and time
-  var now = new Date().getTime();
-  // Find the distance between now and the count down date
-  var distance = countDownDate + (72 * 60 * 60 * 1000) - now;
-  if (distance < 0) {
-    return false;
-  }
-  return true;
-};
+// const getRemaining = (countDownDate) => {
+//   // Get today's date and time
+//   var now = new Date().getTime();
+//   // Find the distance between now and the count down date
+//   var distance = countDownDate + (72 * 60 * 60 * 1000) - now;
+//   if (distance < 0) {
+//     return false;
+//   }
+//   return true;
+// };
 
 export const getUserInfo = async (id) => {
   var users = await db.collection("users").get();

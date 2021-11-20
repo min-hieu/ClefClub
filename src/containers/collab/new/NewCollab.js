@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom"
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import Navbar from '../../../components/shared/Navbar';
@@ -12,10 +15,10 @@ import { useAuth } from "../../../contexts/AuthContext"
 import { storage } from "../../../firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../../../firebase"
-import { useHistory } from "react-router-dom"
-import Snackbar from '@material-ui/core/Snackbar';
 
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const styles = {
   main: {
@@ -117,20 +120,23 @@ const styles = {
     },
     width: '100%',
     marginTop: 20,
-  }
+  },
+  snackbarMessage: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
 };
 
 function NewCollab({ classes }) {
   const [formData, setFormData] = useState({})
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [url, setUrl] = useState("");
   const [uploaded, setUploaded] = useState(false);
   const [title, setTitle] = useState("Upload video");
-  const { currentUser, logout } = useAuth()
-  const descriptionRef = useRef()
-  const titleRef = useRef()
+  const { currentUser } = useAuth()
   const history = useHistory()
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const updateFormData = (key, value) => {
@@ -141,9 +147,16 @@ function NewCollab({ classes }) {
   const hiddenFileInput = React.useRef(null);
 
   const handleChoose = e => {
-    if (e.target.files[0]) {
-      handleVideoUpload(e.target.files[0]);
-    }
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+      if (!chosenFile.type.includes('video')) {
+        setOpenAlert(true);
+        return;
+      }
+      handleVideoUpload(chosenFile);
+      setTitle("Video is chosen!");
+      setUploaded(true);
+    };
   };
 
   const handleClickUpload = e => {
@@ -176,7 +189,7 @@ function NewCollab({ classes }) {
     console.log("Uploading the video!\n");
     console.log(video.name);
 
-    const storageRef = ref(storage, 'videos/' + video.name);   
+    const storageRef = ref(storage, 'videos/' + video.name);
     const uploadTask = uploadBytesResumable(storageRef, video);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on('state_changed',
@@ -195,7 +208,7 @@ function NewCollab({ classes }) {
           console.log('Upload is running');
           break;
       }
-    }, 
+    },
     (error) => {
       // A full list of error codes is available at
       // https://firebase.google.com/docs/storage/web/handle-errors
@@ -210,7 +223,7 @@ function NewCollab({ classes }) {
           // Unknown error occurred, inspect error.serverResponse
           break;
       }
-    }, 
+    },
     () => {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -223,27 +236,25 @@ function NewCollab({ classes }) {
     );
   };
 
-
-
   const header =
     <>
       <Typography className={classes.title}>New Jam</Typography>
       <Typography className={classes.subtitle}>Start cooking up some joy!</Typography>
     </>
 
-const addZone = uploaded ? (
-                   <div className={classes.newdropzone}>
-                   <RefreshIcon className={classes.refreshIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-                   <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-                   <Typography className={classes.addText}>{title}</Typography>
-                   </div>
-                ) : (
-                  <div className={classes.dropzone}>
-                    <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
-                    <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
-                    <Typography className={classes.addText}>{title}</Typography>
-                    </div>
-                )
+  const addZone = uploaded ? (
+      <div className={classes.newdropzone}>
+        <RefreshIcon className={classes.refreshIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+        <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+        <Typography className={classes.addText}>{title}</Typography>
+      </div>
+  ) : (
+    <div className={classes.dropzone}>
+      <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+      <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+      <Typography className={classes.addText}>{title}</Typography>
+    </div>
+  )
 
   const titleField =
     <InputBase
@@ -273,28 +284,57 @@ const addZone = uploaded ? (
       Publish your jam
     </Button>
 
-  const videoDisplay = uploaded ? 
-  <div className="d-inline-flex p-2">
-   <br/>
-  <video
-          src={url}
-          controls
-          width="290px"
-          loading="lazy"
-        />
-  </div>
-  : null
+  const videoDisplay = uploaded && (
+    <div className="d-inline-flex p-2">
+      <br/>
+      <video
+        src={url}
+        controls
+        width="290px"
+        loading="lazy"
+      />
+    </div>
+  );
+
+  const successMessage = "Your jam is published!";
+  const alertMessage = "Unsupported file type!";
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+
+  const alertSnackbar =
+    <Snackbar
+      open={openAlert}
+      onClose={handleCloseAlert}
+      ContentProps={{
+        classes: {
+          root: classes.alertSnackbar
+        }
+      }}
+    >
+      <Alert severity="error" onClose={handleCloseAlert}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
 
   const successSnackbar =
-  <Snackbar
-    open={open}
-    ContentProps={{
-      classes: {
-        root: classes.snackbar
-      }
-    }}
-    message={"Your request is submitted!"}
-  />
+    <Snackbar
+      open={open}
+      onClose={handleClose}
+      ContentProps={{
+        classes: {
+          root: classes.snackbar
+        }
+      }}
+    >
+      <Alert severity="success" onClose={handleClose}>
+        {successMessage}
+      </Alert>
+    </Snackbar>
 
   return (
     <div className={classes.main}>
@@ -305,12 +345,8 @@ const addZone = uploaded ? (
       {descriptionField}
       {publishButton}
       {successSnackbar}
+      {alertSnackbar}
 			<Navbar />
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
     </div>
   );
 }

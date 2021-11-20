@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
@@ -17,7 +16,6 @@ const styles = {
     paddingLeft: 16,
     padding: 10,
   },
- 
   sectionDesc: {
     fontSize: 14,
     paddingLeft: 16,
@@ -149,44 +147,45 @@ const MediaControlCard = ({text, data}) => {
           <Typography component="h10" variant="h10">
             {text}
           </Typography>
-        </TruncateMarkup>  
+        </TruncateMarkup>
       </Grid>
       <Grid xs={1} className={classes.timeStamp}>
-        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>  
-      </Grid>     
+        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>
+      </Grid>
     </Card>
   );
 }
 
 const NotificationList = ({classes, data, section, notifPage}) => {
-    const drawTile = (data) => {
-      const link =  {pathname: '/collab/preview', state: data}
-      const text =  
-        section == "In progress" 
-          ? notifPage == 'inReq'
-            ? <div> The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}") </div>
-            : <div> The request you sent to the jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> is under review </div>
-          : notifPage == 'inReq'
-            ? <div> The request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span> has been {data.status} </div>
-            : <div> Your request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has been {data.status} </div>
+  const drawTile = (data) => {
+    const link =  {pathname: '/collab/preview', state: data}
+    const text =
+      section === "In progress"
+        ? notifPage === 'inReq'
+          ? <div> The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}") </div>
+          : <div> The request you sent to the jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> is under review </div>
+        : notifPage === 'inReq'
+          ? <div> The request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span> has been {data.status} </div>
+          : <div> Your request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has been {data.status} </div>
 
-      return (
-        <Link to={link} style={{ textDecoration: 'none' }}>     
-          <Grid item xs={12}>
-            <MediaControlCard text = {text} data={data}></MediaControlCard>
-          </Grid>
-        </Link>
-      )
-    }
-    const descr = section == "In progress" 
-    ? notifPage == 'inReq'
-      ? `You have awaiting contributions for these jams`
-      : `You have awaiting requests for approval for these jams`
-    : notifPage == 'outReq'
-      ? `These are the results of your requests for following jams`
-      : `These jams are about to be concluded when others approve`
     return (
-      <>
+      <Link to={link} style={{ textDecoration: 'none' }}>
+        <Grid item xs={12}>
+          <MediaControlCard text = {text} data={data}></MediaControlCard>
+        </Grid>
+      </Link>
+    )
+  }
+ // const descr = section === "In progress"
+ // ? notifPage === 'inReq'
+ //   ? `You have awaiting contributions for these jams`
+ //   : `You have awaiting requests for approval for these jams`
+ // : notifPage === 'outReq'
+ //   ? `These are the results of your requests for following jams`
+ //   : `These jams are about to be concluded when others approve`
+
+  return (
+    <>
       <Typography variant='body1' className={classes.sectionHeading}>{section}</Typography>
       {/* <Typography className={classes.sectionDesc}> {descr} </Typography>   */}
       <div className={classes.gridListWrapper}>
@@ -194,9 +193,8 @@ const NotificationList = ({classes, data, section, notifPage}) => {
           {data.map(drawTile)}
         </Grid>
       </div>
-      </>
-    )
-
+    </>
+  )
 }
 
 export default withStyles(styles)(NotificationList);
