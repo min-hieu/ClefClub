@@ -14,7 +14,7 @@ To run locally, execute:<br>
 
 # Main files
 - All main implementation file is located in the **src** folder.
-    -  assets: app's assets, including mostly testing images
+    -  assets: app's assets, including mostly testing images and video
     -  containers: main page containers
     -  components: reusable components that can be shared among pages
 
