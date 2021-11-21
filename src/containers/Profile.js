@@ -210,7 +210,7 @@ function Profile(props) {
             sx={ showClaps ? styles.titleActive : styles.title }
             onClick={(e) => {setShowClaps(true);setShowCollabs(false)}}
           >
-            Your Flowers
+            Flowers tossed
           </Typography>
         </Grid>
       </Grid>

@@ -49,7 +49,7 @@ export const getUserClaps = async (id) => {
   collabs.docs.map((doc) => {
     // console.log(doc.data().userIds.includes(id))
     if (doc.data().clappedIds){
-      if (doc.data().clappedIds.includes(id) && !doc.data().userIds.includes(id)) clapped.push(Object.assign({}, doc.data(), {collabId: doc.id}));
+      if (doc.data().clappedIds.includes(id)) clapped.push(Object.assign({}, doc.data(), {collabId: doc.id}));
     }else{
       return null;
     }
