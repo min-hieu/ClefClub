@@ -218,6 +218,10 @@ function Profile(props) {
       { showCollabs ? <CardList data={topCollabData}/> : null }
       { showClaps ? <CardList data={topClapData}/> : null }
       {logoutFailedSnackbar}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
       <Navbar />
     </div>
   );
