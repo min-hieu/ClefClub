@@ -70,7 +70,7 @@ const Navbar = ({classes}) => {
     </Link>
 
     return (
-      <nav class="menu">
+      <nav className="menu">
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolBar}>
             <Grid container spacing={2} direction="row">

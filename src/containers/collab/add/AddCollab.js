@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
@@ -9,11 +9,18 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import CheckIcon from '@material-ui/icons/Check';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constant';
-import testCover from '../../../assets/test/test_cover.png'
 import Navbar from '../../../components/shared/Navbar';
+import { storage, db } from "../../../firebase"
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {getCollab} from "../../../contexts/DBContext"
+import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const styles = {
   backIcon: {
@@ -87,10 +94,7 @@ const styles = {
       color: SECONDARY_COLOR,
     },
   },
-  snackbar: {
-    background: PRIMARY_COLOR,
-  },
-  successMessage: {
+  snackbarMessage: {
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
@@ -99,7 +103,7 @@ const styles = {
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
-  top: 420,
+  top: 405,
   right: 50,
   color: TERTIARY_COLOR,
   background: SECONDARY_COLOR,
@@ -112,27 +116,143 @@ const StyledFab = styled(Fab)({
 });
 
 function AddCollab({ classes }) {
-  const mainCover =
-		{ img: testCover,
-			title: 'test cover' };
-  const [uploaded, setUploaded] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-  const submit = async () => {
-    setOpen(true);
-    await delay(1000);
-    window.location.href = '/';
-  };
+  const [url, setUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [title, setTitle] = useState("Upload video");
+  const [collabId, setCollabId] = useState();
+  const [collabVideo, setCollabVideo] = useState();
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabOwners, setCollabOwners] = useState([]);
+  const [userName, setUserName] = useState([]);
+  const history = useHistory();
+  const { state } = useLocation();
+  const [formData, setFormData] = useState({});
+  const { currentUser } = useAuth();
+  const [uploaded, setUploaded] = useState(false);
+
+
+  useEffect(() => {
+    setCollabId(state.collabId)
+    let collab = getCollab(state.collabId);
+    collab.then(collab => {
+      setCollabVideo(collab.videos[0])
+      setCollabTitle(collab.title ? collab.title : "")
+      setCollabOwners(collab.userIds)
+      })
+
+    let user = getUserInfo (currentUser.email);
+        user.then(user => {
+      setUserName(user.nickname)
+      })
+  }, []);
+
+
+  const updateFormData = (key, value) => {
+    setFormData({...formData, [key]: value})
+  }
+
+  const hiddenFileInput = React.useRef(null);
   const handleClose = () => {
     setOpen(false);
   };
-  const successMessage =
-    <div className={classes.successMessage}>
-      <CheckIcon />
-      <span> Your jam has been submitted! </span>
-    </div>
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
 
-  const history = useHistory();
+  const handleChoose = e => {
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+      if (!chosenFile.type.includes('video')) {
+        setOpenAlert(true);
+        return;
+      }
+      handleVideoUpload(chosenFile);
+      setTitle("Video is chosen!");
+      setUploaded(true);
+    };
+  };
+
+  const handleClickUpload = e => {
+    hiddenFileInput.current.click();
+  }
+
+  const addCollabToDB  = async () =>{
+    const acceptedIds = collabOwners.includes(currentUser.email) ? [currentUser.email] : [];
+    const status = acceptedIds.length/setCollabOwners.length > 0.5 ? 'accepted' : 'pending';
+    try{
+      db.collection("requests").add({
+        ...formData,
+        collabId: collabId,
+        collabTitle: collabTitle ? collabTitle : "Untitled",
+        status: status,
+        acceptedIds: acceptedIds,
+        declinedIds: [],
+        videoURL: url,
+        requesterId: currentUser.email,
+        requesterName: userName,
+        receiverIds: collabOwners,
+      });
+      setOpen(true);
+      await delay(1000);
+      history.goBack();
+    } catch (e) {
+      alert(e)
+      alert("Please choose a video first!")
+    }
+  }
+
+  const handleVideoUpload = (video) => {
+    const storageRef = ref(storage, 'videos/' + video.name);
+    const metadata = {
+      username: 'firstUser',
+    };
+    const uploadTask = uploadBytesResumable(storageRef, video, metadata);
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+    (snapshot) => {
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setTitle('Just a moment: ' + Math.round(progress) + '%');
+      setProgress(progress);
+      switch (snapshot.state) {
+        case 'paused':
+          setTitle('Upload is paused');
+          break;
+        case 'running':
+          break;
+      }
+    },
+    (error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/unauthorized':
+          // User doesn't have permission to access the object
+          break;
+        case 'storage/canceled':
+          // User canceled the upload
+          break;
+        case 'storage/unknown':
+          // Unknown error occurred, inspect error.serverResponse
+          break;
+      }
+    },
+    () => {
+      // Upload completed successfully, now we can get the download URL
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setUrl(downloadURL)
+        setUploaded(true);
+      });
+    }
+    );
+  };
+
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  const successMessage = "Your request is submitted!";
+  const alertMessage = "Unsupported file type!";
 
   const header =
     <Grid container alignItems="center" justifyContent="center">
@@ -148,43 +268,47 @@ function AddCollab({ classes }) {
     </Grid>
 
   const videoUpload =
-    uploaded ? (
-      <>
-        <iframe
-          className={classes.preview}
-          width="304"
-          height="380"
-          src={"https://www.youtube.com/embed/-xEpxWPAYXU?start=28&end=41"}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          title="Embedded youtube"
-        />
-        <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
-          <RefreshIcon />
-        </StyledFab>
-      </>
-    ) : (
       <div className={classes.videoWrapper}>
-        <img src={mainCover.img} alt={mainCover.title} className={classes.cover} />
-        <div className={classes.dropzone} onClick={() => setUploaded(true)}>
-          <AddCircleOutlineOutlinedIcon className={classes.addIcon} />
-          <Typography className={classes.addText}>Upload video</Typography>
+        <video src = {collabVideo} className={classes.cover} autoPlay loop muted/>
+        <div className={classes.dropzone}>
+          {uploaded ? (
+            <>
+              {progress<100 && (
+                <>
+                  <br/>
+                  <br/>
+                  <Typography className={classes.addText}>{title}</Typography>
+                </>
+              )}
+              <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop/>
+              <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
+                <RefreshIcon />
+              </StyledFab>
+            </>
+          ) : (
+            <>
+              <AddCircleOutlineOutlinedIcon className={classes.addIcon} style= {{cursor:'pointer'}} onClick = {handleClickUpload}/>
+              <input type="file" style={{display:'none'}} ref={hiddenFileInput}  onChange={handleChoose}/>
+              <Typography className={classes.addText}>{title}</Typography>
+            </>
+          )}
         </div>
       </div>
-    )
 
   const messageToOwner =
     <Input
+      onChange={(event) => {
+        updateFormData('message', event.target.value)
+      }}
       className={classes.message}
-      placeholder="Message for the jam owner..."
+      placeholder="Message for the jam owners..."
       required
     />
 
   const submitButton =
     <Button
       className={classes.submitButton}
-      onClick={submit}
+      onClick={addCollabToDB}
     >
       Submit your jam
     </Button>
@@ -195,11 +319,29 @@ function AddCollab({ classes }) {
       onClose={handleClose}
       ContentProps={{
         classes: {
-          root: classes.snackbar
+          root: classes.alertSnackbar
         }
       }}
-      message={successMessage}
-    />
+    >
+      <Alert severity="success" onClose={handleClose}>
+        {successMessage}
+      </Alert>
+    </Snackbar>
+
+  const alertSnackbar =
+    <Snackbar
+      open={openAlert}
+      onClose={handleCloseAlert}
+      ContentProps={{
+        classes: {
+          root: classes.alertSnackbar
+        }
+      }}
+    >
+      <Alert severity="error" onClose={handleCloseAlert}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
 
   return (
     <div className={classes.main}>
@@ -209,7 +351,12 @@ function AddCollab({ classes }) {
       {messageToOwner}
       {submitButton}
       {successSnackbar}
+      {alertSnackbar}
       <Navbar />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
   );
 }

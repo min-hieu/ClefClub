@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { PRIMARY_COLOR, TERTIARY_COLOR } from '../../Constant';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../Constant';
+import TruncateMarkup from "react-truncate-markup";
 
 const styles = {
   sectionHeading: {
@@ -15,6 +15,18 @@ const styles = {
     color: PRIMARY_COLOR,
     paddingLeft: 16,
     padding: 10,
+  },
+  sectionDesc: {
+    fontSize: 14,
+    paddingLeft: 16,
+    padding: 4,
+    color: 'grey'
+  },
+  sectionUser: {
+    fontSize: 14,
+    paddingLeft: 16,
+    padding: 4,
+    color: PRIMARY_COLOR
   },
 
   tileTitle: {
@@ -59,18 +71,22 @@ const useStyles = makeStyles((theme) => ({
   details: {
     display: 'flex',
     flexDirection: 'column',
-    width: '90%',
   },
   content: {
-    flex: '1 0 auto',
-    width: '90%',
+    margin: 'auto',
+    // flex: '1 0 auto',
+    width: '95%',
+    marginRight: 15,
   },
   cover: {
-    width: '26%',
-    height: 80,
+    // width: '26%',
+    // padding: 10,
+    height: 60,
+    width: 60,
     margin: 'auto',
-    marginLeft: 15,
     borderRadius: 90,
+    backgroundColor: TERTIARY_COLOR,
+    border: '1px solid rgba(0, 0, 0, 0.1)',
   },
   controls: {
     display: 'flex',
@@ -82,6 +98,33 @@ const useStyles = makeStyles((theme) => ({
     height: 38,
     width: 38,
   },
+  subtitle: {
+    fontSize: 14,
+    color: SECONDARY_COLOR,
+    paddingLeft: 16,
+    paddingTop: 10,
+    textAlign: 'center',
+  },
+  sectionDesc: {
+    fontSize: 14,
+    paddingLeft: 16,
+    padding: 4,
+    color: 'grey'
+  },
+  sectionUser: {
+    fontSize: 16,
+    paddingLeft: 16,
+    padding: 4,
+    color: PRIMARY_COLOR
+  },
+  sectionTime: {
+    fontSize: 10,
+    margin: 'auto',
+    color: '#abb8c3'
+  },
+  timeStamp:{
+    margin: 'auto',
+  }
 }));
 
 
@@ -91,56 +134,67 @@ const MediaControlCard = ({text, data}) => {
 
   return (
     <Card className={classes.root}>
-      <CardMedia
-        className={classes.cover}
-        image={data.img}
-        title="Live from space album cover"
-      />
-      <div className={classes.details}>
-        <CardContent className={classes.content} alignItems='center'>
+      <Grid className={classes.details} xs={3}>
+        <CardMedia
+          component='video'
+          className={classes.cover}
+          image={data.video}
+          title="Live from space album cover"
+        />
+      </Grid>
+      <Grid className={classes.content} xs={8}>
+        <TruncateMarkup lines = {3}>
           <Typography component="h10" variant="h10">
             {text}
           </Typography>
-        </CardContent>
-      </div>
+        </TruncateMarkup>
+      </Grid>
+      <Grid xs={1} className={classes.timeStamp}>
+        <Typography className={classes.sectionTime}> {Math.floor(Math.random() * 60) + 1}m </Typography>
+      </Grid>
     </Card>
   );
 }
 
-const NotificationList = ({classes, data, section}) => {
-    const drawTile = (data) => {
-      const text = data.receive 
-        ? data.finalAccept === null 
-          ? `You have an awaiting contribution for the jam ${data.title}` 
-          : `Your jam ${data.title} just ${data.finalAccept ? 'approved' : 'declined'} a new contribution` 
-        : data.finalAccept === null 
-        ? `Your contribution to ${data.title} has been sent.`
-        : data.finalAccept
-          ? `Your contribution to ${data.title} has been approved.`
-          : `Your contribution to ${data.title} has been declined.`
-      const link = data.receive 
-        ? '/collab/preview'
-        : '/collab/preview'
-      return (
-        <Link to={link} style={{ textDecoration: 'none' }}>         
-          <Grid item xs={12}>
-            <MediaControlCard text={text} data={data}></MediaControlCard>
-          </Grid>
-        </Link>
-      )
-  }
-    
+const NotificationList = ({classes, data, section, notifPage}) => {
+  const drawTile = (data) => {
+    const link =  {pathname: '/collab/preview', state: data}
+    const text =
+      section === "In progress"
+        ? notifPage === 'inReq'
+          ? <div> The jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has a pending requests from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span>: "{data.message}") </div>
+          : <div> The request you sent to the jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> is under review </div>
+        : notifPage === 'inReq'
+          ? <div> The request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> from <span style={{fontWeight: 'bold'}}>{data.requesterName}</span> has been {data.status} </div>
+          : <div> Your request for jam <span style={{fontWeight: 'bold', fontStyle: 'italic'}}>{data.title}</span> has been {data.status} </div>
+
     return (
-      <>
+      <Link to={link} style={{ textDecoration: 'none' }}>
+        <Grid item xs={12}>
+          <MediaControlCard text = {text} data={data}></MediaControlCard>
+        </Grid>
+      </Link>
+    )
+  }
+ // const descr = section === "In progress"
+ // ? notifPage === 'inReq'
+ //   ? `You have awaiting contributions for these jams`
+ //   : `You have awaiting requests for approval for these jams`
+ // : notifPage === 'outReq'
+ //   ? `These are the results of your requests for following jams`
+ //   : `These jams are about to be concluded when others approve`
+
+  return (
+    <>
       <Typography variant='body1' className={classes.sectionHeading}>{section}</Typography>
+      {/* <Typography className={classes.sectionDesc}> {descr} </Typography>   */}
       <div className={classes.gridListWrapper}>
         <Grid className={classes.gridList} xs={12} spacing={2} direction='column'>
           {data.map(drawTile)}
         </Grid>
       </div>
-      </>
-    )
-
+    </>
+  )
 }
 
 export default withStyles(styles)(NotificationList);

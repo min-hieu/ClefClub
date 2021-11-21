@@ -1,5 +1,5 @@
-import React,{ useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {useLocation} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -8,11 +8,15 @@ import Grid from '@mui/material/Grid';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
-import YoutubeEmbed from '../../../components/shared/YoutubeEmbed';
 import ClapIcon from '../../../assets/clap.svg';
-import ViewSession from '../../session/view/ViewSession';
-import style from './clap.css';
+import ViewSession from '../ViewSession';
+import './clap.css';
+import { useHistory } from "react-router-dom"
+import { useAuth } from "../../../contexts/AuthContext"
+import { getCollab } from "../../../contexts/DBContext"
 
+
+import { db } from "../../../firebase"
 
 const styles = {
   overlay: {
@@ -46,11 +50,12 @@ const styles = {
   video: {
     bottom: 83,
     position: 'relative',
+    backgroundColor: 'black',
   },
   iconList: {
+    width: 'fit-content',
     bottom: 9,
-    right: 52,
-    width: 30,
+    right: 20,
   },
   cmtSection: {
     bottom: 0,
@@ -91,43 +96,113 @@ const styles = {
     position: 'sticky',
     color: TERTIARY_COLOR,
   },
+  clap: {
+    cursor: 'pointer',
+    width: 24,
+    height: 24,
+    "&:hover": {
+      width: 30,
+      height: 30,
+    },
+  },
 };
 
 
-function ViewCollab(props) {
-  const {
-    videoId,
-    videoUser,
-    videoTitle,
-    videoDescription,
-  } = props
-
+function ViewCollab() {
   const history = useHistory();
-  const tmpVideoId = "lQr-MMn639Q?autoplay=1";
   const backIcon =
     <ArrowBackIosIcon
       style={styles.backIcon}
       onClick={() => history.goBack()}
     />
+  const [collabId, setCollabId] = useState()
+  const [collabTitle, setCollabTitle] = useState()
+  const [collabClaps, setCollabClaps] = useState()
+  const [collabSize, setCollabSize] = useState()
+  const [collabVideo, setCollabVideo] = useState()
+  const [collabDescription, setCollabDescription] = useState()
+  const { currentUser } = useAuth()
+
+
+  const { state } = useLocation();
+  useEffect(() => {
+    setCollabId(state.collabId)
+    let collab = getCollab (state.collabId);
+    collab.then(collab => {
+      // console.log(collab.title)
+      setCollabVideo(collab.videos[0])
+      setCollabTitle(collab.title)
+      setCollabDescription(collab.description)
+      setCollabSize(collab.userIds.length)
+      setCollabClaps(collab.claps)
+      })
+  }, [collabId,collabTitle,collabClaps,collabSize,collabDescription]);
+
+
+
+  async function handleJam() {
+    try {
+      history.push( {pathname: "/collab/add/", state: {collabId: collabId}})
+    } catch {
+      console.log("Failed to join")
+    }
+  }
+
+  const handleLikes  = () => {
+    setShowFlower(true);
+    var collab = db.collection("sessions").doc(collabId);
+    collab.get().then(function (doc) {
+      if (doc.exists) {
+        collab.get().then((snapshot) => {
+          var claps = snapshot.data().claps;
+          var clappedIds = snapshot.data().clappedIds;
+          if (clappedIds && !clappedIds.includes(currentUser.email)){
+            console.log(clappedIds)
+            collab.update({
+              claps: claps+1,
+              clappedIds: clappedIds.concat([currentUser.email])
+            });
+            console.log("Clap!")
+          }
+        });
+      } else {
+        alert("session is no longer available");
+      }
+    });
+  }
+
+  const handleClap = () => {
+    setClaps(claps => [...claps, <img src={ClapIcon} alt="clap" className="userClap"/>])
+    console.log(claps);
+    console.log("clapped");
+  }
 
   const video =
-    <YoutubeEmbed
-      embedId={ tmpVideoId }
-      w="375"
-      h="700"
-      sx={styles.video}
+    <video
+      style={styles.video}
+      src={collabVideo}
+      width="375px"
+      height='700'
+      autoPlay={true}
+      loop
     />
+
 
   const title =
     <Typography sx={styles.title}>
-      <span style={{color:SECONDARY_COLOR}}>John</span>
-      - 69K views - 6 days ago
+      <span style={{color:SECONDARY_COLOR}}>{collabTitle} </span>
+       - 2 days ago
     </Typography>
 
   const description =
+  <>
     <Typography sx={styles.desc}>
-      Ayo whassubdog...
+      Joined by {collabSize}
     </Typography>
+      <Typography sx={styles.desc}>
+      {collabDescription}
+    </Typography>
+  </>
 
   const iconList =
     <Grid
@@ -140,13 +215,13 @@ function ViewCollab(props) {
       sx={styles.iconList}
     >
       <Grid item xs={3}>
-        <GroupAddIcon onClick={(e)=>goToLink('/collab/add')}/>
+        <GroupAddIcon onClick={handleJam}/>
       </Grid>
       <Grid item xs={3}>
-        <LocalFloristIcon onClick={(e)=>{setShowFlower(true)}}/>
+        <LocalFloristIcon onClick={handleLikes}/>
       </Grid>
       <Grid item xs={3}>
-        <img src={ClapIcon} style={{width:24,height:24}}/>
+        <img src={ClapIcon} style={styles.clap} alt="clap" onClick={handleClap}/>
       </Grid>
       <Grid item xs={3}>
         <ChatIcon
@@ -156,15 +231,15 @@ function ViewCollab(props) {
     </Grid>
 
   const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:23.4, bottom:131.1 }}/>
+    <FilterVintageIcon sx={{ position: 'absolute', right:22, bottom:106 }}/>
+
 
   const [showComments, setShowComments] = useState(false);
   const [showFlower, setShowFlower] = useState(false);
-  const goToLink = (link) =>
-    history.push(link);
+  const [claps, setClaps] = useState([]);
 
   return (
-    <>
+    <div style={{height: 690}}>
       {backIcon}
       {video}
       <div style={styles.overlay}>
@@ -172,20 +247,22 @@ function ViewCollab(props) {
         <div style={styles.textWrapper}>
           {title}
           {description}
-          {showFlower ? flower : null}
           {iconList}
+          {showFlower ? flower : null}
+          {collabClaps ? flower : null}
         </div>
       </div>
-      <img src={ClapIcon} className="flyClaps" id="clap1"/>
-      <img src={ClapIcon} className="flyClaps" id="clap2"/>
-      <img src={ClapIcon} className="flyClaps" id="clap3"/>
-      <img src={ClapIcon} className="flyClaps" id="clap4"/>
-      <img src={ClapIcon} className="flyClaps" id="clap5"/>
-      <img src={ClapIcon} className="flyClaps" id="clap6"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap1"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap2"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap3"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap4"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap5"/>
+      <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap6"/>
+      { claps }
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
       { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
-    </>
+    </div>
   );
 }
 

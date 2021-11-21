@@ -1,0 +1,72 @@
+.hud {
+    height: '16%';
+    width: '100%';
+    background: 'linear-gradient(#00000000,${PRIMARY_COLOR} 40%)';
+    bottom: 0;
+    position: 'absolute';
+    z-index: 100;
+}
+
+.video-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+  }
+  
+.video-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.uploadedImg {
+    height: 100%;
+    width: 100%;
+}
+.uploadedVideo{
+    height: 100%;
+    width: 100%;
+}
+
+.vertical-center {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+.horizontal-right{
+    /* position: absolute; */
+    position: relative;
+    right: 85px;
+    bottom: 80px;
+    /* z-index: 10; */
+    /* top: 50%; */
+}
+
+.container {
+    height: 100%;
+    position: relative;
+    background-color: black;
+    
+}
+
+.App-root-1 {
+    background: black;
+}
+
+.joinButton {
+    color: TERTIARY_COLOR;
+    background-color: SECONDARY_COLOR;
+    font-size: 18;
+    font-weight: 'bold';
+    justify-content: 'center !important';
+    width: '100%';
+    margin-top: 20;
+  }
+
+.addIcon {
+    font-size: 70,
+}

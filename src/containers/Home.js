@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from "react"
 import { withStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@mui/material/Typography';
 import { PRIMARY_COLOR } from '../Constant';
 import Navbar from '../components/shared/Navbar';
 import CardList from '../components/shared/CardList';
-import testImg1 from '../assets/test/test_img.png';
-import testImg2 from '../assets/test/jam.jpeg';
-import testImg3 from '../assets/test/jam2.jpeg';
-import testImg4 from '../assets/test/jam69.jpeg';
-import testImg5 from '../assets/test/jam1.jpeg';
-import testImg6 from '../assets/test/jam4.jpeg';
-import testImg7 from '../assets/test/jam5.jpeg';
+import { useAuth } from "../contexts/AuthContext";
+import { useHistory } from "react-router-dom";
+import { getAllCollabs } from "../contexts/DBContext";
 
 const styles = {
+  bannerTitle: {
+    position: 'absolute',
+    left: "50%",
+    transform: "translate(-50%,0)",
+    color: 'white',
+    top: 140,
+    fontSize: 30,
+    fontWeight: 'bold',
+    width: 'fit-content',
+  },
   media: {
     height: 300,
     borderRadius: '20px 20px 0 0',
+    backgroundColor: 'black',
   },
   mediaList: {
     width: 133,
@@ -45,46 +52,67 @@ const styles = {
 };
 
 function Home({ classes }) {
+  const { currentUser } = useAuth();
+  const history = useHistory();
+  const [allCollabs, setAllCollabs] = useState();
 
-  const topCollabData = [
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg2,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg3,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg4,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg5,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg6,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg1,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-    {   img: testImg7,
-      title: 'this is a jam',
-       link: '/collab/view',
-       clap: 123},
-  ];
+
+  useEffect(() => {
+    // Run! Like go get some data from an API.
+
+    if (!currentUser) {
+      history.push("/login")
+      return;
+    }else{
+
+      let claps = getAllCollabs ();
+      claps.then(claps => {
+        setAllCollabs(claps)
+      })
+
+    }
+  }, []);
+
+
+  var topCollabData=[];
+  let bannerThumbnail = "";
+  if (allCollabs){
+      for(var i=0;i<allCollabs.length;i++){
+        topCollabData.push({
+          video: allCollabs[i].videos[0],
+          title: allCollabs[i].title,
+          link: '/collab/view',
+          clap: allCollabs[i].claps,
+          collabId: allCollabs[i].collabId,
+          collabSize: allCollabs[i].userIds.length,
+        });
+      };
+      bannerThumbnail = allCollabs[12].videos[0];
+      console.log("This is banner")
+      console.log(bannerThumbnail);
+  }
+
 
   const banner =
-    <Card>
+    <Card onClick={(e)=>{
+      history.push(
+        {
+          pathname:'/collab/view',
+          state:{collabId:"eBJmTdjzrV6dStrQWNB3"
+        }
+      })}}>
       <CardActionArea>
-        <CardMedia className={classes.media} image={require('../assets/test/test_img.png')}/>
+        <Typography sx={styles.bannerTitle}>
+          Collab of the week!
+        </Typography>
+        <video
+          style={styles.media}
+          src={bannerThumbnail}
+          width="364px"
+          autoPlay={true}
+          muted
+          loop
+        />
       </CardActionArea>
     </Card>
 
@@ -106,7 +134,16 @@ function Home({ classes }) {
     </Select>
 
   const topCollabs =
-    <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+    <>
+      <CardList data={topCollabData} conSx={styles.homeCardList}></CardList>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </>
 
   return (
     <>
