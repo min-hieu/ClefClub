@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import ClearIcon from '@mui/icons-material/Clear';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { useAuth } from "../../../contexts/AuthContext"
-import { getRequest } from "../../../contexts/DBContext"
+import { getRequest, getCollab } from "../../../contexts/DBContext"
 import { db } from "../../../firebase"
 import { arrayUnion } from "firebase/firestore";
 
@@ -80,6 +80,7 @@ const CollabPreview = ({ classes }) => {
   const history = useHistory()
   const [collabId, setCollabId] = useState()
   const [collabTitle, setCollabTitle] = useState()
+  const [collabUrl, setCollabUrl] = useState()
   const [message, setMessage] = useState()
   const [videoURL, setVideoURL] = useState()
   const [requestId, setRequestId] = useState()
@@ -113,6 +114,10 @@ const CollabPreview = ({ classes }) => {
       setAccepted(request.acceptedIds.includes(currentUser.email) ? 'accepted' : (request.declinedIds.includes(currentUser.email) ? 'declined' : 'unknown'));
       setNumOwners(request.receiverIds.length)
     })
+
+    let cl = getCollab(state.collabId)
+    cl.then(cl => setCollabUrl(cl.videos[0]));
+
   }, [accepted]);
 
 
@@ -177,7 +182,7 @@ const messageText =
   };
 
   const handleDecline = () => {
-    if (declineN/num_owners>0.5){
+    if ((declineN+1)/num_owners>0.5){
       db.collection("requests").doc(requestId).update({
         declinedIds: arrayUnion(currentUser.email),
         status: 'declined',
@@ -242,41 +247,50 @@ const messageText =
           <Typography variant="caption" className={classes.declineText}> Declined by {declineN}/{num_owners} owner(s) </Typography>
         </Stack>
       </Stack>;
+      
 
-  return (
-    <>
-      <br/>
-      <br/>
-      {title}
-      {subTitle1}
-      {messageText}
-      {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
-      <video
-        src={videoURL}
-        autoplay="true"
-        controls
-        width="99%"
-        loading="lazy"
-      />
-      {(requesterId !== currentUser.email ) && accepted==='unknown'
-        ? <>{vote}</>
-        : <>{decision}</>
-      }
-      {progressInstance}
-      {(requesterId !== currentUser.email ) && accepted==='unknown'
-          &&
-            <>
-              {subTitle2}
-              <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed>
-            </>
-      }
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <Navbar />
-    </>
+      return (
+        <>
+          <br/>
+          <br/>
+          {title}
+          {subTitle1}
+          {messageText}
+          {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
+          <video
+            src={videoURL}
+            autoPlay={true}
+            controls
+            width="99%"
+            loading="lazy"
+          />
+          {(requesterId !== currentUser.email ) && accepted==='unknown'
+            ? <>{vote}</>
+            : <>{decision}</>
+          }
+          {progressInstance}
+          {(requesterId !== currentUser.email ) && accepted==='unknown'
+              &&
+                <>
+                  {subTitle2}
+                  {/* <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed> */}
+                  <video
+                    src={collabUrl}
+                    autoPlay={true}
+                    controls
+                    width="99%"
+                    loading="lazy"
+                  />
+
+                </>
+          }
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <Navbar />
+        </>
   );
 }
 
