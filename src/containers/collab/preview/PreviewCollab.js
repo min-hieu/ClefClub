@@ -258,32 +258,25 @@ const messageText =
           {messageText}
           {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
           <video
+            src={collabUrl}
+            autoPlay={true}
+            controls
+            width="99%"
+            loading="lazy"
+            />
+          <video
             src={videoURL}
             autoPlay={true}
             controls
             width="99%"
             loading="lazy"
+            style={{marginTop: -10}}
           />
           {(requesterId !== currentUser.email ) && accepted==='unknown'
             ? <>{vote}</>
             : <>{decision}</>
           }
           {progressInstance}
-          {(requesterId !== currentUser.email ) && accepted==='unknown'
-              &&
-                <>
-                  {subTitle2}
-                  {/* <YoutubeEmbed embedId="u5IEr6jMuHw"  w="99%" h="100%" ></YoutubeEmbed> */}
-                  <video
-                    src={collabUrl}
-                    autoPlay={true}
-                    controls
-                    width="99%"
-                    loading="lazy"
-                  />
-
-                </>
-          }
           <br/>
           <br/>
           <br/>
