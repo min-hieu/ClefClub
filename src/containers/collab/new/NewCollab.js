@@ -346,6 +346,11 @@ function NewCollab({ classes }) {
       {publishButton}
       {successSnackbar}
       {alertSnackbar}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
 			<Navbar />
     </div>
   );
