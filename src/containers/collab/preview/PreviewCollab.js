@@ -260,14 +260,14 @@ const messageText =
           <video
             src={collabUrl}
             autoPlay={true}
-            controls
+            // controls
             width="99%"
             loading="lazy"
             />
           <video
             src={videoURL}
             autoPlay={true}
-            controls
+            // controls
             width="99%"
             loading="lazy"
             style={{marginTop: -10}}
