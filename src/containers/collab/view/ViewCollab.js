@@ -119,7 +119,7 @@ function ViewCollab() {
   const [collabTitle, setCollabTitle] = useState()
   const [collabClaps, setCollabClaps] = useState()
   const [collabSize, setCollabSize] = useState()
-  const [collabVideo, setCollabVideo] = useState()
+  const [collabVideos, setCollabVideos] = useState([])
   const [collabDescription, setCollabDescription] = useState()
   const { currentUser } = useAuth()
 
@@ -130,7 +130,8 @@ function ViewCollab() {
     let collab = getCollab (state.collabId);
     collab.then(collab => {
       // console.log(collab.title)
-      setCollabVideo(collab.videos[0])
+      // console.log("Videos:",collab.videos)
+      setCollabVideos(collab.videos)
       setCollabTitle(collab.title)
       setCollabDescription(collab.description)
       setCollabSize(collab.userIds.length)
@@ -178,15 +179,18 @@ function ViewCollab() {
   }
 
   const video =
-    <video
-      style={styles.video}
-      src={collabVideo}
-      width="375px"
-      height='700'
-      autoPlay={true}
-      loop
-    />
-
+  <>
+    {collabVideos.map((v) => (
+        <video
+        style={styles.video}
+        src={v}
+        width="375px"
+        // height='700'
+        autoPlay={true}
+        loop
+      />
+      ))}
+  </>
 
   const title =
     <Typography sx={styles.title}>
@@ -239,8 +243,16 @@ function ViewCollab() {
   const [claps, setClaps] = useState([]);
 
   return (
-    <div style={{height: 690}}>
+    <div style={{height: 690, backgroundColor:"black"}}>
       {backIcon}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
       {video}
       <div style={styles.overlay}>
         <div style={styles.overlayBg}/>
