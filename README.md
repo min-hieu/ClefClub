@@ -2,6 +2,7 @@
 
 This is term project for the CS473 - Introduction to Social Computing. The project main goal was to create a platform to solve 
 the CoQuaIn (Communication, Quality control and Interaction) social problem that have haunted the process of musical jamming for years.
+Access the prototype through this link: https://clef-club.web.app/
 
 # Setup
 
