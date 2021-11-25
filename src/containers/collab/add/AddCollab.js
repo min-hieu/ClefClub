@@ -15,6 +15,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constan
 import Navbar from '../../../components/shared/Navbar';
 import { storage, db } from "../../../firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { arrayUnion } from "firebase/firestore";
 import {getCollab} from "../../../contexts/DBContext"
 import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
 
@@ -145,7 +146,7 @@ function AddCollab({ classes }) {
   const [uploaded, setUploaded] = useState(false);
   const vidRef = useRef([]);
   const newRef = useRef();
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
 
 
   useEffect(() => {
@@ -211,6 +212,11 @@ function AddCollab({ classes }) {
         requesterName: userName,
         receiverIds: collabOwners,
       });
+      if (status=='accepted'){
+        db.collection("sessions").doc(collabId).update({
+          videos: arrayUnion(url),
+        });
+      }
       setOpen(true);
       await delay(1000);
       history.goBack();
@@ -297,6 +303,7 @@ function AddCollab({ classes }) {
         loop
         ref={el => vidRef.current[i] = el}
         // controls
+        muted
         />
       ))}
         <div className={classes.dropzone}>
@@ -349,6 +356,7 @@ const onStop = React.useCallback(() => {
   for (let i = 0; i < vidRef.current.length; i++) {
     vidRef.current[i].pause();
   }
+  newRef.current.pause();
   setPaused(true);
 }, []);
 
@@ -380,6 +388,7 @@ const onMerge = React.useCallback(() => {
   for (let i = 0; i < vidRef.current.length; i++) {
     vidRef.current[i].currentTime = 0;
     vidRef.current[i].play();
+    vidRef.current[i].muted = false;
 
   }
   newRef.current.currentTime = 0;
@@ -409,9 +418,9 @@ const restartButton =
 const mergeButton =
 <Button
   className={classes.playButton}
-  onClick={newRef.current ? onMerge: null }
+  onClick={newRef.current ? (paused ? onMerge : onStop): null }
 >
-  Merge
+{ paused ? `Preview` : `Stop` }
 </Button>
 
   const successSnackbar =
@@ -452,8 +461,8 @@ const mergeButton =
       <div style={{'display': 'flex',
                     'align-items': 'center',
                     'justify-content': 'center'}}>
-        {restartButton}
-        {playButton}
+        {/* {restartButton}
+        {playButton} */}
         {mergeButton}
       </div>
       <br/>
