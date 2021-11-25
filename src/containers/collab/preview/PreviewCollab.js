@@ -80,7 +80,7 @@ const CollabPreview = ({ classes }) => {
   const history = useHistory()
   const [collabId, setCollabId] = useState()
   const [collabTitle, setCollabTitle] = useState()
-  const [collabUrl, setCollabUrl] = useState()
+  const [collabUrls, setCollabUrls] = useState([])
   const [message, setMessage] = useState()
   const [videoURL, setVideoURL] = useState()
   const [requestId, setRequestId] = useState()
@@ -116,7 +116,7 @@ const CollabPreview = ({ classes }) => {
     })
 
     let cl = getCollab(state.collabId)
-    cl.then(cl => setCollabUrl(cl.videos[0]));
+    cl.then(cl => setCollabUrls(cl.videos));
 
   }, [accepted]);
 
@@ -257,17 +257,19 @@ const messageText =
           {subTitle1}
           {messageText}
           {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
-          <video
-            src={collabUrl}
+          {collabUrls.map((v) => (
+            <video
+            src={v}
             autoPlay={true}
-            controls
+            // controls
             width="99%"
             loading="lazy"
-            />
+          />
+          ))}
           <video
             src={videoURL}
             autoPlay={true}
-            controls
+            // controls
             width="99%"
             loading="lazy"
             style={{marginTop: -10}}

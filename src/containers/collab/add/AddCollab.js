@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { styled, withStyles } from '@material-ui/core/styles';
 import { useHistory, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +15,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR } from '../../../Constan
 import Navbar from '../../../components/shared/Navbar';
 import { storage, db } from "../../../firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { arrayUnion } from "firebase/firestore";
 import {getCollab} from "../../../contexts/DBContext"
 import { useAuth,getUserInfo } from "../../../contexts/AuthContext"
 
@@ -94,6 +95,20 @@ const styles = {
       color: SECONDARY_COLOR,
     },
   },
+  playButton: {
+    background: PRIMARY_COLOR,
+    color: TERTIARY_COLOR,
+    fontSize: 12,
+    fontWeight: 'bold',
+    width: '25%',
+    borderRadius:100,
+    marginTop: 10,
+    margin: 10, 
+    '&:hover': {
+      background: TERTIARY_COLOR,
+      color: SECONDARY_COLOR,
+    },
+  },
   snackbarMessage: {
     display: 'flex',
     alignItems: 'center',
@@ -120,7 +135,7 @@ function AddCollab({ classes }) {
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState("Upload video");
   const [collabId, setCollabId] = useState();
-  const [collabVideo, setCollabVideo] = useState();
+  const [collabVideos, setCollabVideos] = useState([]);
   const [collabTitle, setCollabTitle] = useState()
   const [collabOwners, setCollabOwners] = useState([]);
   const [userName, setUserName] = useState([]);
@@ -129,13 +144,16 @@ function AddCollab({ classes }) {
   const [formData, setFormData] = useState({});
   const { currentUser } = useAuth();
   const [uploaded, setUploaded] = useState(false);
+  const vidRef = useRef([]);
+  const newRef = useRef();
+  const [paused, setPaused] = useState(true);
 
 
   useEffect(() => {
     setCollabId(state.collabId)
     let collab = getCollab(state.collabId);
     collab.then(collab => {
-      setCollabVideo(collab.videos[0])
+      setCollabVideos(collab.videos)
       setCollabTitle(collab.title ? collab.title : "")
       setCollabOwners(collab.userIds)
       })
@@ -144,6 +162,8 @@ function AddCollab({ classes }) {
         user.then(user => {
       setUserName(user.nickname)
       })
+
+    
   }, []);
 
 
@@ -192,6 +212,11 @@ function AddCollab({ classes }) {
         requesterName: userName,
         receiverIds: collabOwners,
       });
+      if (status=='accepted'){
+        db.collection("sessions").doc(collabId).update({
+          videos: arrayUnion(url),
+        });
+      }
       setOpen(true);
       await delay(1000);
       history.goBack();
@@ -269,7 +294,18 @@ function AddCollab({ classes }) {
 
   const videoUpload =
       <div className={classes.videoWrapper}>
-        <video src = {collabVideo} className={classes.cover} autoPlay loop muted/>
+        {/* <video src = {collabVideo} className={classes.cover} autoPlay loop muted/> */}
+        {collabVideos.map((v, i) => (
+        <video
+        src={v}
+        className={classes.cover}
+        autoPlay 
+        loop
+        ref={el => vidRef.current[i] = el}
+        // controls
+        muted
+        />
+      ))}
         <div className={classes.dropzone}>
           {uploaded ? (
             <>
@@ -280,7 +316,7 @@ function AddCollab({ classes }) {
                   <Typography className={classes.addText}>{title}</Typography>
                 </>
               )}
-              <video src = {url} style={{ height: '100%', width: '100%' }} autoPlay loop/>
+              <video src = {url} ref={newRef} style={{ height: '100%', width: '100%' }} autoPlay controls loop/>
               <StyledFab aria-label="reupload" onClick={() => setUploaded(false)}>
                 <RefreshIcon />
               </StyledFab>
@@ -312,6 +348,80 @@ function AddCollab({ classes }) {
     >
       Submit your jam
     </Button>
+
+const onStop = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].pause();
+  }
+  newRef.current.pause();
+  setPaused(true);
+}, []);
+
+const onPlay = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].play();
+  }
+  setPaused(false);
+}, []);
+
+const onRestart = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].currentTime = 0;
+    vidRef.current[i].play();
+  }
+  setPaused(false);
+}, []);
+
+const onMerge = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].currentTime = 0;
+    vidRef.current[i].play();
+    vidRef.current[i].muted = false;
+
+  }
+  newRef.current.currentTime = 0;
+  newRef.current.play();
+
+  setPaused(false);
+}, []);
+
+
+const playButton =
+<Button
+  className={classes.playButton}
+  onClick={paused ? onPlay : onStop}
+>
+{paused ? `Play` : `Pause` }
+</Button>
+
+
+const restartButton =
+<Button
+  className={classes.playButton}
+  onClick={onRestart}
+>
+  Restart
+</Button>
+
+const mergeButton =
+<Button
+  className={classes.playButton}
+  onClick={newRef.current ? (paused ? onMerge : onStop): null }
+>
+{ paused ? `Preview` : `Stop` }
+</Button>
 
   const successSnackbar =
     <Snackbar
@@ -348,6 +458,15 @@ function AddCollab({ classes }) {
       {header}
       <br />
       {videoUpload}
+      <div style={{'display': 'flex',
+                    'align-items': 'center',
+                    'justify-content': 'center'}}>
+        {/* {restartButton}
+        {playButton} */}
+        {mergeButton}
+      </div>
+      <br/>
+      <br/>
       {messageToOwner}
       {submitButton}
       {successSnackbar}
