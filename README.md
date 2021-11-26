@@ -21,7 +21,7 @@ Access the prototype through this link: https://clef-club.web.app/
        + Notification
        + Profile
        + Search
-       + Collab-related: new (create), add, preview
+       + Collab-related: new (create), add, preview, view
     -  components: reusable components that can be shared among pages or some complex component
        + shared: reusable components across pages
        + notification: components for the notification 
