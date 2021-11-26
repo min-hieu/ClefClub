@@ -6,18 +6,27 @@ Access the prototype through this link: https://clef-club.web.app/
 
 # Setup
 
-To run locally, execute:<br>
+- To run locally, execute:<br>
 `npm install`<br>
 `npm start`<br>
-*Trouble-shooting*: 
-    Run `rm package-lock.json` before npm install might fix any trouble running locally. 
-    For linux, add `--openssl-legacy-provider` to the scripts (npm start, build, ...)
+- *Trouble-shooting*: 
+    - Run `rm package-lock.json` before npm install might fix any trouble running locally. 
+    - For linux, add `--openssl-legacy-provider` to the scripts (npm start, build, ...)
 
 # Main files
 - All main implementation file is located in the **src** folder.
     -  assets: app's assets, including mostly testing images and video
     -  containers: main page containers
-    -  components: reusable components that can be shared among pages
+       + Home
+       + Notification
+       + Profile
+       + Search
+       + Collab-related: new (create), add, preview
+    -  components: reusable components that can be shared among pages or some complex component
+       + shared: reusable components across pages
+       + notification: components for the notification 
+       + userAuth: components to handle user authentication
+    -  context: database management
 
 # Coding convention
 - Functional component (Please use () => {}) and hook for stateful component.
