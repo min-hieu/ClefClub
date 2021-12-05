@@ -73,17 +73,16 @@ const commentData = [
 
 ]
 
-function ViewSession({ sx }) {
-
+function CommentSection({ sx, author, collabId }) {
   const mainStyle = sx ? sx : styles.main
 
   return (
     <div className={mainStyle}>
       <Container style={ styles.main }>
-        <CommentExampleComment data = {commentData}></CommentExampleComment>
+        <CommentExampleComment author={author.email} collabId={collabId}></CommentExampleComment>
       </Container>
     </div>
   );
 }
 
-export default ViewSession;
+export default CommentSection;

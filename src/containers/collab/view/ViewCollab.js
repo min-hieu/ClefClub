@@ -9,7 +9,7 @@ import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
 import ClapIcon from '../../../assets/clap.svg';
-import ViewSession from '../ViewSession';
+import CommentSection from '../CommentSection';
 import './clap.css';
 import { useHistory } from "react-router-dom"
 import { useAuth } from "../../../contexts/AuthContext"
@@ -273,7 +273,7 @@ function ViewCollab() {
       { claps }
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
-      { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
+      { showComments ? <CommentSection sx={styles.cmtSection} author={currentUser} collabId={collabId}/> : null }
     </div>
   );
 }
