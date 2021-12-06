@@ -88,8 +88,6 @@ function Home({ classes }) {
         });
       };
       bannerThumbnail = allCollabs[0].videos[0];
-      console.log("This is banner")
-      console.log(bannerThumbnail);
   }
 
 
