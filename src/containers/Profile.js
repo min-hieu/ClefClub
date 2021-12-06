@@ -222,7 +222,7 @@ function Profile(props) {
       <br/>
       <br/>
       <br/>
-      <Navbar />
+      <Navbar currentPage="profile" />
     </div>
   );
 }

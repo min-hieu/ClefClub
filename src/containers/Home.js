@@ -150,7 +150,7 @@ function Home({ classes }) {
       {banner}
       {sortSelect}
       {topCollabs}
-      <Navbar />
+      <Navbar currentPage="home" />
     </>
   );
 }

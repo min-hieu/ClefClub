@@ -81,7 +81,7 @@ function Notification({ classes }) {
     if (!currentUser) {
       history.push("/login")
       return;
-    }else{
+    } else{
 
       let outResult = getOutgoingRequests (currentUser.email);
       outResult.then(outResult => {
@@ -100,41 +100,41 @@ function Notification({ classes }) {
     }
   }, []);
 
-  const tabNames = 
-  <Grid container sx={styles.titleBar}>
-    <Grid item xs={6}>
-      <Typography sx={ showIncoming ? styles.titleActive : styles.title }
-      onClick={(e) => {setshowMy(false);setshowIncoming(true)}}
-      >
-        Incoming Requests
-      </Typography>
+  const tabNames =
+    <Grid container sx={styles.titleBar}>
+      <Grid item xs={6}>
+        <Typography sx={ showIncoming ? styles.titleActive : styles.title }
+        onClick={(e) => {setshowMy(false);setshowIncoming(true)}}
+        >
+          Incoming Requests
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography
+          sx={ showMy ? styles.titleActive : styles.title }
+          onClick={(e) => {setshowMy(true);setshowIncoming(false)}}
+        >
+          My Requests
+        </Typography>
+      </Grid>
     </Grid>
-    <Grid item xs={6}>
-      <Typography
-        sx={ showMy ? styles.titleActive : styles.title }
-        onClick={(e) => {setshowMy(true);setshowIncoming(false)}}
-      >
-        My Requests
-      </Typography>
-    </Grid>
-  </Grid>
 
   // const IncomingDataInProgress = [
-  //   { 	
+  //   {
   //     img: testImg,
   //     title: 'Carpe Diem',
   //     receive: true,
   //     accept: null,
   //     finalAccept: null,
   //   },
-  //   { 	
+  //   {
   //     img: testImg,
   //     title: 'Carpe',
   //     receive: true,
   //     accept: true,
   //     finalAccept: null,
   //   },
-  //   { 	
+  //   {
   //     img: testImg,
   //     title: 'Diem',
   //     receive: true,
@@ -147,7 +147,7 @@ function Notification({ classes }) {
   if (userWaitingRequests){
     // console.log("userWaitingRequests:",userWaitingRequests)
       for(var i=0;i<userWaitingRequests.length;i++){
-        IncomingDataInProgress.push({ 
+        IncomingDataInProgress.push({
           requestId: userWaitingRequests[i].requestId,
           requesterId: userWaitingRequests[i].requesterId,
           collabId: userWaitingRequests[i].collabId,
@@ -156,7 +156,7 @@ function Notification({ classes }) {
           video: userWaitingRequests[i].videoURL,
           receive: true,
           accept: null,
-          finalAccept: null, 
+          finalAccept: null,
           acceptN:  userWaitingRequests[i].acceptedN,
           declineN:  userWaitingRequests[i].declinedN,
           acceptedIds:  userWaitingRequests[i].acceptedIds,
@@ -175,7 +175,7 @@ function Notification({ classes }) {
     // console.log("userWaitingRequests:",userWaitingRequests)
       for(var i=0;i<userUnpublishedRequests.length;i++){
 
-        IncomingDataClosed.push({ 
+        IncomingDataClosed.push({
           requestId: userUnpublishedRequests[i].requestId,
           requesterId: userUnpublishedRequests[i].requesterId,
           collabId: userUnpublishedRequests[i].collabId,
@@ -184,7 +184,7 @@ function Notification({ classes }) {
           video: userUnpublishedRequests[i].videoURL,
           receive: true,
           accept: null,
-          finalAccept: null, 
+          finalAccept: null,
           acceptN:  userUnpublishedRequests[i].acceptedN,
           declineN:  userUnpublishedRequests[i].declinedN,
           acceptedIds:  userUnpublishedRequests[i].acceptedIds,
@@ -201,7 +201,7 @@ function Notification({ classes }) {
   var OutcomingDataInprogress=[];
   if (userPendingRequests){
       for(var i=0;i<userPendingRequests.length;i++){
-        OutcomingDataInprogress.push({ 
+        OutcomingDataInprogress.push({
           requestId: userPendingRequests[i].requestId,
           requesterId: userPendingRequests[i].requesterId,
           collabId: userPendingRequests[i].collabId,
@@ -210,7 +210,7 @@ function Notification({ classes }) {
           video: userPendingRequests[i].videoURL,
           receive: false,
           accept: null,
-          finalAccept: null, 
+          finalAccept: null,
           acceptN:  userPendingRequests[i].acceptedN,
           declineN:  userPendingRequests[i].declinedN,
           acceptedIds:  userPendingRequests[i].acceptedIds,
@@ -226,7 +226,7 @@ function Notification({ classes }) {
   var OutcomingDataClosed=[];
   if (userClosedRequests){
       for(var i=0;i<userClosedRequests.length;i++){
-        OutcomingDataClosed.push({ 
+        OutcomingDataClosed.push({
           requestId: userClosedRequests[i].requestId,
           requesterId: userClosedRequests[i].requesterId,
           collabId: userClosedRequests[i].collabId,
@@ -236,7 +236,7 @@ function Notification({ classes }) {
           video: userClosedRequests[i].videoURL,
           receive: false,
           accept: null,
-          finalAccept: null, 
+          finalAccept: null,
           acceptN:  userClosedRequests[i].acceptedN,
           declineN:  userClosedRequests[i].declinedN,
           acceptedIds:  userClosedRequests[i].acceptedIds,
@@ -263,13 +263,13 @@ function Notification({ classes }) {
       { showMy && (
           <>
             <NotificationList data = {OutcomingDataInprogress} section = 'In progress' notifPage="outReq"></NotificationList>
-            <NotificationList data = {OutcomingDataClosed} section = 'Closed' notifPage="outReq"></NotificationList> 
+            <NotificationList data = {OutcomingDataClosed} section = 'Closed' notifPage="outReq"></NotificationList>
           </>
       )}
       <br/>
       <br/>
       <br/>
-      <Navbar />
+      <Navbar currentPage="noti" />
     </>
   );
 }
