@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {useLocation} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import ReplayCircleFilledIcon from '@mui/icons-material/ReplayCircleFilled';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Grid from '@mui/material/Grid';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
@@ -122,6 +125,8 @@ function ViewCollab() {
   const [collabVideos, setCollabVideos] = useState([])
   const [collabDescription, setCollabDescription] = useState()
   const { currentUser } = useAuth()
+  const [paused, setPaused] = useState(true);
+  const vidRef = useRef([]);
 
 
   const { state } = useLocation();
@@ -180,13 +185,14 @@ function ViewCollab() {
 
   const video =
   <>
-    {collabVideos.map((v) => (
+    {collabVideos.map((v,i) => (
         <video
         style={styles.video}
         src={v}
         width="375px"
         // height='700'
-        autoPlay={true}
+        autoPlay={false}
+        ref={el => vidRef.current[i] = el}
         loop
       />
       ))}
@@ -208,6 +214,39 @@ function ViewCollab() {
     </Typography>
   </>
 
+
+const onStop = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].pause();
+  }
+  setPaused(true);
+}, []);
+
+const onPlay = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].play();
+  }
+  setPaused(false);
+}, []);
+
+const onRestart = React.useCallback(() => {
+  if (vidRef.current === undefined) {
+    return;
+  }
+  for (let i = 0; i < vidRef.current.length; i++) {
+    vidRef.current[i].currentTime = 0;
+    vidRef.current[i].play();
+  }
+  setPaused(false);
+}, []);
+
+
   const iconList =
     <Grid
       container
@@ -218,6 +257,18 @@ function ViewCollab() {
       position="absolute"
       sx={styles.iconList}
     >
+      
+
+      <Grid item xs={3}>
+      {paused ? <PlayCircleIcon onClick={onPlay}/>
+              : <PauseCircleIcon onClick={onStop}/>
+      }
+      </Grid>
+      
+      <Grid item xs={3}>
+        <ReplayCircleFilledIcon onClick={onRestart}/>
+      </Grid>
+
       <Grid item xs={3}>
         <GroupAddIcon onClick={handleJam}/>
       </Grid>
