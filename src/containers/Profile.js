@@ -151,7 +151,6 @@ function Profile(props) {
         });
       }
   }
-  console.log("Elements topCollabData:",topCollabData)
 
   var topClapData=[];
   if (userClaps){
@@ -166,7 +165,6 @@ function Profile(props) {
         });
       }
   }
-  console.log("Elements userClaps:",topClapData)
 
   const handleClose = () => {
     setOpenSnackbar(false);
@@ -222,7 +220,7 @@ function Profile(props) {
       <br/>
       <br/>
       <br/>
-      <Navbar />
+      <Navbar currentPage="profile" />
     </div>
   );
 }

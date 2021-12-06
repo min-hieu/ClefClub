@@ -103,7 +103,7 @@ const styles = {
     width: '25%',
     borderRadius:100,
     marginTop: 10,
-    margin: 10, 
+    margin: 10,
     '&:hover': {
       background: TERTIARY_COLOR,
       color: SECONDARY_COLOR,
@@ -212,7 +212,7 @@ function AddCollab({ classes }) {
         requesterName: userName,
         receiverIds: collabOwners,
       });
-      if (status=='accepted'){
+      if (status === 'accepted'){
         db.collection("sessions").doc(collabId).update({
           videos: arrayUnion(url),
         });

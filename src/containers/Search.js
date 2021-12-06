@@ -178,7 +178,7 @@ function Search({ classes }) {
           </Grid>
         </Grid>
       )}
-      <Navbar />
+      <Navbar currentPage="search" />
     </div>
   );
 }

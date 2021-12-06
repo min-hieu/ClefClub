@@ -339,7 +339,6 @@ const messageText =
                     'justify-content': 'center'}}>
             {mergeButton}
           </div>
-          
           {(requesterId !== currentUser.email ) && accepted==='unknown'
             ? <>{vote}</>
             : <>{decision}</>
