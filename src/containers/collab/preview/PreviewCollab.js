@@ -266,14 +266,18 @@ const messageText =
             loading="lazy"
           />
           ))}
-          <video
-            src={videoURL}
-            autoPlay={true}
-            // controls
-            width="99%"
-            loading="lazy"
-            style={{marginTop: -10}}
-          />
+          { finalDecision==="accepted" ?
+            null
+          : <video
+              src={videoURL}
+              autoPlay={true}
+              // controls
+              width="99%"
+              loading="lazy"
+              style={{marginTop: -10}}
+            />
+          }
+          
           {(requesterId !== currentUser.email ) && accepted==='unknown'
             ? <>{vote}</>
             : <>{decision}</>
