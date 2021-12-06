@@ -6,6 +6,12 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
+import flower0 from '../../assets/flower0.svg';
+import flower1 from '../../assets/flower1.svg';
+import flower2 from '../../assets/flower2.svg';
+import flower3 from '../../assets/flower3.svg';
+import flower4 from '../../assets/flower4.svg';
+import flower5 from '../../assets/flower5.svg';
 
 const styles = {
   container: {
@@ -25,6 +31,10 @@ const styles = {
   actionicon: {
     color: 'white',
   },
+  icon: {
+    width: 20,
+    height: 20,
+  }
 };
 
 const CardList = ({ data, conSx }) => {
@@ -71,7 +81,19 @@ const CardList = ({ data, conSx }) => {
                 aria-label={`star ${item.title}`}
               >
 
-                <FilterVintageIcon sx={{ width:'20px', height:'20px' }}/>
+              {
+                (item.clap == 0) ?
+                  <img src={flower0} style={styles.icon}/>
+                : (item.clap <= 2) ?
+                  <img src={flower1} style={styles.icon}/>
+                : (item.clap <= 4) ?
+                  <img src={flower2} style={styles.icon}/>
+                : (item.clap <= 9) ?
+                  <img src={flower3} style={styles.icon}/>
+                : (item.clap <= 19) ?
+                  <img src={flower4} style={styles.icon}/>
+                : <img src={flower5} style={styles.icon}/>
+              }
 
               </IconButton>
             }
