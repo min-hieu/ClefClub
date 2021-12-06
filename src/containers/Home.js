@@ -98,7 +98,7 @@ function Home({ classes }) {
       history.push(
         {
           pathname:'/collab/view',
-          state:{collabId:"5MZRUILN2AD9OxoaLRXE"
+          state:{collabId: allCollabs[0].collabId
         }
       })}}>
       <CardActionArea>

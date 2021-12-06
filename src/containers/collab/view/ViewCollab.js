@@ -134,7 +134,6 @@ function ViewCollab() {
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
     collab.then(collab => {
-      // console.log(collab.title)
       // console.log("Videos:",collab.videos)
       setCollabVideos(collab.videos)
       setCollabTitle(collab.title)
