@@ -31,6 +31,11 @@ const styles = {
       color: "white",
     },
   },
+  highlight: {
+    color: "white",
+    fontSize: 35,
+    margin: 10,
+  },
 };
 
 const StyledFab = styled(Fab)({
@@ -57,11 +62,35 @@ const IconWrapper = (icon, link) => (
   </Grid>
 )
 
-const Navbar = ({classes}) => {
-  const HomeOption    = IconWrapper(<HomeOutlinedIcon className={classes.navIcon}/>,    '/')
-  const ProfileOption = IconWrapper(<PersonOutlinedIcon className={classes.navIcon}/>,  '/profile')
-  const NotiOption = IconWrapper(<NotificationsNoneIcon className={classes.navIcon}/>,  '/notification')
-  const SearchOption  = IconWrapper(<SearchOutlinedIcon className={classes.navIcon}/>,  '/search')
+const Navbar = ({ classes, currentPage }) => {
+  const HomeOption =
+    IconWrapper(
+      <HomeOutlinedIcon
+        className={currentPage === 'home' ? classes.highlight : classes.navIcon}
+      />,
+      '/',
+    );
+  const ProfileOption =
+    IconWrapper(
+      <PersonOutlinedIcon
+        className={currentPage === 'profile' ? classes.highlight : classes.navIcon}
+      />,
+      '/profile',
+    );
+  const NotiOption =
+    IconWrapper(
+      <NotificationsNoneIcon
+        className={currentPage === 'noti' ? classes.highlight : classes.navIcon}
+      />,
+      '/notification',
+    );
+  const SearchOption =
+    IconWrapper(
+      <SearchOutlinedIcon
+        className={currentPage === 'search' ? classes.highlight : classes.navIcon}
+      />,
+      '/search',
+    );
   const AddOption =
     <Link to='/collab/new'>
       <StyledFab aria-label="add">

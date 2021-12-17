@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Link, useLocation, useHistory} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -55,6 +55,20 @@ const styles = {
       color: NEGATIVE_PRIMARY_COLOR,
     },
   },
+  playButton: {
+    backgroundColor: `${TERTIARY_COLOR} !important`,
+    color: `${PRIMARY_COLOR} !important`,
+    fontSize: 12,
+    fontWeight: 'bold',
+    width: '25%',
+    borderRadius:50,
+    marginTop: 10,
+    margin: 10, 
+    '&:hover': {
+      background: SECONDARY_COLOR,
+      color: TERTIARY_COLOR,
+    }
+  },
   decision: {
     margin: `30px 0 0 0`,
     border: 1
@@ -73,7 +87,6 @@ const styles = {
   declineText: {
     color: NEGATIVE_PRIMARY_COLOR,
   }
-
 };
 
 const CollabPreview = ({ classes }) => {
@@ -94,6 +107,9 @@ const CollabPreview = ({ classes }) => {
   const { currentUser } = useAuth()
   const { state } = useLocation();
   const [accepted, setAccepted] = useState();
+  const vidRef = useRef([]);
+  const newRef = useRef();
+  const [paused, setPaused] = useState(true);
 
   useEffect(() => {
     // console.log(state)
@@ -196,6 +212,45 @@ const messageText =
     setDeclineN(declineN + 1);
 
   }
+
+  const onMerge = React.useCallback(() => {
+    if (vidRef.current === undefined) {
+      return;
+    }
+    for (let i = 0; i < vidRef.current.length; i++) {
+      vidRef.current[i].currentTime = 0;
+      vidRef.current[i].play();
+      vidRef.current[i].muted = false;
+  
+    }
+    if (newRef.current){
+      newRef.current.currentTime = 0;
+      newRef.current.play();
+    }
+    setPaused(false);
+  }, []);
+
+  const onStop = React.useCallback(() => {
+    if (vidRef.current === undefined) {
+      return;
+    }
+    for (let i = 0; i < vidRef.current.length; i++) {
+      vidRef.current[i].pause();
+    }
+    if (newRef.current){
+      newRef.current.pause();
+    }
+    setPaused(true);
+  }, []);
+
+  const mergeButton =
+  <Button
+    className={classes.playButton}
+    onClick={vidRef.current ? (paused ? onMerge : onStop): null }
+  >
+  { paused ? `Preview` : `Stop` }
+  </Button>
+
   const approveButton =
     <Link to='/notification' style={{ textDecoration: 'none' }}>
       <Button className={classes.acceptButton} color="success" onClick={handleApprove}>
@@ -257,23 +312,33 @@ const messageText =
           {subTitle1}
           {messageText}
           {/* <YoutubeEmbed embedId="6mYw53V9RGM?autoplay=1" w="99%" h="100%" /> */}
-          {collabUrls.map((v) => (
+          {collabUrls.map((v, i) => (
             <video
             src={v}
-            autoPlay={true}
+            autoPlay={false}
+            ref={el => vidRef.current[i] = el}
             // controls
             width="99%"
             loading="lazy"
           />
           ))}
-          <video
-            src={videoURL}
-            autoPlay={true}
-            // controls
-            width="99%"
-            loading="lazy"
-            style={{marginTop: -10}}
-          />
+          { finalDecision==="accepted" ?
+            null
+          : <video
+              src={videoURL}
+              autoPlay={false}
+              // controls
+              width="99%"
+              loading="lazy"
+              style={{marginTop: -10}}
+              ref={newRef}
+            />
+          }
+          <div style={{'display': 'flex',
+                    'align-items': 'center',
+                    'justify-content': 'center'}}>
+            {mergeButton}
+          </div>
           {(requesterId !== currentUser.email ) && accepted==='unknown'
             ? <>{vote}</>
             : <>{decision}</>

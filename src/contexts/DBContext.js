@@ -1,4 +1,6 @@
 import { db } from "../firebase"
+import {arrayUnion} from "firebase/firestore"
+import monkey from '../assets/test/monkey.jpeg';
 
 export function createId(length) {
     var result = "";
@@ -65,7 +67,7 @@ export const getCollab = async (id) => {
 
 // function to get user with ID
 export const getUser = async (id) => {
-  return (await db.collection("users").doc(id).get()).data();
+  return (await db.collection("users").where('email', '==', id).get()).docs;
 };
 
 // function to get request with ID
@@ -73,6 +75,10 @@ export const getRequest = async (id) => {
   return (await db.collection("requests").doc(id).get()).data();
 };
 
+// function to get comment with ID
+export const getComment = async (id) => {
+  return (await db.collection("comments").doc(id).get()).data();
+};
 
 // function to get all outgoing requests of user with ID
 export const getOutgoingRequests = async (id) => {
@@ -165,4 +171,52 @@ export const getIncomingRequests = async (id) => {
   return [waiting, closed];
 };
 
+const makeData = async (parentId) => {
+  const comment = await getComment(parentId)
+  // const author = await getUser(comment.author)
+  comment.id = parentId
+  comment.subComment = []
+  comment.author = {name: comment.author, img: monkey}
+  const commentRelationships =  await db.collection("comment_relationship").where('parentId', '==', parentId).get()
+  for await (let reply of commentRelationships.docs) {
+    const newDatum = await makeData(reply.data().childId)
+    comment.subComment.push(newDatum)
+  }
+  return comment
+}
+export const getCommentFromCollabs = async (id) => {
+  const collab = await getCollab(id)
+  const commentIds = collab.comments
+  const data = []
+  for await (let commentId of commentIds) {
+    const newData = await makeData(commentId)
+    data.push(newData)
+  }
+  return data
+}
+
+export const writeCommentToDatabase = async (data, collabId) => {
+  try {
+    console.log(data)
+    const res = await db.collection('comments').add(data)
+    console.log(res)
+    db.collection('sessions').doc(collabId).update({
+      comments: arrayUnion(res.id)
+    })
+    return res.id
+    }
+  catch {return}
+}
+
+export const writeSubCommentToDatabase = async (data, parentId) => {
+  try {
+    const res = await db.collection('comments').add(data)
+    db.collection('comment_relationship').add({
+      parentId: parentId,
+      childId: res.id
+    })
+    return res.id
+  }
+  catch {return}
+}
 

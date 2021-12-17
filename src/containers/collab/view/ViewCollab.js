@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {useLocation} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@mui/icons-material/Chat';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import ReplayCircleFilledIcon from '@mui/icons-material/ReplayCircleFilled';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Grid from '@mui/material/Grid';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { SECONDARY_COLOR,TERTIARY_COLOR } from '../../../Constant';
+import flower0 from '../../../assets/flower0.svg'
+import flower1 from '../../../assets/flower1.svg'
+import flower2 from '../../../assets/flower2.svg'
+import flower3 from '../../../assets/flower3.svg'
+import flower4 from '../../../assets/flower4.svg'
+import flower5 from '../../../assets/flower5.svg'
 import ClapIcon from '../../../assets/clap.svg';
-import ViewSession from '../ViewSession';
+import CommentSection from '../CommentSection';
 import './clap.css';
 import { useHistory } from "react-router-dom"
 import { useAuth } from "../../../contexts/AuthContext"
@@ -105,6 +114,15 @@ const styles = {
       height: 30,
     },
   },
+  flower: {
+    cursor: 'pointer',
+    width: 24,
+    height: 24,
+    "&:hover": {
+      width: 30,
+      height: 30,
+    },
+  },
 };
 
 
@@ -122,6 +140,8 @@ function ViewCollab() {
   const [collabVideos, setCollabVideos] = useState([])
   const [collabDescription, setCollabDescription] = useState()
   const { currentUser } = useAuth()
+  const [paused, setPaused] = useState(true);
+  const vidRef = useRef([]);
 
 
   const { state } = useLocation();
@@ -129,7 +149,6 @@ function ViewCollab() {
     setCollabId(state.collabId)
     let collab = getCollab (state.collabId);
     collab.then(collab => {
-      // console.log(collab.title)
       // console.log("Videos:",collab.videos)
       setCollabVideos(collab.videos)
       setCollabTitle(collab.title)
@@ -150,7 +169,6 @@ function ViewCollab() {
   }
 
   const handleLikes  = () => {
-    setShowFlower(true);
     var collab = db.collection("sessions").doc(collabId);
     collab.get().then(function (doc) {
       if (doc.exists) {
@@ -163,7 +181,8 @@ function ViewCollab() {
               claps: claps+1,
               clappedIds: clappedIds.concat([currentUser.email])
             });
-            console.log("Clap!")
+            setCollabClaps(claps + 1);
+            console.log("Flower Tossed!");
           }
         });
       } else {
@@ -180,13 +199,14 @@ function ViewCollab() {
 
   const video =
   <>
-    {collabVideos.map((v) => (
+    {collabVideos.map((v,i) => (
         <video
         style={styles.video}
         src={v}
         width="375px"
         // height='700'
-        autoPlay={true}
+        autoPlay={false}
+        ref={el => vidRef.current[i] = el}
         loop
       />
       ))}
@@ -208,6 +228,67 @@ function ViewCollab() {
     </Typography>
   </>
 
+
+  const onStop = React.useCallback(() => {
+    if (vidRef.current === undefined) {
+      return;
+    }
+    for (let i = 0; i < vidRef.current.length; i++) {
+      vidRef.current[i].pause();
+    }
+    setPaused(true);
+  }, []);
+
+  const onPlay = React.useCallback(() => {
+    if (vidRef.current === undefined) {
+      return;
+    }
+    for (let i = 0; i < vidRef.current.length; i++) {
+      vidRef.current[i].play();
+    }
+    setPaused(false);
+  }, []);
+
+  const onRestart = React.useCallback(() => {
+    if (vidRef.current === undefined) {
+      return;
+    }
+    for (let i = 0; i < vidRef.current.length; i++) {
+      vidRef.current[i].currentTime = 0;
+      vidRef.current[i].play();
+    }
+    setPaused(false);
+  }, []);
+
+  const flowerIcon0 =
+      <img src={flower0} style={styles.flower} onClick={handleLikes}/>
+  const flowerIcon1 =
+      <img src={flower1} style={styles.flower} onClick={handleLikes}/>
+  const flowerIcon2 =
+      <img src={flower2} style={styles.flower} onClick={handleLikes}/>
+  const flowerIcon3 =
+      <img src={flower3} style={styles.flower} onClick={handleLikes}/>
+  const flowerIcon4 =
+      <img src={flower4} style={styles.flower} onClick={handleLikes}/>
+  const flowerIcon5 =
+      <img src={flower5} style={styles.flower} onClick={handleLikes}/>
+
+  const [flowerIcon, setFlowerIcon] = useState(flowerIcon0);
+
+  const flowerToIcon = (flower) =>
+      collabClaps == 0 ? flowerIcon0 :
+      collabClaps <= 2 ? flowerIcon1 :
+      collabClaps <= 4 ? flowerIcon2 :
+      collabClaps <= 9 ? flowerIcon3 :
+      collabClaps <= 19 ? flowerIcon4 :
+      flowerIcon5;
+
+  useEffect(() => {
+    setFlowerIcon(flowerToIcon(collabClaps));
+    console.log("changeicon");
+    console.log(collabClaps);
+  }, [collabClaps]);
+
   const iconList =
     <Grid
       container
@@ -218,11 +299,22 @@ function ViewCollab() {
       position="absolute"
       sx={styles.iconList}
     >
+
+      <Grid item xs={3}>
+      {paused ? <PlayCircleIcon onClick={onPlay}/>
+              : <PauseCircleIcon onClick={onStop}/>
+      }
+      </Grid>
+
+      <Grid item xs={3}>
+        <ReplayCircleFilledIcon onClick={onRestart}/>
+      </Grid>
+
       <Grid item xs={3}>
         <GroupAddIcon onClick={handleJam}/>
       </Grid>
       <Grid item xs={3}>
-        <LocalFloristIcon onClick={handleLikes}/>
+        {flowerIcon}
       </Grid>
       <Grid item xs={3}>
         <img src={ClapIcon} style={styles.clap} alt="clap" onClick={handleClap}/>
@@ -234,12 +326,9 @@ function ViewCollab() {
       </Grid>
     </Grid>
 
-  const flower =
-    <FilterVintageIcon sx={{ position: 'absolute', right:22, bottom:106 }}/>
 
 
   const [showComments, setShowComments] = useState(false);
-  const [showFlower, setShowFlower] = useState(false);
   const [claps, setClaps] = useState([]);
 
   return (
@@ -260,8 +349,6 @@ function ViewCollab() {
           {title}
           {description}
           {iconList}
-          {showFlower ? flower : null}
-          {collabClaps ? flower : null}
         </div>
       </div>
       <img src={ClapIcon} alt="fly-claps" className="flyClaps" id="clap1"/>
@@ -273,7 +360,7 @@ function ViewCollab() {
       { claps }
       { showComments ? <div style={styles.closeCmt} onClick={(e)=>{setShowComments(false)}}/> : null }
       { showComments ? <div style={styles.cmtBg} /> : null }
-      { showComments ? <ViewSession sx={styles.cmtSection}/> : null }
+      { showComments ? <CommentSection sx={styles.cmtSection} author={currentUser} collabId={collabId}/> : null }
     </div>
   );
 }
