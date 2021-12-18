@@ -19,13 +19,16 @@ import flower4 from '../../../assets/flower4.svg'
 import flower5 from '../../../assets/flower5.svg'
 import ClapIcon from '../../../assets/clap.svg';
 import CommentSection from '../CommentSection';
+
 import './clap.css';
+import imported from './flower.css';
+
 import { useHistory } from "react-router-dom"
 import { useAuth } from "../../../contexts/AuthContext"
 import { getCollab } from "../../../contexts/DBContext"
 
+import { db } from "../../../firebase";
 
-import { db } from "../../../firebase"
 
 const styles = {
   overlay: {
@@ -114,14 +117,17 @@ const styles = {
       height: 30,
     },
   },
+  flowerActive: {
+    width: 18,
+    height: 18,
+    marginBottom: 6,
+    transitionDuration: ".2s",
+  },
   flower: {
     cursor: 'pointer',
     width: 24,
     height: 24,
-    "&:hover": {
-      width: 30,
-      height: 30,
-    },
+    transitionDuration: ".08s",
   },
 };
 
@@ -168,8 +174,10 @@ function ViewCollab() {
     }
   }
 
+
   const handleLikes  = () => {
     var collab = db.collection("sessions").doc(collabId);
+    setFlowerSx(styles.flowerActive);
     collab.get().then(function (doc) {
       if (doc.exists) {
         collab.get().then((snapshot) => {
@@ -260,18 +268,29 @@ function ViewCollab() {
     setPaused(false);
   }, []);
 
+  const [flowerSx, setFlowerSx] = useState(styles.flower);
+
+  useEffect(() => {
+    if (flowerSx == styles.flowerActive) {
+      setTimeout(() => {
+        setFlowerSx(styles.flower);
+      }, 200);
+    }
+  }, [flowerSx]);
+
+
   const flowerIcon0 =
-      <img src={flower0} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower0} style={flowerSx} onClick={handleLikes}/>
   const flowerIcon1 =
-      <img src={flower1} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower1} style={flowerSx} onClick={handleLikes}/>
   const flowerIcon2 =
-      <img src={flower2} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower2} style={flowerSx} onClick={handleLikes}/>
   const flowerIcon3 =
-      <img src={flower3} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower3} style={flowerSx} onClick={handleLikes}/>
   const flowerIcon4 =
-      <img src={flower4} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower4} style={flowerSx} onClick={handleLikes}/>
   const flowerIcon5 =
-      <img src={flower5} style={styles.flower} onClick={handleLikes}/>
+      <img src={flower5} style={flowerSx} onClick={handleLikes}/>
 
   const [flowerIcon, setFlowerIcon] = useState(flowerIcon0);
 
@@ -281,13 +300,12 @@ function ViewCollab() {
       collabClaps <= 4 ? flowerIcon2 :
       collabClaps <= 9 ? flowerIcon3 :
       collabClaps <= 19 ? flowerIcon4 :
-      flowerIcon5;
+      flowerIcon5
 
   useEffect(() => {
     setFlowerIcon(flowerToIcon(collabClaps));
-    console.log("changeicon");
     console.log(collabClaps);
-  }, [collabClaps]);
+  }, [collabClaps, flowerSx]);
 
   const iconList =
     <Grid
